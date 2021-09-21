@@ -36,4 +36,3 @@ export default route<StateInterface>(function (/* { store, ssrContext } */) {
 
   return Router;
 });
-  
