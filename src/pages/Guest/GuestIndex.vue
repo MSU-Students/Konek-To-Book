@@ -1,71 +1,105 @@
 <template>
+<q-page class="bg-image">
+  <!--------------------------------  TAB_MENU ------------------------------------------    --->
+  <q-tabs
+        key=""
+        v-model="tab"
+        inline-label
+        dense
+        width = "100px"
+        :breakpoint="0"
+        align="left"
+        class="bg-orange-9 text-white shadow-2"
+      >
+      <q-tab
+          name="back"
+          icon="reply"
+          @click="() => $router.replace('/')"
+        />
+        <q-tab
+          name="book"
+          icon="collections_bookmark"
+          label="Books"
+          @click="() => $router.replace('/GuestIndex')"
+        />
+        <q-tab name="categories" icon="book" label="Categories"  @click="() => $router.replace('/GuestCategories')" />
+         <q-space />
+        <q-tab
+          v-if="$q.screen.gt.sm"
+          name="login"
+          icon="logout"
+          label="Login"
+          @click="() => $router.replace('/LoginForm')"
+        />
+        </q-tabs>
+<!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
   <div class="q-pa-md">
     <q-table
+      ref="tableRef"
+      :class="tableClass"
+      tabindex="0"
       title="BOOKS"
       :rows="rows"
       :columns="columns"
       row-key="name"
       :pagination="pagination"
-      :loading="loading"
       :filter="filter"
-      @request="onRequest"
-      binary-state-sort
+
+
     >
       <template v-slot:top-right>
         <div class="search">
-          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+        <q-input outlined rounded dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+         </q-input>
         </div>
 
-         <q-page-scroller
+        <q-page-scroller
            position="bottom-right"
            :scroll-offset="150"
-           :offset="[18,18]"
-    >
+           :offset="[18,18]" >
             <q-btn fab icon="keyboard_arrow_up"  color="orange-9" text-color="white"  />
          </q-page-scroller>
 
       </template>
     </q-table>
   </div>
+</q-page>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue';
-
+<script lang = 'ts'>
+import { ref } from 'vue'
+interface IRow {
+  name: string;
+}
 const columns = [
-
-  { name: 'bookID',
-    required: true,
-    label: 'Book ID',
-    field:'bookID',
-    align: 'center',
-    sortable: true,
-  },
+   { name: 'bookID', align: 'center', label: 'Book ID', field: 'bookID', sortable: true },
   {
-    name: 'name',
+    name: 'desc',
     required: true,
     label: 'Title',
     align: 'center',
-    field: (row) => row.name ,
-    format: (val) => `${val}`,
-    sortable: true,
+    field: (row: IRow) => row.name,
+    format: (val: string) => `${val}`,
+    sortable: true
   },
 
-  { name: 'isbn', label: 'ISBN', align: 'center',field:'isbn', sortable: true },
-  { name:  'callnumber ', label: 'Call Number', align: 'center',field: 'callnumber', sortable: true },
+
+  { name: 'isbn', label: 'ISBN', align: 'center',field:'isbn'},
+  { name:  'callnumber ', label: 'Call Number', align: 'center',field: 'callnumber'},
   { name: 'authors', label: 'Author/s', align: 'center', field: 'authors', sortable: true },
-  { name: 'edition', label: 'Edition', align: 'center', field: 'edition', sortable: true },
-  {
+  { name: 'edition', label: 'Edition', align: 'center', field: 'edition' },
+
+
+ {
     name: 'category',
     label: 'Category',
     field:'category',
     align: 'center',
     sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+
   },
   {
     name: 'publisher',
@@ -73,7 +107,6 @@ const columns = [
     field: 'publisher',
     align: 'center',
     sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
 
   {
@@ -82,15 +115,13 @@ const columns = [
     field:'dateofpublication',
     align: 'center',
     sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+
   },
   {
     name: 'pages',
     label: 'Pages',
     align: 'center',
     field: 'pages',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
 
   {
@@ -98,8 +129,6 @@ const columns = [
     label: 'Series',
     align: 'center',
     field:'series',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
 
   {
@@ -107,21 +136,17 @@ const columns = [
     label: 'Status',
     align: 'center',
     field:'status',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
   {
     name: 'availability',
     label: 'Availability',
     align: 'center',
     field: 'availability',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
 ];
 
-const originalRows = [
-  {
+const rows = [
+ {
     bookID: '01',
     name: 'Data Structures and Algorithms',
     isbn: '9865-865',
@@ -317,110 +342,23 @@ const originalRows = [
     status: 'New',
     availability: 'YES',
   },
-];
+]
 
 export default {
-  setup() {
-    const rows = ref([]);
-    const filter = ref('');
-    const loading = ref(false);
-    const pagination = ref({
-      sortBy: 'desc',
-      descending: false,
-      page: 1,
-      rowsPerPage: 3,
-      rowsNumber: 10
-    })
-
-
-    // emulate ajax call
-    // SELECT * FROM ... WHERE...LIMIT...
-    function fetchFromServer(startRow, count, filter, sortBy, descending) {
-      const data = filter
-        ? originalRows.filter((row) => row.name.includes(filter))
-        : originalRows.slice();
-
-      // handle sortBy
-      if (sortBy) {
-        const sortFn =
-          sortBy ==='desc'
-            ? descending
-              ? (a, b) => (a.name > b.name ? -1 : a.name < b.name ? 1 : 0)
-              : (a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
-            : descending
-            ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
-            : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
-        data.sort(sortFn);
-      }
-
-      return data.slice(startRow, startRow + count);
-    }
-
-    // emulate 'SELECT count(*) FROM ...WHERE...'
-    function getRowsNumberCount(filter) {
-      if (!filter) {
-        return originalRows.length;
-      }
-      let count = 0;
-      originalRows.forEach((treat) => {
-        if (treat.name.includes(filter)) {
-          ++count;
-        }
-      });
-      return count;
-    }
-
-    function onRequest (props) {
-      const { page, rowsPerPage, sortBy, descending } = props.pagination
-      const filter = props.filter
-
-      loading.value = true
-
-      // emulate server
-      setTimeout(() => {
-        // update rowsCount with appropriate value
-        pagination.value.rowsNumber = getRowsNumberCount(filter)
-
-        // get all rows if "All" (0) is selected
-        const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
-
-        // calculate starting row of data
-        const startRow = (page - 1) * rowsPerPage
-
-        // fetch data from "server"
-        const returnedData = fetchFromServer(startRow, fetchCount, filter, sortBy, descending)
-
-        // clear out existing data and add new
-        rows.value.splice(0, rows.value.length, ...returnedData)
-
-        // don't forget to update local pagination object
-        pagination.value.page = page
-        pagination.value.rowsPerPage = rowsPerPage
-        pagination.value.sortBy = sortBy
-        pagination.value.descending = descending
-
-        // ...and turn of loading indicator
-        loading.value = false
-      }, 1500)
-    }
-
-    onMounted(() => {
-      // get initial data from server (1st page)
-      onRequest({
-        pagination: pagination.value,
-        filter: undefined
-      })
-    })
+  setup () {
+    const tableRef = ref(null)
+    const navigationActive = ref(false)
+    const pagination = ref({})
 
     return {
-      filter,
-      loading,
+      tableRef,
+      navigationActive,
+      filter: ref(''),
       pagination,
       columns,
       rows,
-
-      onRequest
     }
-  }
+   }
 }
 </script>
+

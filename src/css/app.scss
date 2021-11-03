@@ -8,7 +8,6 @@
   font-family: 'Poor Richard';
 }
 
-
 // app global css in SCSS form
 
 * {
@@ -16,11 +15,9 @@
 }
 
 .search{
-  width: 600px;
+  width: 500px;
 
 }
-
-
 
 h3 {
   font-family: 'Comfort';
@@ -31,6 +28,59 @@ h3 {
 #login{
   align-items: center;
   position: center;
-
 }
 
+.bg-image
+{
+  background-image: url(../assets/Images/style.png);
+  background-blend-mode: overlay;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 60%;
+}
+
+.bg-image1
+{
+  background-image: url(../assets/Images/style2.png);
+  background-blend-mode: overlay;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 60%;
+}
+
+.my-sticky-header-column-table
+{
+  td:first-child{
+    /* bg color is important for td; just specify one */
+    background-color: #c1f4cd !important
+  }
+  tr th{
+    position: sticky;
+    /* higher than z-index for td below */
+    z-index: 2;
+    /* bg color is important; just specify one */
+    background: #fff;
+  }
+  /* this will be the loading indicator */
+  thead tr:last-child th{
+    /* height of all previous header rows */
+    top: 48px;
+    /* highest z-index */
+    z-index: 3;
+}
+  thead tr:first-child th{
+    top: 0 ;
+    z-index: 1 ;
+}
+  tr:first-child th:first-child{
+    /* highest z-index */
+    z-index: 3;
+  }
+  td:first-child{
+    z-index: 1;
+  }
+  td:first-child, th:first-child{
+    position: sticky;
+    left: 0;
+  }
+}

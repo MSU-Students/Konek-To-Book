@@ -1,49 +1,68 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="hHh lpR lFf">
-      <q-header elevated class="bg-primary">
+      <q-header elevated class="bg-primary q-px-lg q-py-sm">
         <q-toolbar>
-          <q-toolbar-title>
-            <div class="row">
-            <section id="logo" class="column">
-              <div class="q-pa-md">
-                <q-avatar size="100px">
-                  <q-img src="../assets/Images/Logo_ISED.png" />
-                </q-avatar>
-              </div>
-            </section>
-            <section id="librarian">
-              <div>
-                <br>
-                <div class="text-h5 text-bold text-orange-9">I S E D</div>
-                <div class="text-body3  text-bold text-white">
-                  LIBRARY MANAGEMENT SYSTEM
-                  <q-separator color="white" />
-                </div>
-                <div class="text-body1 text-white">
-                  Mindanao State University - Marawi City
-                </div>
-                  <br>
-              </div>
-            </section>
-          </div>
-          </q-toolbar-title>
+          <q-img src="../assets/Images/Logo_ISED.png" style="width: 110px"></q-img>
 
-          <q-btn-dropdown flat dropdown-icon="account_circle" >
+          <q-card flat class="bg-transparent">
+            <div>
+              <br />
+              <div class="text-h4 text-bold text-orange-9 on-right">I S E D</div>
+              <div class="text-h6 text-bold text-white on-right">
+                LIBRARY MANAGEMENT SYSTEM
+                <q-separator color="white" width="130%" />
+              </div>
+              <div class="text-body1 text-white on-right">
+                Mindanao State University - Marawi City
+              </div>
+              <br />
+            </div>
+          </q-card>
+          <q-space />
+
+          <div class="search">
+            <q-input
+              rounded
+              dense
+              outlined
+              bg-color="white"
+              v-model="ph"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
+
+          <q-btn-dropdown flat dropdown-icon="account_circle" size="25px">
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
-                <q-avatar size="90px" icon="person"/>
+                <q-avatar size="100px"  icon="person" />
                 <div class="text-subtitle1 q-mt-md q-mb-xs">Librarian</div>
-                <q-btn
-                  class="q-ma-xs"
-                  color="primary"
-                  label="Logout"
-                  push
-                  size="md"
-                  to="/Mainlayout"
-                  v-close-popup
-                />
+                  <q-list>
+                        <q-item clickable v-close-popup @click="onItemClick" to="pages/Librarian/ChangePass">
+                          <q-item-section avatar>
+                            <q-avatar icon="manage_accounts" color="red-8" text-color="white" />
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>Change Password</q-item-label>
+                          </q-item-section>
+                        </q-item>
 
+                        <q-item clickable v-close-popup @click="onItemClick" to="pages/Guest/LoginForm">
+                          <q-item-section avatar>
+                            <q-avatar icon="logout" color="red-8" text-color="white" />
+                          </q-item-section>
+                          <q-item-section>
+                            <q-item-label>Logout</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-icon name="info" color="amber" />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
               </div>
             </div>
           </q-btn-dropdown>
@@ -71,49 +90,41 @@
               <q-item-section> Dashboard </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple to="pages/Librarian/ManageBooks">
+            <q-item clickable v-ripple to="pages/Librarian/ManageCategories">
               <q-item-section avatar>
                 <q-icon name="book" />
-              </q-item-section>
-
-              <q-item-section> Manage Books </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple to="/admin/POS">
-              <q-item-section avatar>
-                <q-icon name="category" />
               </q-item-section>
 
               <q-item-section> Manage Categories </q-item-section>
             </q-item>
 
-             <q-separator />
+            <q-separator />
 
-            <q-item clickable v-ripple to="/admin/POS">
+            <q-item clickable v-ripple to="pages/Librarian/ManageBorrowers">
               <q-item-section avatar>
-                <q-icon name="person" />
+                <q-icon name="people" />
               </q-item-section>
 
               <q-item-section> Manage Borrowers </q-item-section>
             </q-item>
 
-              <q-item clickable v-ripple to="/admin/POS">
+            <q-item clickable v-ripple to="pages/Librarian/ManageIssuedBooks">
               <q-item-section avatar>
-                <q-icon name="how_to_reg" />
+                <q-icon name="local_library" />
               </q-item-section>
 
               <q-item-section> Manage Issued Books </q-item-section>
             </q-item>
 
-              <q-item clickable v-ripple to="/admin/POS">
+            <q-item clickable v-ripple to="pages/Librarian/ManageFines">
               <q-item-section avatar>
-                <q-icon name="how_to_reg" />
+                <q-icon name="payments" />
               </q-item-section>
 
               <q-item-section> Manage Fines </q-item-section>
             </q-item>
 
-            <q-separator />
+          <q-separator />
 
             <q-item clickable v-ripple to="pages/Guest/LoginForm">
               <q-item-section avatar>

@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="bg-image">
     <div class="row q-col-gutter-sm q-ma-xs q-mr-sm">
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <q-card>
@@ -13,7 +13,7 @@
                 <div class="text-h5">356</div>
               </div>
               <div class="col-2">
-                <q-icon size="62px" name="trending_up" />
+                <q-icon size="62px" name="auto_stories" />
               </div>
             </div>
           </q-card-section>
@@ -32,7 +32,7 @@
                 <div class="text-h5">45</div>
               </div>
               <div class="col-2">
-                <q-icon size="62px" name="far fa-dot-circle" />
+                <q-icon size="62px" name="local_library" />
               </div>
             </div>
           </q-card-section>
@@ -41,14 +41,14 @@
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <q-card>
           <q-card-section
-            :class="$q.dark.isActive ? 'orange_dark' : 'bg-orange-8'"
+            :class="$q.dark.isActive ? 'orange_dark' : 'bg-orange-9 '"
             class="text-white"
           >
             <div class="row">
               <div class="col-10">
-                <div class="text-h6">Students</div>
+                <div class="text-h6">Borrowers</div>
                 <div class="text-h5">
-                  <q-icon name="arrow_downward" />
+                  <q-icon name="people" />
                   Second Semester
                 </div>
               </div>
@@ -57,69 +57,141 @@
         </q-card>
         </div>
       </div>
+<!-------------------------------- --------------------- TAB_MENU_BOOK------------------------------------------   --------- --->
+ <div class="q-ma-md">
+          <q-tabs
+            inline-label
+            dense
+            width ="50px"
+            align="right"
+            class="bg-primary text-white shadow-2">
 
-      <q-table
-      title="Book Lists"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-      :rows-per-page-options="[0]"
-      :filter="filter"
-       >
-       <template v-slot:top-right>
-        <div class="q-pa-md q-gutter-sm row">
-          <q-input
-            outlined
-            rounded
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-          <q-btn
-            label="Add User"
-            color="primary"
-            dense
-            flat
-            icon="add"
-            @click="addUser = true"
+<!-------------------------------- ------------------- ADD NEW BOOK BUTTON  ------------------------------------------    --->
+         <q-tab
+            name="book"
+            icon="library_add"
+            label="Add Book"
+           @click="addBook = true"
           />
-          <q-dialog v-model="addUser">
-            <q-card style="width: 350px">
+         <q-dialog v-model="addBook" persistent>
+            <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
               <q-card-section class="row">
-                <div class="text-h6">Add User</div>
-                <q-space />
+               <q-toolbar>
+                   <q-avatar size="50px">
+                      <q-icon name="auto_stories"   />
+                   </q-avatar>
+                <div class="text-h6">Add New Book</div>
+                    <q-space />
                 <q-btn flat round dense icon="close" v-close-popup />
+               </q-toolbar>
               </q-card-section>
 
-              <q-card-section class="q-gutter-md">
-                <q-input outlined v-model="name" label="First Name" />
-                <q-input outlined v-model="name" label="Middle Initial" />
-                <q-input outlined v-model="name" label="Last Name" />
-                <q-input outlined v-model="username" label="Username" />
-                <q-input outlined v-model="password" label="Password" />
-                <q-input outlined v-model="email" label="Email" type="email" />
-                <q-select
-                  outlined
-                  v-model="role"
-                  :options="options"
-                  label="Roles"
-                />
+             <q-card-section class="q-gutter-md">
+                    <q-input dense outlined v-model="title" label="Title" />
+             </q-card-section>
+
+              <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-input dense outlined v-model="isbn"  label="ISBN" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="author" label="Author" />
+                </div>
               </q-card-section>
 
-              <q-card-actions align="right">
+            <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-input dense outlined v-model="callnumber" label="Call Number" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="edition" label="Edition" />
+                </div>
+              </q-card-section>
+
+              <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-select
+                      dense
+                      outlined
+                      v-model="category"
+                      :options="options"
+                      label="Category"
+                    />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="publisher" label="Publisher" />
+                </div>
+              </q-card-section>
+
+              <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-input dense outlined v-model="datepublication" type="date" label="Date of Publication" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="pages" label="Pages" />
+                </div>
+              </q-card-section>
+
+               <q-card-section class="q-gutter-md row">
+                 <div class="col">
+                  <q-input dense outlined v-model="series" label="Series" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="status" label="Status" />
+                </div>
+                <div class="col">
+                  <q-select
+                      outlined
+                      dense
+                      v-model="availablity"
+                      :options="options1"
+                      label="Availability"
+                    />
+                </div>
+              </q-card-section>
+
+           <q-card-actions align="right">
                 <q-btn flat label="Cancel" color="red-10" v-close-popup />
                 <q-btn flat label="Add" color="primary" v-close-popup />
               </q-card-actions>
             </q-card>
           </q-dialog>
-        </div>
+<!--------------------------------  -------------Print BOOK ------------------------------------------    --->
+           <q-tab
+            name="Print"
+            icon="print"
+            label="Print"
+          />
+        </q-tabs>
+     </div>
+ <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
+   <div class="q-ma-md">
+    <q-table
+      ref="tableRef"
+      :class="tableClass"
+      title="List of Books"
+      :rows="rows"
+      :columns="columns"
+      row-key="name"
+      :pagination="pagination"
+      :filter="filter"
+    >
+      <template v-slot:top-right>
+        <q-input outlined rounded dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+         </q-input>
+
+        <q-page-scroller
+           position="bottom-right"
+           :scroll-offset="150"
+           :offset="[18,18]" >
+            <q-btn fab icon="keyboard_arrow_up"  color="orange-9" text-color="white"  />
+         </q-page-scroller>
       </template>
-     <template v-slot:header="props">
+
+      <template v-slot:header="props">
         <q-tr :props="props">
           <q-th auto-width />
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -127,10 +199,77 @@
           </q-th>
         </q-tr>
       </template>
-    <template v-slot:body="props">
+
+<!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
+<template v-slot:body="props">
         <q-tr :props="props">
           <div>
             <q-td>
+              <q-btn
+                  round
+                  color="blue"
+                  icon="more_vert"
+                  size="md"
+                  flat
+                  dense
+                  @click="Details = true"
+             />
+             <q-dialog v-model="Details">
+              <q-card class="my-card" flat bordered>
+                <q-card-section>
+                  <div class="text-h6 text-teal-8 text-center">
+                    Book Details
+                    <q-btn
+                      round
+                      flat
+                      dense
+                      icon="close"
+                      class="float-right"
+                      color="grey-8"
+                      v-close-popup
+                    ></q-btn>
+                  </div>
+                </q-card-section>
+                  <q-separator />
+                <q-card-section horizontal>
+                  <q-card-section class="q-pt-xs col">
+                    <div class="text-overline">01</div>
+                    <div class="text-h6 text-orange-9 text-bold q-ma-mp q-mb-xs">Data Structures and Algorithms</div>
+                    <div class="text-caption text-grey"> ISBN: 9865-865</div>
+                    <div class="text-caption text-grey"> CallNo: 906</div>
+                    <div class="text-caption text-grey"> Author: Sarah Jay</div>
+                    <div class="text-caption text-grey"> Edition: 2nd Ed</div>
+                    <div class="text-caption text-grey"> Category: Reference</div>
+
+                    <div class="text-caption text-grey"> Publisher: 2026-2029</div>
+                    <div class="text-caption text-grey"> Date 0f Publication: 567890</div>
+                    <div class="text-caption text-grey"> Pages: ii</div>
+                    <div class="text-caption text-grey"> Series: 2nd Ed</div>
+                    <div class="text-caption text-grey"> Status: New</div>
+                     <div class="text-caption text-grey"> Availability: YES</div>
+                  </q-card-section>
+
+
+                    <q-card-section class="col-5 flex flex-center">
+                     <q-avatar
+                          square
+                          size="170px"
+                          font-size="130px"
+                          color="teal"
+                          text-color="white"
+                          icon="auto_stories"
+                      />
+                     </q-card-section>
+                </q-card-section>
+
+                <q-separator />
+
+                <q-card-section class="col-5 text-italic text-teal-8 flex flex-center">
+                      KonektoBook  library management system
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+ <!-------------------------------------------------- EDIT BOOK BUTTON   -------------------------------------------------------------->
               <q-btn
                 round
                 color="teal-8"
@@ -140,42 +279,98 @@
                 dense
                 @click="editRow = true"
               />
-              <q-dialog v-model="editRow">
-                <q-card style="width: 350px">
-                  <q-card-section class="row">
-                    <div class="text-h6">Edit User</div>
-                    <q-space />
-                    <q-btn flat round dense icon="close" v-close-popup />
-                  </q-card-section>
+                <q-dialog v-model="editRow" persistent>
+            <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+              <q-card-section class="row">
+               <q-toolbar>
+                   <q-avatar size="50px">
+                      <q-icon name="auto_stories"   />
+                   </q-avatar>
+                <div class="text-h6">Edit Book</div>
+                   <q-space />
+                <q-btn flat round dense icon="close" v-close-popup />
+               </q-toolbar>
+              </q-card-section>
 
-              <q-card-section class="q-gutter-md">
-                    <q-input outlined v-model="name" label="First Name" />
-                    <q-input outlined v-model="name" label="Middle Initial" />
-                    <q-input outlined v-model="name" label="Last Name" />
-                    <q-input outlined v-model="username" label="Username" />
-                    <q-input outlined v-model="password" label="Password" />
-                    <q-input
+            <q-card-section class="q-gutter-md row">
+                 <div class="col-md-3">
+                 <q-input dense outlined v-model="bookid" readonly  label="Book ID" />
+                </div>
+                <div class="col">
+                 <q-input dense outlined v-model="title" label="Title" />
+                </div>
+              </q-card-section>
+
+              <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-input dense outlined v-model="isbn" label="ISBN" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="authors" label="Author" />
+                </div>
+              </q-card-section>
+
+            <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-input dense outlined v-model="callnumber" label="Call Number" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="edition" label="Edition" />
+                </div>
+              </q-card-section>
+
+              <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-select
                       outlined
-                      v-model="email"
-                      label="Email"
-                      type="email"
-                    />
-                    <q-select
-                      outlined
-                      v-model="role"
+                      dense
+                      v-model="category"
                       :options="options"
-                      label="Roles"
+                      label="category"
                     />
-                  </q-card-section>
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="publisher" label="Publisher" />
+                </div>
+              </q-card-section>
 
-                  <q-card-actions align="right">
+              <q-card-section class="q-gutter-md row">
+                <div class="col">
+                  <q-input dense outlined v-model="datepublication" type="date" label="Date of Publication" />
+                </div>
+                <div class="col">
+                  <q-input dense outlined v-model="pages" label="Pages" />
+                </div>
+              </q-card-section>
+
+               <q-card-section class="q-gutter-md row">
+                 <div class="col">
+                  <q-input dense outlined v-model="series" label="Series" />
+                </div>
+                <div class="col">
+                    <q-input dense outlined v-model="status" label="Status" />
+                </div>
+                <div class="col">
+                  <q-select
+                      outlined
+                      dense
+                      v-model="availablity"
+                      :options="options1"
+                      label="Availability"
+                    />
+                </div>
+              </q-card-section>
+
+                <q-card-actions align="right">
                     <q-btn flat label="Cancel" color="red-10" v-close-popup />
                     <q-btn flat label="Save" color="primary" v-close-popup />
                   </q-card-actions>
+
                 </q-card>
               </q-dialog>
+ <!------------------------------------------------------------- DELETE BOOK BUTTON   -----------------------------------------------------------------    --->
               <q-btn
-                color="red-10"
+                color="red-8"
                 icon="delete"
                 size="sm"
                 class="q-ml-sm"
@@ -203,91 +398,357 @@
                       v-close-popup="cancelEnabled"
                       :disable="!cancelEnabled"
                     />
-                     <q-btn flat label="Confirm" color="primary" v-close-popup />
+                    <q-btn flat label="Confirm" color="primary" v-close-popup />
                   </q-card-actions>
                 </q-card>
               </q-dialog>
             </q-td>
           </div>
-          <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            {{ col.value }}
-          </q-td>
-           </q-tr>
-      </template>
-    </q-table>
+                 <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                   {{ col.value }}
+                 </q-td>
+
+         </q-tr>
+       </template>
+     </q-table>
+    </div>
   </q-page>
-</template>
+ </template>
 
-<script>
+
+<script lang = 'ts'>
 import { ref } from 'vue'
-
+interface IRow {
+  name: string;
+}
 const columns = [
-    {
-      name: 'name',
-      required: true,
-      label: 'name',
-      align: 'left',
-      field: (row) => row.name,
-      format: (val) => `${val}`,
-    },
-    {
-      name: 'email',
-      align: 'center',
-      label: 'Email',
-      field: 'email',
-    },
-    {
-      name: 'dateCreated',
-      align: 'center',
-      label: 'Date Created',
-      field: 'dateCreated',
-    },
-    { name: 'role', align: 'center', label: 'Role', field: 'role' },
-    { name: 'status', align: 'center', label: 'Status', field: 'status' },
-    {
-      name: 'lastLogin',
-      align: 'center',
-      label: 'Last Login',
-      field: 'lastLogin',
-    },
-  ];
+   { name: 'bookID', align: 'center', label: 'Book ID', field: 'bookID', sortable: true },
+  {
+    name: 'desc',
+    required: true,
+    label: 'Title',
+    align: 'center',
+    field: (row: IRow) => row.name,
+    format: (val: string) => `${val}`,
+    sortable: true
+  },
+
+
+  { name: 'isbn', label: 'ISBN', align: 'center',field:'isbn'},
+  { name:  'callnumber ', label: 'Call Number', align: 'center',field: 'callnumber'},
+  { name: 'authors', label: 'Author/s', align: 'center', field: 'authors', sortable: true },
+  { name: 'edition', label: 'Edition', align: 'center', field: 'edition' },
+
+
+ {
+    name: 'category',
+    label: 'Category',
+    field:'category',
+    align: 'center',
+    sortable: true,
+
+  },
+  {
+    name: 'publisher',
+    label: 'Publisher',
+    field: 'publisher',
+    align: 'center',
+    sortable: true,
+  },
+
+  {
+    name: 'dateofpublication',
+    label: 'Date of Publication',
+    field:'dateofpublication',
+    align: 'center',
+    sortable: true,
+
+  },
+  {
+    name: 'pages',
+    label: 'Pages',
+    align: 'center',
+    field: 'pages',
+  },
+
+  {
+    name: 'series',
+    label: 'Series',
+    align: 'center',
+    field:'series',
+  },
+
+  {
+    name: 'status',
+    label: 'Status',
+    align: 'center',
+    field:'status',
+  },
+  {
+    name: 'availability',
+    label: 'Availability',
+    align: 'center',
+    field: 'availability',
+  },
+];
 
 const rows = [
  {
-      name: 'Basam C. Serad',
-      email: 'basamserad1998@gmail.com',
-      dateCreated: 'December 23, 1998',
-      role: 'Admin',
-      status: 'Active',
-      lastLogin: '11 / 11 / 2001',
-    },
-    {
-      name: 'Basem C. Serad',
-      email: 'basamserad1998@gmail.com',
-      dateCreated: 'December 23, 1998',
-      role: 'Admin',
-      status: 'Active',
-      lastLogin: '11 / 11 / 2001',
-    },
-    {
-      name: 'Arefa C. Serad',
-      email: 'basamserad1998@gmail.com',
-      dateCreated: 'December 23, 1998',
-      role: 'Admin',
-      status: 'Active',
-      lastLogin: '11 / 11 / 2001',
-    },
-];
+    bookID: '01',
+    name: 'Data Structures and Algorithms',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'sarah jay',
+    edition: '2nd ed',
+    category: 'reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'ii',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+  {
+    bookID: '02',
+    name: 'Algorithms',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'sarah jay',
+    edition: '2nd ed',
+    category: 'Capstone',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'ii',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'NO',
+  },
+
+  {
+    bookID: '03',
+    name: 'Integrating',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Jyasa',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'ii',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'NO',
+  },
+  {
+    bookID: '04',
+    name: 'Robotics',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady gerry',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'ii',
+    series: 'tvhj',
+    status: 'Old',
+    availability: 'YES',
+  },
+  {
+    bookID: '05',
+    name: 'Robotics and systematic system',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'iii',
+    series: 'tvhj',
+    status: 'Old',
+    availability: 'NO',
+  },
+  {
+    bookID: '06',
+    name: 'Oracles',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'ii',
+    series: 'tvhj',
+    status: 'Old',
+    availability: 'YES',
+  },
+  {
+    bookID: '07',
+    name: 'Programming Language',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'iii',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+  {
+    bookID: '08',
+    name: 'Java Language',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'iv',
+    series: 'yuio',
+    status: 'New',
+    availability: 'NO',
+  },
+  {
+    bookID: '09',
+    name: 'Programming Languages',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'i',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+  {
+    bookID: '10',
+    name: 'Robotics',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'xi',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+  {
+    bookID: '11',
+    name: 'Cinderella',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'x',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+  {
+    bookID: '15',
+    name: 'Github',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'xii',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+  {
+    bookID: '13',
+    name: 'Integrated',
+    isbn: '9865-865',
+    callnumber: '906',
+    authors: 'Lady ',
+    edition: '3rd ed',
+    category: 'Reference',
+    publisher: '2026-2029',
+    dateofpublication: '567890',
+    pages: 'vi',
+    series: 'tvhj',
+    status: 'New',
+    availability: 'YES',
+  },
+]
 
 export default {
   setup () {
-    return {
+    const tableRef = ref(null)
+    const navigationActive = ref(false)
+    const pagination = ref({})
+    const cancelEnabled= ref(true)
+    const addBook = ref(false)
+    const editRow = ref(false)
+    const filter = ref('')
+    const dialog = ref (false)
+    const Details = ref(false)
+    const bookid = ref('')
+    const title = ref('')
+    const isbn = ref('')
+    const callnumber = ref('')
+    const author = ref('')
+    const edition = ref('')
+    const category = ref('')
+    const publisher = ref('')
+    const datepublication = ref('')
+    const pages = ref('')
+    const series = ref('')
+    const status = ref('')
+    const availablity = ref('')
 
-      filter: ref(''),
+    const options = ref(['Circulation', 'Capstone', 'Filipiniana','New Arrivals', 'Reference', 'Theses'])
+    const options1 = ref(['YES', 'NO'])
+
+    return {
+      tableRef,
+      navigationActive,
+      pagination,
+      cancelEnabled,
+      addBook,
+      editRow,
+      filter,
       columns,
       rows,
+      dialog,
+      Details,
 
-          }
-  }
+      bookid,
+      title,
+      isbn,
+      callnumber,
+      author,
+      edition,
+      category,
+      publisher,
+      datepublication,
+      pages,
+      series,
+      status,
+      availablity,
+
+      options,
+      options1,
+    }
+   }
 }
 </script>
