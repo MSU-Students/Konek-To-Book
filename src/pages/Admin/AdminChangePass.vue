@@ -12,7 +12,13 @@
           <q-form @submit="onSubmit" @reset="onClear" class="q-gutter-md">
             <div class="q-pa-md">
               <div class="q-gutter-xs">
-                <q-input color="orange-9" filled v-model="username"  style="width: 250px" placeholder="Username">
+                <q-input
+                  color="orange-9"
+                  filled
+                  v-model="username"
+                  style="width: 250px"
+                  placeholder="Username"
+                >
                   <template v-slot:append>
                     <q-icon name="person" />
                   </template>
@@ -32,9 +38,8 @@
                       @click="isPwd = !isPwd"
                     />
                   </template>
-
                 </q-input>
-                 <q-input
+                <q-input
                   color="orange-9"
                   filled
                   v-model="newpassword"
@@ -52,14 +57,8 @@
               </div>
             </div>
 
-
             <div>
-              <q-btn
-                clickable
-                v-ripple
-                label="save"
-                color="primary"
-              ></q-btn>
+              <q-btn clickable v-ripple label="save" color="primary"></q-btn>
               <q-btn
                 label="Clear"
                 type="reset"
@@ -75,44 +74,29 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue';
-export default defineComponent({
-  name: 'MainLayout',
-  setup() {
-    const username = ref(null);
-    const currentpassword = ref(null);
-    const newpassword = ref(null);
-    const accept = ref(false);
-    return {
-      slide: ref(1),
-      isPwd: ref(true),
-      isPwd1: ref(true),
-      username,
-      currentpassword,
-      newpassword,
+<script lang="ts">
+import { Vue, Options } from "vue-class-component";
+Options({});
+export default class AdminChangePass extends Vue {
+  username = "";
+  currentpassword = "";
+  newpassword = "";
+  isPwd = true;
+  isPwd1 = true;
+  user = "librarian";
+  // onSubmit() {
+  //   $q.ref({
+  //     color: 'green-4',
+  //     textColor: 'white',
+  //     icon: 'cloud_done',
+  //     message: 'Submitted',
+  //   });
+  // },
 
-      autoplay: ref(true),
-      user: ref('librarian'),
-      // onSubmit() {
-      //   $q.ref({
-      //     color: 'green-4',
-      //     textColor: 'white',
-      //     icon: 'cloud_done',
-      //     message: 'Submitted',
-      //   });
-      // },
-
-      onClear() {
-        username.value = null;
-        currentpassword.value = null;
-        newpassword.value = null;
-        accept.value = false;
-      },
-      onItemClick() {
-        // console.log('Clicked on an Item')
-      },
-    };
-  },
-});
+  onClear() {
+    this.username = "";
+    this.currentpassword = "";
+    this.newpassword = "";
+  }
+}
 </script>
