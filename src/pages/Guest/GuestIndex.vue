@@ -1,50 +1,17 @@
 <template>
-  <q-page class="bg-image">
-    <!--------------------------------  TAB_MENU ------------------------------------------    --->
-    <q-tabs
-      key=""
-      v-model="tab"
-      inline-label
-      dense
-      width="100px"
-      :breakpoint="0"
-      align="left"
-      class="bg-orange-9 text-white shadow-2"
-    >
-      <q-tab name="back" icon="reply" @click="() => $router.replace('/')" />
-      <q-tab
-        name="book"
-        icon="collections_bookmark"
-        label="Books"
-        @click="() => $router.replace('/GuestIndex')"
-      />
-      <q-tab
-        name="categories"
-        icon="book"
-        label="Categories"
-        @click="() => $router.replace('/GuestCategories')"
-      />
-      <q-space />
-      <q-tab
-        v-if="$q.screen.gt.sm"
-        name="login"
-        icon="logout"
-        label="Login"
-        @click="() => $router.replace('/LoginForm')"
-      />
-    </q-tabs>
+  <q-page class="bg-image1">
     <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
-    <div class="q-pa-md">
+    <div class="q-ma-md">
       <q-table
         ref="tableRef"
-        :class="tableClass"
+
         tabindex="0"
         title="BOOKS"
         :rows="rows"
         :columns="columns"
         row-key="name"
         :pagination="pagination"
-        :filter="filter"
+
       >
         <template v-slot:top-right>
           <div class="search">
@@ -53,7 +20,7 @@
               rounded
               dense
               debounce="300"
-              v-model="filter"
+
               placeholder="Search"
             >
               <template v-slot:append>
@@ -88,7 +55,7 @@ interface IRow {
 Options({});
 
 export default class GuestIndex extends Vue {
-  tableRef = null;
+  tableRef = '';
   navigationActive = false;
   pagination = {};
   filters = "";

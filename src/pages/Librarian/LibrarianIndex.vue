@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-image">
+  <q-page class = "bg-image1">
     <div class="row q-col-gutter-sm q-ma-xs q-mr-sm">
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <q-card>
@@ -94,7 +94,7 @@
                 <q-input dense outlined v-model="isbn" label="ISBN" />
               </div>
               <div class="col">
-                <q-input dense outlined v-model="author" label="Author" />
+                <q-input dense outlined v-model="authors" label="Author" />
               </div>
             </q-card-section>
 
@@ -161,9 +161,10 @@
             </q-card-section>
 
             <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="red-10" v-close-popup />
-              <q-btn flat label="Add" color="primary" v-close-popup />
-            </q-card-actions>
+                <q-btn  flat label="Cancel" color="red-8" v-close-popup />
+                <q-btn flat label="Save" color="primary" v-close-popup />
+             </q-card-actions>
+
           </q-card>
         </q-dialog>
         <!--------------------------------  -------------Print BOOK ------------------------------------------    --->
@@ -209,6 +210,14 @@
           </q-page-scroller>
         </template>
 
+      <template v-slot:header="props">
+        <q-tr :props="props">
+          <q-th auto-width />
+          <q-th v-for="col in props.cols" :key="col.name" :props="props">
+            {{ col.label }}
+          </q-th>
+        </q-tr>
+      </template>
         <!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
         <template v-slot:body="props">
           <q-tr :props="props">
@@ -436,9 +445,10 @@
                     </q-card-section>
 
                     <q-card-actions align="right">
-                      <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                      <q-btn flat label="Save" color="primary" v-close-popup />
+                     <q-btn  flat label="Cancel" color="red-8" v-close-popup />
+                     <q-btn flat label="Save" color="primary" v-close-popup />
                     </q-card-actions>
+
                   </q-card>
                 </q-dialog>
                 <!------------------------------------------------------------- DELETE BOOK BUTTON   -----------------------------------------------------------------    --->
@@ -467,7 +477,7 @@
                       <q-btn
                         flat
                         label="Cancel"
-                        color="primary"
+                        color="red-8"
                         v-close-popup="cancelEnabled"
                         :disable="!cancelEnabled"
                       />
@@ -477,11 +487,13 @@
                         color="primary"
                         v-close-popup
                       />
+
                     </q-card-actions>
                   </q-card>
                 </q-dialog>
               </q-td>
             </div>
+
             <q-td v-for="col in props.cols" :key="col.name" :props="props">
               {{ col.value }}
             </q-td>
@@ -513,7 +525,7 @@ export default class LibrarianIndex extends Vue {
   title = "";
   isbn = "";
   callnumber = "";
-  author = "";
+  authors = "";
   edition = "";
   category = "";
   publisher = "";

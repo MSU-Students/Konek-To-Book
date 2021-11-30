@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-image">
+  <q-page class="bg-image1">
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_FINES------------------------------------------    --->
       <q-tabs
@@ -92,7 +92,7 @@
 
             <q-card-actions align="right">
               <q-btn flat label="Cancel" color="red-10" v-close-popup />
-              <q-btn flat label="Add" color="primary" v-close-popup />
+              <q-btn flat label="Save" color="primary" v-close-popup />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -287,7 +287,7 @@
                       <q-btn
                         flat
                         label="Cancel"
-                        color="primary"
+                        color="red-8"
                         v-close-popup="cancelEnabled"
                         :disable="!cancelEnabled"
                       />

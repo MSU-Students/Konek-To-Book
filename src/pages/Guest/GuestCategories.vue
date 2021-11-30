@@ -1,43 +1,10 @@
 <template>
-  <q-page class="bg-image">
-    <!--------------------------------  TAB_MENU ------------------------------------------    --->
-    <q-tabs
-      key=""
-      v-model="tab"
-      inline-label
-      dense
-      width="100px"
-      :breakpoint="0"
-      align="left"
-      class="bg-orange-9 text-white shadow-2"
-    >
-      <q-tab name="back" icon="reply" @click="() => $router.replace('/')" />
-      <q-tab
-        name="book"
-        icon="collections_bookmark"
-        label="Books"
-        @click="() => $router.replace('/GuestIndex')"
-      />
-      <q-tab
-        name="categories"
-        icon="book"
-        label="Categories"
-        @click="() => $router.replace('/GuestCategories')"
-      />
-      <q-space />
-      <q-tab
-        v-if="$q.screen.gt.sm"
-        name="login"
-        icon="logout"
-        label="Login"
-        @click="() => $router.replace('/LoginForm')"
-      />
-    </q-tabs>
+  <q-page class="bg-image2">
     <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
     <div class="q-pa-md">
       <q-table
         grid
-        card-class="bg-blue-grey-8 text-white"
+        card-class="bg-white text-black"
         title="Lists of Available Categories"
         :rows="rows"
         :columns="columns"

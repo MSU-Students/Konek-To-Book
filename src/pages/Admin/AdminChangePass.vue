@@ -1,6 +1,5 @@
 <template>
-  <!-- another section -->
-  <q-page class="bg-image1 q-pa-md flex flex-center">
+  <q-page class="bg-image3 q-pa-md flex flex-center">
     <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
       <q-card-section style="width: 360px"></q-card-section>
 
@@ -84,6 +83,7 @@ export default class AdminChangePass extends Vue {
   isPwd = true;
   isPwd1 = true;
   user = "librarian";
+
   // onSubmit() {
   //   $q.ref({
   //     color: 'green-4',

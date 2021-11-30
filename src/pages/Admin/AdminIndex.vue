@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-image">
+  <q-page class="bg-image3">
     <div class="col q-col-gutter-md q-ma-sm absolute-right"></div>
     <div class="q-ma-xl">
       <div class="q-ma-xl">
@@ -73,15 +73,7 @@
           </div>
         </div>
 
-        <div class="absolute-right q-pa-md">
-          <div class="q-pr-xl">
-            <div class="q-pa-xl">
-              <div class="q-pt-xl q-pt-md" height="480px" width="2000px">
-                <q-date v-model="date" landscape color="lime-9" />
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   </q-page>

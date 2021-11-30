@@ -1,44 +1,34 @@
 <template>
-  <!-- another section -->
-  <q-page class="bg-image q-pa-md flex flex-center">
+  <q-page class="bg-image3 q-pa-md flex flex-center">
     <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
       <q-card-section style="width: 360px"></q-card-section>
 
       <section id="login" class="column">
         <div class="q-pa-md" style="max-width: 400px" align="center">
-          <br /><br />
-          <div class="text-h5 text-grey-10 text-bold">SIGN IN FORM</div>
+          <br />
+          <div class="text-h5 text-grey-10 text-bold">Change Password</div>
+          <br />
           <q-form @submit="onSubmit" @reset="onClear" class="q-gutter-md">
-            <div class="q-pa-sm">
+            <div class="q-pa-md">
               <div class="q-gutter-xs">
-                <q-radio v-model="user" val="librarian" label="Librarian" />
-                <q-radio v-model="user" val="admin" label="Admin" />
-
                 <q-input
                   color="orange-9"
                   filled
                   v-model="username"
                   style="width: 250px"
                   placeholder="Username"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Input your Username',
-                  ]"
                 >
                   <template v-slot:append>
                     <q-icon name="person" />
                   </template>
                 </q-input>
+
                 <q-input
                   color="orange-9"
                   filled
-                  v-model="password"
-                  placeholder="Password"
+                  v-model="currentpassword"
+                  placeholder="Current Password"
                   :type="isPwd ? 'password' : 'text'"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Input your Password',
-                  ]"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -48,23 +38,33 @@
                     />
                   </template>
                 </q-input>
+                <q-input
+                  color="orange-9"
+                  filled
+                  v-model="newpassword"
+                  placeholder="New Password"
+                  :type="isPwd1 ? 'password' : 'text'"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwd1 ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd1 = !isPwd1"
+                    />
+                  </template>
+                </q-input>
               </div>
             </div>
 
-            <div class="q-px-sm">
-              Your selection is: <strong>{{ user }}</strong>
-            </div>
-
             <div>
-              <q-btn label="Login" color="primary" type="submit" />
+              <q-btn clickable v-ripple label="save" color="primary"></q-btn>
               <q-btn
-                clickable
                 label="Clear"
                 type="reset"
                 color="primary"
                 flat
                 class="q-ml-sm"
-              />
+              ></q-btn>
             </div>
           </q-form>
         </div>
@@ -76,23 +76,27 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 Options({});
-export default class LoginForm extends Vue {
+export default class AdminChangePass extends Vue {
   username = "";
-  password = "";
+  currentpassword = "";
+  newpassword = "";
   isPwd = true;
-  user = "";
+  isPwd1 = true;
+  user = "librarian";
 
-  async onSubmit() {
-    if (this.username == "admin" && this.password == "admin") {
-      await this.$router.replace("Librarian/LibrarianIndex");
-    } else {
-      this.username = "";
-      this.password = "";
-    }
-  }
+  // onSubmit() {
+  //   $q.ref({
+  //     color: 'green-4',
+  //     textColor: 'white',
+  //     icon: 'cloud_done',
+  //     message: 'Submitted',
+  //   });
+  // },
+
   onClear() {
     this.username = "";
-    this.password = "";
+    this.currentpassword = "";
+    this.newpassword = "";
   }
 }
 </script>

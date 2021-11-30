@@ -10,19 +10,20 @@
             icon="auto_stories"
             @click="() => $router.replace('/')"
           >
+          <q-tooltip>Home</q-tooltip>
           </q-btn>
           KonektoBook
           </q-toolbar-title>
-        <div class="q-pa-sm q-gutter-sm on-right">
+        <div class="q-gutter-sm items-center no-wrap">
           <q-btn
             flat
             round
-            size="15px"
+            size="20px"
             color="white"
             icon="account_circle"
             @click="() => $router.replace('/LoginForm')"
           >
-            <q-tooltip class="bg-orange-9 text-h7">SIGN IN</q-tooltip>
+            <q-tooltip>SIGN IN</q-tooltip>
           </q-btn>
         </div>
       </q-toolbar>

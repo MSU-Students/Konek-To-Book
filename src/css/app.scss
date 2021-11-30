@@ -16,15 +16,12 @@
 
 .search{
   width: 500px;
-
 }
-
 h3 {
   font-family: 'Comfort';
   color: goldenrod;
   text-align: center;
 }
-
 #login{
   align-items: center;
   position: center;
@@ -32,22 +29,37 @@ h3 {
 
 .bg-image
 {
+  background-image: url(../assets/Images/Capture1.png);
+  background-blend-mode: overlay;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.bg-image1
+{
   background-image: url(../assets/Images/style.png);
   background-blend-mode: overlay;
   background-position: right;
   background-repeat: no-repeat;
   background-size: 60%;
 }
-
-.bg-image1
+.bg-image2
 {
-  background-image: url(../assets/Images/style2.png);
+  background-image: url(../assets/Images/style3.png);
   background-blend-mode: overlay;
   background-position: right;
   background-repeat: no-repeat;
-  background-size: 60%;
+  background-size: 65%;
 }
-
+.bg-image3
+{
+  background-image: url(../assets/Images/style4.png);
+  background-blend-mode: overlay;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 65%;
+}
 .my-sticky-header-column-table
 {
   td:first-child{

@@ -14,19 +14,21 @@ const routes: RouteRecordRaw[] = [
     ]
   },
 
+
+   //!---->For GuestUser
   {
     path: '/Guest',
-    component: () => import('layouts/GuestUser.vue'),
+    component: () => import('src/layouts/GuestLayout.vue'),
     children: [
       { path: '/GuestIndex',
       component: () => import('src/pages/Guest/GuestIndex.vue') },
       { path: '/GuestCategories',
       component: () => import('src/pages/Guest/GuestCategories.vue') },
-
     ],
   },
 
 
+   //!---->For Librarian
   {
     path: '/Librarian',
     component: () => import('layouts/LibrarianLayout.vue'),
@@ -47,14 +49,16 @@ const routes: RouteRecordRaw[] = [
       component: () => import('src/pages/Librarian/ManageFines.vue') },
 
       { path: '/ChangePass',
-      component: () => import('src/pages/Librarian/ChangePass.vue') },
+      component: () => import('src/pages/Librarian/LibrarianChangePass.vue') },
 
     ],
   },
 
+
+     //!---->For ADMIN
   {
     path: '/Admin',
-    component: () => import('layouts/Admin.vue'),
+    component: () => import('src/layouts/AdminLayout.vue'),
     children: [
       { path: '/AdminIndex',
       component: () => import('src/pages/Admin/AdminIndex.vue') },
@@ -62,10 +66,6 @@ const routes: RouteRecordRaw[] = [
       component: () => import('src/pages/Admin/ManageAccount.vue') },
       { path: '/AdminChangePass',
       component: () => import('src/pages/Admin/AdminChangePass.vue') },
-
-
-
-
     ],
   },
 
