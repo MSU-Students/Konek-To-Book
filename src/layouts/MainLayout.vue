@@ -3,17 +3,17 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
-         <q-btn
+          <q-btn
             flat
             round
             color="white"
             icon="auto_stories"
             @click="() => $router.replace('/')"
           >
-          <q-tooltip>Home</q-tooltip>
+            <q-tooltip>Home</q-tooltip>
           </q-btn>
           KonektoBook
-          </q-toolbar-title>
+        </q-toolbar-title>
         <div class="q-gutter-sm items-center no-wrap">
           <q-btn
             flat
@@ -32,6 +32,5 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-
   </q-layout>
 </template>

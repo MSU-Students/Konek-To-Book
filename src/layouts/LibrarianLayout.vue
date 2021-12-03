@@ -1,17 +1,19 @@
 <template>
-   <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-image text-white" height-hint="64">
       <q-toolbar class="GPL__toolbar" style="height: 64px">
         <q-btn
-        dense
-        flat
-        round icon="menu"
-        class="q-mx-md"
-       @click="drawer =!drawer" />
+          dense
+          flat
+          round
+          icon="menu"
+          class="q-mx-md"
+          @click="drawer = !drawer"
+        />
 
         <q-toolbar-title class="row items-center no-wrap">
-            <img src="../assets/Images/Logo_ISED.png" style="height: 40px">
-            <span class="q-ml-sm">ISED Library</span>
+          <img src="../assets/Images/Logo_ISED.png" style="height: 40px" />
+          <span class="q-ml-sm">ISED Library</span>
         </q-toolbar-title>
 
         <div class="q-gutter-sm row items-center no-wrap">
@@ -23,54 +25,59 @@
                   <img src="../assets/Images/msu-main.png" />
                 </q-avatar>
                 <div class="q-mt-md q-mb-xs">201812488</div>
-                <div class="text-weight-bold"> Alango, Norjehan </div>
-                      <q-list>
-                      <q-item clickable v-close-popup to="pages/Librarian/LibrarianChangePass">
-                          <q-item-section avatar>
-                            <q-avatar icon="manage_accounts" color="black" text-color="white" />
-                          </q-item-section>
-                          <q-item-section>
-                            <q-item-label>Change Password</q-item-label>
-                          </q-item-section>
-                        </q-item>
+                <div class="text-weight-bold">Alango, Norjehan</div>
+                <q-list>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    to="pages/Librarian/LibrarianChangePass"
+                  >
+                    <q-item-section avatar>
+                      <q-avatar
+                        icon="manage_accounts"
+                        color="black"
+                        text-color="white"
+                      />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Change Password</q-item-label>
+                    </q-item-section>
+                  </q-item>
 
-                        <q-item clickable v-close-popup to="pages/Guest/LoginForm">
-                          <q-item-section avatar>
-                            <q-avatar icon="logout" color="black" text-color="white" />
-                          </q-item-section>
-                          <q-item-section>
-                            <q-item-label>Logout</q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                    </div>
+                  <q-item clickable v-close-popup to="pages/Guest/LoginForm">
+                    <q-item-section avatar>
+                      <q-avatar
+                        icon="logout"
+                        color="black"
+                        text-color="white"
+                      />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Logout</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
               </div>
+            </div>
           </q-btn-dropdown>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      show-if-above
-      v-model="drawer"
-      :breakpoint="500"
-      bordered
-      class="bg-grey-2"
-
-      >
+    <q-drawer show-if-above v-model="drawer" bordered class="bg-grey-2">
       <!-- drawer content -->
-         <q-scroll-area class="fit">
-          <q-list padding>
-            <q-item clickable v-ripple to="pages/Librarian/LibrarianIndex">
-              <q-item-section avatar>
-                <q-icon name="dashboard" />
-              </q-item-section>
+      <q-scroll-area class="fit">
+        <q-list padding>
+          <q-item clickable v-ripple to="pages/Librarian/LibrarianIndex">
+            <q-item-section avatar>
+              <q-icon name="dashboard" />
+            </q-item-section>
 
-              <q-item-section> Dashboard </q-item-section>
-            </q-item>
+            <q-item-section> Dashboard </q-item-section>
+          </q-item>
 
-             <q-separator />
-             <q-expansion-item>
+          <q-separator />
+          <q-expansion-item>
             <template v-slot:header>
               <q-item-section avatar>
                 <q-icon name="view_list" />
@@ -79,70 +86,68 @@
             </template>
             <q-card>
               <q-card-section>
-                 <q-item clickable v-ripple to="pages/Librarian/ManageCategories">
-              <q-item-section avatar>
-                <q-icon name="book" />
-              </q-item-section>
-              <q-item-section> Manage Categories </q-item-section>
-            </q-item>
+                <q-item
+                  clickable
+                  v-ripple
+                  to="pages/Librarian/ManageCategories"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="book" />
+                  </q-item-section>
+                  <q-item-section> Manage Categories </q-item-section>
+                </q-item>
 
+                <q-item clickable v-ripple to="pages/Librarian/ManageBorrowers">
+                  <q-item-section avatar>
+                    <q-icon name="people" />
+                  </q-item-section>
+                  <q-item-section> Manage Borrowers </q-item-section>
+                </q-item>
 
-            <q-item clickable v-ripple to="pages/Librarian/ManageBorrowers">
-              <q-item-section avatar>
-                <q-icon name="people" />
-              </q-item-section>
-              <q-item-section> Manage Borrowers </q-item-section>
-            </q-item>
+                <q-item
+                  clickable
+                  v-ripple
+                  to="pages/Librarian/ManageIssuedBooks"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="local_library" />
+                  </q-item-section>
+                  <q-item-section> Manage Issued Books </q-item-section>
+                </q-item>
 
-            <q-item clickable v-ripple to="pages/Librarian/ManageIssuedBooks">
-              <q-item-section avatar>
-                <q-icon name="local_library" />
-              </q-item-section>
-              <q-item-section> Manage Issued Books </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple to="pages/Librarian/ManageFines">
-              <q-item-section avatar>
-                <q-icon name="payments" />
-              </q-item-section>
-              <q-item-section> Manage Fines </q-item-section>
-            </q-item>
-
+                <q-item clickable v-ripple to="pages/Librarian/ManageFines">
+                  <q-item-section avatar>
+                    <q-icon name="payments" />
+                  </q-item-section>
+                  <q-item-section> Manage Fines </q-item-section>
+                </q-item>
               </q-card-section>
             </q-card>
           </q-expansion-item>
 
-
-
           <q-separator />
 
-            <q-item clickable v-ripple to="pages/Guest/LoginForm">
-              <q-item-section avatar>
-                <q-icon name="logout" />
-              </q-item-section>
+          <q-item clickable v-ripple to="pages/Guest/LoginForm">
+            <q-item-section avatar>
+              <q-icon name="logout" />
+            </q-item-section>
 
-              <q-item-section> Logout </q-item-section>
-            </q-item>
-
-          </q-list>
-       </q-scroll-area>
+            <q-item-section> Logout </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
-
   </q-layout>
 </template>
 
-<script>
-import { ref} from "vue";
-
-export default {
-  setup() {
-    return {
-    drawer: ref(false),
-    }
-  }
+<script lang="ts">
+import { Vue, Options } from "vue-class-component";
+Options({});
+export default class LoginForm extends Vue {
+  drawer = false;
 }
 </script>
