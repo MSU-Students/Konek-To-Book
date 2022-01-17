@@ -232,11 +232,13 @@
                   dense
                   @click="Details = true"
                 />
+
+
                 <q-dialog v-model="Details">
-                  <q-card class="my-card" flat bordered>
+                  <q-card style="width: 500px; max-width: 90vw"  flat bordered>
                     <q-card-section>
-                      <div class="text-h6 text-teal-8 text-center">
-                        Book Details
+                      <div class="text-h9 text-left">
+                        BOOK DETAILS
                         <q-btn
                           round
                           flat
@@ -249,61 +251,32 @@
                       </div>
                     </q-card-section>
                     <q-separator />
-                    <q-card-section horizontal>
+                    <q-card-section>
+
                       <q-card-section class="q-pt-xs col">
-                        <div class="text-overline">01</div>
-                        <div
-                          class="
-                            text-h6 text-orange-9 text-bold
-                            q-ma-mp q-mb-xs
-                          "
-                        >
-                          Data Structures and Algorithms
-                        </div>
-                        <div class="text-caption text-grey">ISBN: 9865-865</div>
-                        <div class="text-caption text-grey">CallNo: 906</div>
-                        <div class="text-caption text-grey">
-                          Author: Sarah Jay
-                        </div>
-                        <div class="text-caption text-grey">
-                          Edition: 2nd Ed
-                        </div>
-                        <div class="text-caption text-grey">
-                          Category: Reference
-                        </div>
-
-                        <div class="text-caption text-grey">
-                          Publisher: 2026-2029
-                        </div>
-                        <div class="text-caption text-grey">
-                          Date 0f Publication: 567890
-                        </div>
-                        <div class="text-caption text-grey">Pages: ii</div>
-                        <div class="text-caption text-grey">Series: 2nd Ed</div>
-                        <div class="text-caption text-grey">Status: New</div>
-                        <div class="text-caption text-grey">
-                          Availability: YES
-                        </div>
-                      </q-card-section>
-
-                      <q-card-section class="col-5 flex flex-center">
-                        <q-avatar
-                          square
-                          size="170px"
-                          font-size="130px"
-                          color="teal"
-                          text-color="white"
-                          icon="auto_stories"
-                        />
+                        <div class="text-overline text-orange-9">01</div>
+                        <div class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs "> Data Structures and Algorithms </div>
+                        <q-space/>
+                        <div class = "text-center q-ma-mp q-mb-xs">ISBN: 9865-865</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">CallNo: 906</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Author: Sarah Jay</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs" >Edition: 2nd Ed </div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Category: Reference</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs"> Publisher: 2026-2029 </div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Date 0f Publication: 567890</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Pages: ii</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Series: 2nd Ed</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Status: New</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Availability: YES</div>
                       </q-card-section>
                     </q-card-section>
 
                     <q-separator />
 
                     <q-card-section
-                      class="col-5 text-italic text-teal-8 flex flex-center"
+                      class="col-8 text-italic flex flex-center"
                     >
-                      KonektoBook library management system
+                      MSU-ISED library management system
                     </q-card-section>
                   </q-card>
                 </q-dialog>
@@ -499,6 +472,7 @@
             </q-td>
           </q-tr>
         </template>
+
       </q-table>
     </div>
   </q-page>

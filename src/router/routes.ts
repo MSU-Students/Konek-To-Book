@@ -1,18 +1,14 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '/',
-      component: () => import('src/pages/MainSearch.vue')},
+      {
+        path: '/',
+        component: () => import('src/pages/MainSearch.vue'),
+      },
 
       { path: '/LoginForm',
-      component: () => import('src/pages/LoginForm.vue') },
-
-    ]
-  },
+        component: () => import('src/pages/LoginForm.vue')
+      },
 
 
    //!---->For GuestUser
@@ -48,7 +44,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/ManageFines',
       component: () => import('src/pages/Librarian/ManageFines.vue') },
 
-      { path: '/ChangePass',
+      { path: '/LibrarianChangePass',
       component: () => import('src/pages/Librarian/LibrarianChangePass.vue') },
 
     ],
