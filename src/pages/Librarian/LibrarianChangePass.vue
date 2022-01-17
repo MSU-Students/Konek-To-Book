@@ -1,34 +1,47 @@
 <template>
-  <q-page class="bg-image3 q-pa-md flex flex-center">
+  <q-page class="bg-image1 q-pa-md flex flex-center">
     <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
-      <q-card-section style="width: 360px"></q-card-section>
+     <div class="fixed-center">
+      <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
+        <div class="q-pt-lg" style="max-width: 380px">
+          <q-card-section>
+            <div class="q-pt-lg">
+              <div class="col text-h6 ellipsis flex justify-center">
+                <div class="text-h4 text-primary q-my-none text-weight-bold">
+                  Password
+                </div>
+              </div>
+            </div>
+          </q-card-section>
+          <br />
 
-      <section id="login" class="column">
-        <div class="q-pa-md" style="max-width: 400px" align="center">
-          <br />
-          <div class="text-h5 text-grey-10 text-bold">Change Password</div>
-          <br />
-          <q-form @submit="onSubmit" @reset="onClear" class="q-gutter-md">
-            <div class="q-pa-md">
-              <div class="q-gutter-xs">
+          <!--login form-->
+          <q-card-section>
+            <q-form @submit="onSubmit" class="q-gutter-md">
+              <div class="q-pl-xl q-pr-xl">
                 <q-input
-                  color="orange-9"
-                  filled
                   v-model="username"
-                  style="width: 250px"
-                  placeholder="Username"
+                  dense
+                  label="Username"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input your Username',
+                  ]"
                 >
-                  <template v-slot:append>
+                  <template v-slot:prepend>
                     <q-icon name="person" />
                   </template>
                 </q-input>
 
                 <q-input
-                  color="orange-9"
-                  filled
                   v-model="currentpassword"
-                  placeholder="Current Password"
+                  dense
+                  label="Current Password"
                   :type="isPwd ? 'password' : 'text'"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input your current password',
+                  ]"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -37,13 +50,20 @@
                       @click="isPwd = !isPwd"
                     />
                   </template>
+                  <template v-slot:prepend>
+                    <q-icon name="lock" />
+                  </template>
                 </q-input>
+
                 <q-input
-                  color="orange-9"
-                  filled
                   v-model="newpassword"
-                  placeholder="New Password"
+                  dense
+                  label="New Password"
                   :type="isPwd1 ? 'password' : 'text'"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input your new password',
+                  ]"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -52,23 +72,31 @@
                       @click="isPwd1 = !isPwd1"
                     />
                   </template>
+                  <template v-slot:prepend>
+                    <q-icon name="lock" />
+                  </template>
                 </q-input>
-              </div>
-            </div>
 
-            <div>
-              <q-btn clickable v-ripple label="save" color="primary"></q-btn>
-              <q-btn
-                label="Clear"
-                type="reset"
-                color="primary"
-                flat
-                class="q-ml-sm"
-              ></q-btn>
-            </div>
-          </q-form>
+                <div class="flex justify-center">
+                    <div>
+                      <q-btn clickable v-ripple label="save" color="primary"></q-btn>
+                      <q-btn
+                        label="Clear"
+                        type="reset"
+                        color="primary"
+                        flat
+                        class="q-ml-sm"
+                      ></q-btn>
+                    </div>
+                </div>
+
+              </div>
+            </q-form>
+          </q-card-section>
         </div>
-      </section>
+      </q-card>
+    </div>
+
     </q-card>
   </q-page>
 </template>
@@ -76,7 +104,7 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 Options({});
-export default class AdminChangePass extends Vue {
+export default class LibrarianChangePass extends Vue {
   username = "";
   currentpassword = "";
   newpassword = "";

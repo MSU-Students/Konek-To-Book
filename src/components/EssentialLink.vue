@@ -1,10 +1,9 @@
 <template>
   <q-item
-     exact clickable
+    clickable
     tag="a"
     target="_blank"
     :href="link"
-
   >
     <q-item-section
       v-if="icon"
@@ -19,36 +18,19 @@
         {{ caption }}
       </q-item-label>
     </q-item-section>
-
-
   </q-item>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { Vue, prop, Options } from 'vue-class-component';
 
-export default defineComponent({
-  name: 'EssentialLink',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
+class Props {
+  readonly title!: string;
+  readonly caption = prop({ default: '' });
+  readonly link = prop({ default: '#' });
+  readonly icon = prop({ default: '' });
+}
 
-    caption: {
-      type: String,
-      default: ''
-    },
-
-    link: {
-      type: String,
-      default: '#'
-    },
-
-    icon: {
-      type: String,
-      default: ''
-    }
-  }
-})
+@Options({})
+export default class EssentialLink extends Vue.with(Props) {}
 </script>

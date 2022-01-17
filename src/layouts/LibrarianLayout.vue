@@ -27,11 +27,7 @@
                 <div class="q-mt-md q-mb-xs">201812488</div>
                 <div class="text-weight-bold">Alango, Norjehan</div>
                 <q-list>
-                  <q-item
-                    clickable
-                    v-close-popup
-                    to="pages/Librarian/LibrarianChangePass"
-                  >
+                  <q-item clickable v-ripple to="pages/Librarian/LibrarianChangePass">
                     <q-item-section avatar>
                       <q-avatar
                         icon="manage_accounts"
@@ -94,14 +90,14 @@
                   <q-item-section avatar>
                     <q-icon name="book" />
                   </q-item-section>
-                  <q-item-section> Manage Categories </q-item-section>
+                  <q-item-section> Categories </q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="pages/Librarian/ManageBorrowers">
                   <q-item-section avatar>
                     <q-icon name="people" />
                   </q-item-section>
-                  <q-item-section> Manage Borrowers </q-item-section>
+                  <q-item-section> Borrowers </q-item-section>
                 </q-item>
 
                 <q-item
@@ -112,14 +108,14 @@
                   <q-item-section avatar>
                     <q-icon name="local_library" />
                   </q-item-section>
-                  <q-item-section> Manage Issued Books </q-item-section>
+                  <q-item-section> Issued Books </q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="pages/Librarian/ManageFines">
                   <q-item-section avatar>
                     <q-icon name="payments" />
                   </q-item-section>
-                  <q-item-section> Manage Fines </q-item-section>
+                  <q-item-section> Fines </q-item-section>
                 </q-item>
               </q-card-section>
             </q-card>

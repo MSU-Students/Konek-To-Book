@@ -4,30 +4,27 @@
     <div class="q-ma-md">
       <q-table
         ref="tableRef"
-
-        tabindex="0"
         title="BOOKS"
         :rows="rows"
         :columns="columns"
         row-key="name"
         :pagination="pagination"
+        :filter="filter"
 
       >
         <template v-slot:top-right>
-          <div class="search">
             <q-input
               outlined
               rounded
               dense
               debounce="300"
-
+              v-model="filter"
               placeholder="Search"
             >
               <template v-slot:append>
                 <q-icon name="search" />
               </template>
             </q-input>
-          </div>
 
           <q-page-scroller
             position="bottom-right"
@@ -42,6 +39,88 @@
             />
           </q-page-scroller>
         </template>
+
+        <template v-slot:header="props">
+        <q-tr :props="props">
+          <q-th auto-width />
+          <q-th v-for="col in props.cols" :key="col.name" :props="props">
+            {{ col.label }}
+          </q-th>
+        </q-tr>
+      </template>
+
+      <!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <div>
+              <q-td>
+                <q-btn
+                  round
+                  color="blue"
+                  icon="more_vert"
+                  size="md"
+                  flat
+                  dense
+                  @click="Details = true"
+                />
+
+
+                <q-dialog v-model="Details">
+                  <q-card style="width: 500px; max-width: 90vw"  flat bordered>
+                    <q-card-section>
+                      <div class="text-h9 text-left">
+                        BOOK DETAILS
+                        <q-btn
+                          round
+                          flat
+                          dense
+                          icon="close"
+                          class="float-right"
+                          color="grey-8"
+                          v-close-popup
+                        ></q-btn>
+                      </div>
+                    </q-card-section>
+                    <q-separator />
+                    <q-card-section>
+
+                      <q-card-section class="q-pt-xs col">
+                        <div class="text-overline text-orange-9">01</div>
+                        <div class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs "> Data Structures and Algorithms </div>
+                        <q-space/>
+                        <div class = "text-center q-ma-mp q-mb-xs">ISBN: 9865-865</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">CallNo: 906</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Author: Sarah Jay</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs" >Edition: 2nd Ed </div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Category: Reference</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs"> Publisher: 2026-2029 </div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Date 0f Publication: 567890</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Pages: ii</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Series: 2nd Ed</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Status: New</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Availability: YES</div>
+                      </q-card-section>
+                    </q-card-section>
+
+                    <q-separator />
+
+                    <q-card-section
+                      class="col-8 text-italic flex flex-center"
+                    >
+                      MSU-ISED library management system
+                    </q-card-section>
+                  </q-card>
+                </q-dialog>
+
+               </q-td>
+            </div>
+
+          <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
+            </q-td>
+          </q-tr>
+        </template>
+
       </q-table>
     </div>
   </q-page>
@@ -52,13 +131,27 @@ import { Vue, Options } from "vue-class-component";
 interface IRow {
   name: string;
 }
-Options({});
-
+@Options({})
 export default class GuestIndex extends Vue {
   tableRef = '';
   navigationActive = false;
   pagination = {};
-  filters = "";
+  filter = "";
+  Details = false;
+  dialog = false;
+  bookid = "";
+  title = "";
+  isbn = "";
+  callnumber = "";
+  authors = "";
+  edition = "";
+  category = "";
+  publisher = "";
+  datepublication = "";
+  pages = "";
+  series = "";
+  status = "";
+  availablity = "";
 
   columns = [
     {
