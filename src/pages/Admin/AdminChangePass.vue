@@ -6,7 +6,7 @@
       <section id="login" class="column">
         <div class="q-pa-md" style="max-width: 400px" align="center">
           <br />
-          <div class="text-h5 text-grey-10 text-bold">Change Password</div>
+          <div class="text-h5 text-grey-10 text-bold">Password</div>
           <br />
           <q-form @submit="onSubmit" @reset="onClear" class="q-gutter-md">
             <div class="q-pa-md">
@@ -82,7 +82,7 @@ export default class AdminChangePass extends Vue {
   newpassword = "";
   isPwd = true;
   isPwd1 = true;
-  user = "librarian";
+  user = "admin";
 
   // onSubmit() {
   //   $q.ref({

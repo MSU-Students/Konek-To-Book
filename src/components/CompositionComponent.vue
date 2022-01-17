@@ -13,52 +13,25 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  PropType,
-  computed,
-  ref,
-  toRef,
-  Ref,
-} from 'vue';
+import { Vue, prop } from 'vue-class-component';
 import { Todo, Meta } from './models';
 
-function useClickCount() {
-  const clickCount = ref(0);
-  function increment() {
-    clickCount.value += 1
-    return clickCount.value;
+class Props {
+  readonly title!: string;
+  readonly todos = prop<Todo[]>({ default: () => [] });
+  readonly meta!: Meta;
+  readonly active!: boolean;
+}
+
+export default class ClassComponent extends Vue.with(Props) {
+  clickCount = 0;
+
+  increment() {
+    this.clickCount += 1;
   }
 
-  return { clickCount, increment };
+  get todoCount() {
+    return this.todos.length;
+  }
 }
-
-function useDisplayTodo(todos: Ref<Todo[]>) {
-  const todoCount = computed(() => todos.value.length);
-  return { todoCount };
-}
-
-export default defineComponent({
-  name: 'CompositionComponent',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    todos: {
-      type: Array as PropType<Todo[]>,
-      default: () => []
-    },
-    meta: {
-      type: Object as PropType<Meta>,
-      required: true
-    },
-    active: {
-      type: Boolean
-    }
-  },
-  setup(props) {
-    return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
-  },
-});
 </script>
