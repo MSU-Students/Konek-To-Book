@@ -15,9 +15,9 @@
           name="account"
           icon="person_add"
           label="Add Account"
-          @click="addAccount = true"
+          @click="addUser = true"
         />
-        <q-dialog v-model="addAccount" persistent>
+        <q-dialog v-model="addUser" persistent>
           <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
             <q-card-section class="row">
               <q-toolbar>
@@ -31,68 +31,89 @@
             </q-card-section>
 
             <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="firstname"
-                  label="First Name"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="middlename"
-                  label="Middle Name"
-                />
-              </div>
-              <div class="col">
-                <q-input dense outlined v-model="lastname" label="Last Name" />
-              </div>
+              <q-form @submit="onaddAccount()">
+                <div class="q-gutter-md row">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputAccount.FName"
+                      label="First Name"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputAccount.MName"
+                      label="Middle Name"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputAccount.LName"
+                      label="Last Name"
+                    />
+                  </div>
+                </div>
+                <div class="q-gutter-md row">
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputAccount.gender"
+                      label="Gender"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputAccount.bdate"
+                      type="date"
+                      label="Birth Date"
+                    />
+                  </div>
+                  <div align="right">
+                    <q-btn flat label="Cancel" color="red-10" v-close-popup />
+                    <q-btn flat label="Save" color="primary" type="submit" />
+                  </div>
+                </div>
+              </q-form>
             </q-card-section>
 
             <q-card-section class="q-gutter-md row">
               <div class="col">
-                <q-select
-                  outlined
+                <q-input
                   dense
-                  v-model="gender"
-                  :options="options"
-                  label="Gender"
+                  outlined
+                  v-model="inputAccount.address"
+                  label="Address"
                 />
               </div>
               <div class="col">
                 <q-input
                   dense
                   outlined
-                  v-model="bdate"
-                  type="date"
-                  label="Birth Date"
-                />
-              </div>
-            </q-card-section>
-
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input dense outlined v-model="address" label="Address" />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="contact"
+                  v-model="inputAccount.contact"
                   label="Contact Number"
                 />
               </div>
             </q-card-section>
 
             <q-card-section class="q-gutter-md">
-              <q-input dense outlined v-model="username" label="Username" />
               <q-input
                 dense
                 outlined
-                v-model="password"
+                v-model="inputAccount.username"
+                label="Username"
+              />
+              <q-input
+                dense
+                outlined
+                v-model="inputAccount.password"
                 :type="isPwd ? 'password' : 'text'"
                 label="Password"
               >
@@ -107,16 +128,12 @@
               <q-select
                 outlined
                 dense
-                v-model="usertype"
-                :options="options1"
+                v-model="inputAccount.usertype"
                 label="User type"
               />
             </q-card-section>
 
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="red-10" v-close-popup />
-              <q-btn flat label="Save" color="primary" v-close-popup />
-            </q-card-actions>
+            <q-card-actions align="right"> </q-card-actions>
           </q-card>
         </q-dialog>
         <!--------------------------------  Print BORROWER ------------------------------------------    --->
@@ -127,11 +144,9 @@
     <div class="q-ma-md">
       <q-table
         ref="tableRef"
-        :class="tableClass"
         tabindex="0"
-        :icon="book"
         title="Manage Accounts"
-        :rows="rows"
+        :rows="allAccount"
         :columns="columns"
         row-key="name"
         :pagination="pagination"
@@ -168,7 +183,7 @@
         <template v-slot:header="props">
           <q-tr :props="props">
             <q-th auto-width />
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
+            <q-th v-for="col in props.cols" :key="col.FName" :props="props">
               {{ col.label }}
             </q-th>
           </q-tr>
@@ -204,22 +219,12 @@
                       </q-toolbar>
                     </q-card-section>
 
-                    <q-card-section class="q-gutter-md">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="userid"
-                        readonly
-                        label="User ID"
-                      />
-                    </q-card-section>
-
                     <q-card-section class="q-gutter-md row">
                       <div class="col">
                         <q-input
                           dense
                           outlined
-                          v-model="firstname"
+                          v-model="inputAccount.FName"
                           label="First Name"
                         />
                       </div>
@@ -227,7 +232,7 @@
                         <q-input
                           dense
                           outlined
-                          v-model="middlename"
+                          v-model="inputAccount.MName"
                           label="Middle Name"
                         />
                       </div>
@@ -235,7 +240,7 @@
                         <q-input
                           dense
                           outlined
-                          v-model="lastname"
+                          v-model="inputAccount.LName"
                           label="Last Name"
                         />
                       </div>
@@ -246,8 +251,7 @@
                         <q-select
                           outlined
                           dense
-                          v-model="gender"
-                          :options="options"
+                          v-model="inputAccount.gender"
                           label="Gender"
                         />
                       </div>
@@ -255,7 +259,7 @@
                         <q-input
                           dense
                           outlined
-                          v-model="bdate"
+                          v-model="inputAccount.bdate"
                           type="date"
                           label="Birth Date"
                         />
@@ -267,15 +271,16 @@
                         <q-input
                           dense
                           outlined
-                          v-model="address"
+                          v-model="inputAccount.address"
                           label="Address"
                         />
                       </div>
+
                       <div class="col">
                         <q-input
                           dense
                           outlined
-                          v-model="contact"
+                          v-model="inputAccount.contact"
                           label="Contact Number"
                         />
                       </div>
@@ -285,13 +290,13 @@
                       <q-input
                         dense
                         outlined
-                        v-model="username"
+                        v-model="inputAccount.username"
                         label="Username"
                       />
                       <q-input
                         dense
                         outlined
-                        v-model="password"
+                        v-model="inputAccount.password"
                         :type="isPwd ? 'password' : 'text'"
                         label="Password"
                       >
@@ -306,8 +311,7 @@
                       <q-select
                         outlined
                         dense
-                        v-model="usertype"
-                        :options="options1"
+                        v-model="inputAccount.usertype"
                         label="User type"
                       />
                     </q-card-section>
@@ -359,10 +363,6 @@
                 </q-dialog>
               </q-td>
             </div>
-
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
           </q-tr>
         </template>
       </q-table>
@@ -372,64 +372,41 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import { IAccountInfo } from "src/store/account/state";
+import { mapActions, mapState } from "vuex";
 
-interface IRow {
-  name: string;
-}
-
-Options({});
+@Options({
+  computed: {
+    ...mapState("account", ["allAccount"]),
+  },
+  methods: {
+    ...mapActions("account", ["addAccount", "editAccount", "deleteAccount"]),
+  },
+})
 export default class ManageAccount extends Vue {
+  addAccount!: (payload: IAccountInfo) => Promise<void>;
+  editAccount!: (payload: IAccountInfo) => Promise<void>;
+  deleteAccount!: (payload: IAccountInfo) => Promise<void>;
+  allAccount!: IAccountInfo[];
+
   tableRef = null;
   navigationActive = false;
   pagination = {};
   cancelEnabled = true;
-  addAccount = false;
+  addUser = false;
   editRow = false;
   filter = "";
   dialog = false;
-  userid = "";
-  firstname = "";
-  middlename = "";
-  lastname = "";
-  gender = "";
-  bdate = "";
-  address = "";
-  contact = "";
-  username = "";
-  password = null;
-  usertype = "";
-  options = ["Female", "Male"];
-  options1 = ["Admin", "Librarian"];
   isPwd = true;
 
   columns = [
     {
-      name: "userid",
-      align: "center",
-      label: "User ID",
-      field: "userid",
-      sortable: true,
-    },
-    {
       name: "desc",
       required: true,
-      label: "First Name",
+      label: "Name",
       align: "center",
-      field: (row: IRow) => row.name,
+      field: (row: IAccountInfo) => row.FName + "" + row.MName + "" + row.LName,
       format: (val: string) => `${val}`,
-      sortable: true,
-    },
-    {
-      name: "middlename ",
-      label: "Middle name",
-      align: "center",
-      field: "middlename",
-    },
-    {
-      name: "lastname",
-      label: "Last Name",
-      align: "center",
-      field: "lastname",
       sortable: true,
     },
     {
@@ -457,91 +434,75 @@ export default class ManageAccount extends Vue {
     },
   ];
 
-  rows = [
-    {
-      userid: "01",
-      studentID: "202012567",
-      name: "Annehayrah",
-      middlename: "P.",
-      lastname: "Racman",
-      gender: "Female",
-      bdate: "10-10-1998",
-      address: "Iligan City",
-      contact: "09876567889",
-      username: "ayrah",
-      password: "1234",
-      usertype: "Librarian",
-    },
-    {
-      userid: "02",
-      studentID: "20187892",
-      name: "Norhani",
-      middlename: "A.",
-      lastname: "Ayaon",
-      gender: "Female",
-      bdate: "08-10-1998",
-      address: "Marawi City",
-      contact: "09876567889",
-      username: "Kanie",
-      password: "Kanie08",
-      usertype: "Admin",
-    },
-    {
-      userid: "03",
-      studentID: "201812507",
-      name: "Paul",
-      middlename: "M.",
-      lastname: "Sangcopan",
-      gender: "Male",
-      bdate: "12-02-1997",
-      address: "Cagayan De Oro City",
-      contact: "09876560000",
-      username: "paul",
-      password: "paul02",
-      usertype: "Librarian",
-    },
-    {
-      userid: "04",
-      studentID: "201812507",
-      name: "Norjehan",
-      middlename: "M.",
-      lastname: "Alango",
-      gender: "Female",
-      bdate: "12-15-1998",
-      address: "Marawi City",
-      contact: "09876560000",
-      username: "jyyhan",
-      password: "jyyhan15",
-      usertype: "Admin",
-    },
-    {
-      userid: "05",
-      studentID: "202119067",
-      name: "Norhanifah",
-      middlename: "D.",
-      lastname: "Ali",
-      gender: "Female",
-      bdate: "03-05-2000",
-      address: "Marawi City",
-      contact: "09009567889",
-      username: "ifah",
-      password: "ifah23",
-      usertype: "Librarian",
-    },
-    {
-      userid: "06",
-      studentID: "202189067",
-      name: "July",
-      middlename: "D.",
-      lastname: "rodrigues",
-      gender: "Male",
-      bdate: "06-29-2000",
-      address: "Marawi City",
-      contact: "09889567889",
-      username: "july",
-      password: "july09",
-      usertype: "Librarian",
-    },
-  ];
+  inputAccount: IAccountInfo = {
+    studentID: "",
+    FName: "",
+    MName: "",
+    LName: "",
+    gender: "",
+    bdate: "",
+    address: "",
+    contact: "",
+    username: "",
+    password: "",
+    usertype: "",
+  };
+
+  async onaddAccount() {
+    await this.addAccount(this.inputAccount);
+    this.addUser = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Adeded.",
+    });
+  }
+
+  async oneditAccount() {
+    await this.editAccount(this.inputAccount);
+    this.editRow = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Edit.",
+    });
+  }
+
+  deleteSpecificAccount(val: IAccountInfo) {
+    this.$q
+      .dialog({
+        message: "Confirm to delete?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        await this.deleteAccount(val);
+        this.$q.notify({
+          type: "warning",
+          message: "Successfully deleted",
+        });
+      });
+  }
+
+  openEditDialog(val: IAccountInfo) {
+    this.editRow = true;
+    this.inputAccount = { ...val };
+  }
+
+  resetModel() {
+    this.inputAccount = {
+      studentID: "",
+      FName: "",
+      MName: "",
+      LName: "",
+      gender: "",
+      bdate: "",
+      address: "",
+      contact: "",
+      username: "",
+      password: "",
+      usertype: "",
+    };
+  }
 }
 </script>

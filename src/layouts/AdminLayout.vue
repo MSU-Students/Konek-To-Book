@@ -119,3 +119,4 @@ export default class AdminLayout extends Vue {
   }
 }
 </script>
+

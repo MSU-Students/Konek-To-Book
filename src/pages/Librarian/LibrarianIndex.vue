@@ -142,23 +142,36 @@
               </div>
             </q-card-section>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
+
+          <q-card-section class="q-gutter-md row">
+            <div class="col">
                 <q-input dense outlined v-model="series" label="Series" />
-              </div>
-              <div class="col">
-                <q-input dense outlined v-model="status" label="Status" />
               </div>
               <div class="col">
                 <q-select
                   outlined
                   dense
-                  v-model="availablity"
+                  v-model="status"
                   :options="options1"
+                  label="Status"
+                />
+              </div>
+         </q-card-section>
+
+           <q-card-section class="q-gutter-md row">
+             <div class="col">
+                <q-input dense outlined v-model="notes" label="Notes" />
+              </div>
+            <div class="col">
+                <q-select
+                  outlined
+                  dense
+                  v-model="availablity"
+                  :options="options2"
                   label="Availability"
                 />
               </div>
-            </q-card-section>
+         </q-card-section>
 
             <q-card-actions align="right">
                 <q-btn  flat label="Cancel" color="red-8" v-close-popup />
@@ -267,6 +280,7 @@
                         <div class = "text-center  q-ma-mp q-mb-xs">Pages: ii</div>
                         <div class = "text-center  q-ma-mp q-mb-xs">Series: 2nd Ed</div>
                         <div class = "text-center  q-ma-mp q-mb-xs">Status: New</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Notes: From California</div>
                         <div class = "text-center  q-ma-mp q-mb-xs">Availability: YES</div>
                       </q-card-section>
                     </q-card-section>
@@ -391,31 +405,33 @@
 
                     <q-card-section class="q-gutter-md row">
                       <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="series"
-                          label="Series"
-                        />
-                      </div>
+                          <q-input dense outlined v-model="series" label="Series" />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            outlined
+                            dense
+                            v-model="status"
+                            :options="options1"
+                            label="Status"
+                          />
+                        </div>
+                  </q-card-section>
+
+                    <q-card-section class="q-gutter-md row">
                       <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="status"
-                          label="Status"
-                        />
-                      </div>
+                          <q-input dense outlined v-model="notes" label="Notes" />
+                        </div>
                       <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="availablity"
-                          :options="options1"
-                          label="Availability"
-                        />
-                      </div>
-                    </q-card-section>
+                          <q-select
+                            outlined
+                            dense
+                            v-model="availablity"
+                            :options="options2"
+                            label="Availability"
+                          />
+                        </div>
+                  </q-card-section>
 
                     <q-card-actions align="right">
                      <q-btn  flat label="Cancel" color="red-8" v-close-popup />
@@ -507,6 +523,7 @@ export default class LibrarianIndex extends Vue {
   pages = "";
   series = "";
   status = "";
+  notes = "";
   availablity = "";
 
   options = [
@@ -517,7 +534,15 @@ export default class LibrarianIndex extends Vue {
     "Reference",
     "Theses",
   ];
-  options1 = ["YES", "NO"];
+  options1 = [
+    "New",
+    "Damage",
+    "Lost",
+    "Outdated",
+    "Obsolete"
+
+    ];
+  options2 = ["YES", "NO"];
 
   columns = [
     {
@@ -595,6 +620,14 @@ export default class LibrarianIndex extends Vue {
       align: "center",
       field: "status",
     },
+
+    {
+      name: "notes",
+      label: "Notes",
+      align: "center",
+      field: "notes",
+    },
+
     {
       name: "availability",
       label: "Availability",
@@ -617,6 +650,7 @@ export default class LibrarianIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "Donation",
       availability: "YES",
     },
     {
@@ -632,6 +666,7 @@ export default class LibrarianIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "Donation",
       availability: "NO",
     },
 
@@ -648,6 +683,7 @@ export default class LibrarianIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -663,6 +699,7 @@ export default class LibrarianIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "Old",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -678,6 +715,7 @@ export default class LibrarianIndex extends Vue {
       pages: "iii",
       series: "tvhj",
       status: "Old",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -693,6 +731,7 @@ export default class LibrarianIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "Old",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -708,6 +747,7 @@ export default class LibrarianIndex extends Vue {
       pages: "iii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -723,6 +763,7 @@ export default class LibrarianIndex extends Vue {
       pages: "iv",
       series: "yuio",
       status: "New",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -738,6 +779,7 @@ export default class LibrarianIndex extends Vue {
       pages: "i",
       series: "tvhj",
       status: "New",
+      notes: "No comment",
       availability: "YES",
     },
     {
@@ -753,6 +795,7 @@ export default class LibrarianIndex extends Vue {
       pages: "xi",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -768,6 +811,7 @@ export default class LibrarianIndex extends Vue {
       pages: "x",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -783,6 +827,7 @@ export default class LibrarianIndex extends Vue {
       pages: "xii",
       series: "tvhj",
       status: "New",
+      notes: "Donation",
       availability: "YES",
     },
     {
@@ -798,6 +843,7 @@ export default class LibrarianIndex extends Vue {
       pages: "vi",
       series: "tvhj",
       status: "New",
+      notes: "Donation",
       availability: "YES",
     },
   ];

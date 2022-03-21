@@ -98,6 +98,7 @@
                         <div class = "text-center  q-ma-mp q-mb-xs">Pages: ii</div>
                         <div class = "text-center  q-ma-mp q-mb-xs">Series: 2nd Ed</div>
                         <div class = "text-center  q-ma-mp q-mb-xs">Status: New</div>
+                        <div class = "text-center  q-ma-mp q-mb-xs">Notes: From California</div>
                         <div class = "text-center  q-ma-mp q-mb-xs">Availability: YES</div>
                       </q-card-section>
                     </q-card-section>
@@ -151,6 +152,7 @@ export default class GuestIndex extends Vue {
   pages = "";
   series = "";
   status = "";
+  notes = "";
   availablity = "";
 
   columns = [
@@ -229,6 +231,14 @@ export default class GuestIndex extends Vue {
       align: "center",
       field: "status",
     },
+
+    {
+      name: "notes",
+      label: "Notes",
+      align: "center",
+      field: "notes",
+    },
+
     {
       name: "availability",
       label: "Availability",
@@ -251,6 +261,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "mmm",
       availability: "YES",
     },
     {
@@ -266,6 +277,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
 
@@ -282,6 +294,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -297,6 +310,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "Old",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -312,6 +326,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "Old",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -327,6 +342,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "Old",
+      notes: "From California",
       availability: "NO",
     },
     {
@@ -342,6 +358,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -357,6 +374,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -372,6 +390,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -387,6 +406,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -402,6 +422,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
     {
@@ -417,6 +438,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From Cagayan",
       availability: "YES",
     },
     {
@@ -432,6 +454,7 @@ export default class GuestIndex extends Vue {
       pages: "ii",
       series: "tvhj",
       status: "New",
+      notes: "From California",
       availability: "YES",
     },
   ];
