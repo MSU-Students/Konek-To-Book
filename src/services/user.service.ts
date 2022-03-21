@@ -1,7 +1,6 @@
 import { lmsApiService } from "./lms-api.service";
 import { DefaultApi, UserDto } from "./rest-api";
 
-
 class UserService extends DefaultApi {
   async create(payload: any): Promise<UserDto> {
     const response = await lmsApiService.addUser(payload);
@@ -25,6 +24,11 @@ class UserService extends DefaultApi {
 
   async delete(id: number) {
     const response = await lmsApiService.deleteUser(id);
+    return response.data;
+  }
+
+  async getUserProfile() {
+    const response = await lmsApiService.getProfile();
     return response.data;
   }
 }

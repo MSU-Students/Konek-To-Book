@@ -78,6 +78,8 @@ class LMSApiService extends DefaultApi {
     const response = await lmsApiService.getProfile();
     return response;
   }
+
+
 }
 
 export const lmsApiService = new LMSApiService();
