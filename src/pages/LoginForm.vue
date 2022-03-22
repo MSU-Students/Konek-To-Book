@@ -242,7 +242,7 @@ export default class LoginForm extends Vue {
         userName: this.username,
         password: this.password,
       });
-      if (this.currentUser.User_Type == "admin") {
+      if (this.currentUser.User_Type == "admin" ) {
         await this.$router.replace("/AdminIndex");
         this.$q.notify({
           position: "center",

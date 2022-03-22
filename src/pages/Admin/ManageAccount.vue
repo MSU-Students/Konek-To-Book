@@ -1,8 +1,7 @@
 <template>
   <q-page class="bg-image1">
     <div class="q-ma-md">
-      <!--------------------------------  TAB_MENU_BORROWER ------------------------------------------    --->
-
+      <!--------------------------------  TAB_MENU_ACCOUNT ------------------------------------------    --->
       <q-tabs
         inline-label
         dense
@@ -10,7 +9,7 @@
         align="right"
         class="bg-red-8 text-white shadow-2"
       >
-        <!--------------------------------  ADD NEW account BUTTON  ------------------------------------------    --->
+        <!--------------------------------  ADD NEW Account BUTTON  ------------------------------------------    --->
         <q-tab
           name="account"
           icon="person_add"
@@ -37,7 +36,7 @@
               </q-toolbar>
             </q-card-section>
 
-            <q-card-section >
+            <q-card-section>
               <q-form @submit="onaddAccount()" class="q-px-md">
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
@@ -100,7 +99,7 @@
                       outlined
                       v-model="inputAccount.U_Contact_Number"
                       label="Contact Number"
-                      mask="(###) ### - ####"
+                      mask="(###) #### - #####"
                       hint="Format: (639) 6312 - 58292"
                     />
                   </div>
@@ -113,6 +112,7 @@
                     />
                   </div>
                 </div>
+
                 <div class="q-gutter-md">
                   <q-input
                     dense
@@ -144,30 +144,31 @@
                   />
                 </div>
                 <div align="right">
-                  <q-btn flat label="Cancel" color="red-10" v-close-popup />
+                  <q-btn flat label="Cancel" color="red-10" v-close-popup  @click="resetModel()"/>
                   <q-btn flat label="Save" color="primary" type="submit" />
                 </div>
               </q-form>
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print BORROWER ------------------------------------------    --->
+        <!--------------------------------  Print ACCOUNT ------------------------------------------    --->
         <q-tab name="Print" icon="print" label="Print" />
       </q-tabs>
     </div>
-    <!--------------------------------  TABLE_ LISTS OF BORROWER  ------------------------------------------    --->
-    <div class="q-ma-md">
-      <q-table
-        ref="tableRef"
-        tabindex="0"
-        title="Manage Accounts"
-        :rows="allAccount"
-        :columns="columns"
-        row-key="name"
-        :pagination="pagination"
-        :filter="filter"
-      >
-        <template v-slot:top-right>
+    <!--------------------------------  TABLE_ LISTS OF ACCOUNT  ------------------------------------------    --->
+     <div class="q-ma-md">
+       <q-table
+          title="Manage Accounts"
+          :rows="allAccount"
+          :columns="columns"
+          row-key="name"
+          :rows-per-page-options="[0]"
+          :filter="filter"
+          selection="multiple"
+          v-model:selected="selected"
+        >
+       <template v-slot:top-right>
+         <div class="q-pa-md q-gutter-sm row">
           <q-input
             outlined
             rounded
@@ -180,45 +181,76 @@
               <q-icon name="search" />
             </template>
           </q-input>
-
-          <q-page-scroller
-            position="bottom-right"
-            :scroll-offset="150"
-            :offset="[18, 18]"
-          >
+          </div>
+       </template>
+        <!--------------------------------  SHOW LIST OF ACCOUNT  ------------------------------------------    --->
+       <template v-slot:body-cell-accountDetails="props">
+        <q-td :props="props">
+          <div class="q-gutter-sm">
             <q-btn
-              fab
-              icon="keyboard_arrow_up"
-              color="orange-9"
-              text-color="white"
+              round
+              color="blue"
+              icon="description"
+              size="sm"
+              flat
+              dense
+              @click="showAccountDetails = true"
             />
-          </q-page-scroller>
-        </template>
+            <q-dialog v-model="showAccountDetails">
+              <q-card flat bordered>
+                <q-card-section>
+                  <div class="text-h6">
+                     Account Information
+                    <q-btn
+                      round
+                      flat
+                      dense
+                      icon="close"
+                      class="float-right"
+                      color="grey-8"
+                      v-close-popup
+                    ></q-btn>
+                  </div>
+                  <div>User ID: </div>
+                  <div>First Name: </div>
+                  <div>Middle Name: </div>
+                  <div>Last Name: </div>
+                  <div>Birth Date: </div>
+                  <div>Address: </div>
+                  <div>Contact Number: </div>
+                  <div>Email:  </div>
+                  <div>Username: </div>
+                  <div>UserType: </div>
+                  <div>Status: </div>
+                </q-card-section>
 
-        <template v-slot:header="props">
-          <q-tr :props="props">
-            <q-th auto-width />
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.label }}
-            </q-th>
-          </q-tr>
-        </template>
+                <q-separator />
 
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <div>
-              <q-td>
-                <!------------------------------------- EDIT Account BUTTON   ------------------------------------------    --->
-                <q-btn
-                  round
-                  color="teal-8"
-                  icon="edit"
-                  size="sm"
-                  flat
-                  dense
-                  @click="editRow = true"
-                />
-                <q-dialog v-model="editRow">
+                <q-card-section>
+                  Assessing clients needs and present suitable promoted
+                  products. Liaising with and persuading targeted doctors to
+                  prescribe our products utilizing effective sales skills.
+                </q-card-section>
+                <q-separator />
+              </q-card>
+            </q-dialog>
+          </div>
+        </q-td>
+      </template>
+
+     <template v-slot:body-cell-action="props">
+        <q-td :props="props">
+          <div class="q-gutter-sm">
+            <q-btn
+              round
+              color="blue"
+              icon="edit"
+              size="sm"
+              flat
+              dense
+              @click="openEditDialog(props.row)"
+            />
+             <q-dialog v-model="editRowAccount" persistent>
                   <q-card
                     style="width: 750px; max-width: 100vw"
                     class="q-pa-md"
@@ -230,138 +262,152 @@
                         </q-avatar>
                         <div class="text-h6">Edit Account</div>
                         <q-space />
-                        <q-btn flat round dense icon="close" v-close-popup />
+                        <q-btn flat round dense icon="close" v-close-popup @click="resetModel()"/>
                       </q-toolbar>
                     </q-card-section>
 
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.U_First_Name"
-                          label="First Name"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.U_Middle_Name"
-                          label="Middle Name"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.U_Last_Name"
-                          label="Last Name"
-                        />
-                      </div>
-                    </q-card-section>
+                    <q-card-section>
+                      <q-form @submit="oneditAccount()" class="q-px-md">
+                        <div class="q-gutter-md row q-pb-md">
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.U_First_Name"
+                              label="First Name"
+                            />
+                          </div>
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.U_Middle_Name"
+                              label="Middle Name"
+                            />
+                          </div>
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.U_Last_Name"
+                              label="Last Name"
+                            />
+                          </div>
+                        </div>
+                        <div class="q-gutter-md row q-pb-sm">
+                          <div class="col">
+                            <q-select
+                              outlined
+                              dense
+                              v-model="inputAccount.Gender"
+                              :options="options"
+                              label="Gender"
+                            />
+                          </div>
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.U_Birth_Date"
+                              type="date"
+                              hint="Birth Date"
+                            />
+                          </div>
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.Address"
+                              label="Address"
+                            />
+                          </div>
+                        </div>
 
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="inputAccount.Gender"
-                          :options="options"
-                          label="Gender"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.U_Birth_Date"
-                          type="date"
-                          label="Birth Date"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.Address"
-                          label="Address"
-                        />
-                      </div>
-                    </q-card-section>
+                        <div class="q-gutter-md row q-pb-sm">
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.U_Contact_Number"
+                              label="Contact Number"
+                              mask="(###) #### - #####"
+                              hint="Format: (639) 6312 - 58292"
+                            />
+                          </div>
+                          <div class="col">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputAccount.email"
+                              label="Email"
+                            />
+                          </div>
+                        </div>
 
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.U_Contact_Number"
-                          label="Contact Number"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputAccount.email"
-                          label="Email"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="inputAccount.username"
-                        label="Username"
-                      />
-                      <q-input
-                        dense
-                        outlined
-                        v-model="inputAccount.password"
-                        :type="isPwd ? 'password' : 'text'"
-                        label="Password"
-                      >
-                        <template v-slot:append>
-                          <q-icon
-                            :name="isPwd ? 'visibility_off' : 'visibility'"
-                            class="cursor-pointer"
-                            @click="isPwd = !isPwd"
+                        <div class="q-gutter-md">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputAccount.username"
+                            label="Username"
                           />
-                        </template>
-                      </q-input>
-                    </q-card-section>
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputAccount.password"
+                            :type="isPwd ? 'password' : 'text'"
+                            label="Password"
+                          >
+                            <template v-slot:append>
+                              <q-icon
+                                :name="isPwd ? 'visibility_off' : 'visibility'"
+                                class="cursor-pointer"
+                                @click="isPwd = !isPwd"
+                              />
+                            </template>
+                          </q-input>
+                        </div>
 
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="inputAccount.User_Type"
-                          :options="options1"
-                          label="User type"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="inputAccount.User_Status"
-                          :options="options2"
-                          label="Status"
-                        />
-                      </div>
-                    </q-card-section>
+                        <div class="q-gutter-md row q-pb-sm">
+                          <div class="col">
+                            <q-select
+                              outlined
+                              dense
+                              v-model="inputAccount.User_Type"
+                              :options="options1"
+                              label="User type"
+                            />
+                          </div>
+                          <div class="col">
+                            <q-select
+                              outlined
+                              dense
+                              v-model="inputAccount.User_Status"
+                              :options="options2"
+                              label="Status"
+                            />
+                          </div>
+                        </div>
 
-                    <q-card-actions align="right">
-                      <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                      <q-btn flat label="Save" color="primary" v-close-popup />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-                <!--------------------------------------- DELETE Account BUTTON   ------------------------------------------    --->
-                <q-btn
+                    <div align="right">
+                      <q-btn
+                        flat
+                        label="Cancel"
+                        color="red-10"
+                        v-close-popup
+                        @click="resetModel()"
+                      />
+                      <q-btn
+                        flat
+                        label="Save"
+                        color="primary"
+                        type="submit" />
+                    </div>
+                  </q-form>
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+           <q-btn
                   color="red-8"
                   icon="delete"
                   size="sm"
@@ -370,6 +416,7 @@
                   round
                   dense
                   @click="dialog = true"
+
                 />
                 <q-dialog v-model="dialog" persistent>
                   <q-card style="width: 300px">
@@ -399,15 +446,11 @@
                     </q-card-actions>
                   </q-card>
                 </q-dialog>
-              </q-td>
-            </div>
 
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
+          </div>
+        </q-td>
+      </template>
+    </q-table>
     </div>
   </q-page>
 </template>
@@ -416,7 +459,6 @@
 import { UserDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
-
 @Options({
   computed: {
     ...mapState("account", ["allAccount"]),
@@ -431,31 +473,39 @@ import { mapActions, mapState } from "vuex";
   },
 })
 export default class ManageAccount extends Vue {
+  allAccount!: UserDto[];
   addAccount!: (payload: UserDto) => Promise<void>;
   editAccount!: (payload: UserDto) => Promise<void>;
   deleteAccount!: (payload: UserDto) => Promise<void>;
   getAllUser!: () => Promise<void>;
-  allAccount!: UserDto[];
+
 
   async mounted() {
     await this.getAllUser();
   }
+
   tableRef = null;
   navigationActive = false;
   pagination = {};
-  cancelEnabled = true;
-  addNewAccount = false;
-  editRow = false;
-  filter = "";
+  selected = [];
+  filter = '';
   dialog = false;
+  //editRowExpenses = false;
+  showAccountDetails = false;
+  addNewAccount = false;
+  cancelEnabled = true;
+  editRowAccount = false;
+
+  accountDetails ='';
   options = ["Male", "Female"];
   options1 = ["Librarian", "Admin"];
-  options2 = ["Activate", "Inactivate"];
+  options2 = ["Active", "Inactive"];
   isPwd = true;
 
   columns = [
     {
       name: "userid",
+      required: true,
       align: "center",
       label: "User ID",
       field: "id",
@@ -517,7 +567,20 @@ export default class ManageAccount extends Vue {
       align: "center",
       field: "User_Status",
     },
+    {
+      name: 'accountDetails',
+      align: 'center',
+      label: 'Note',
+      field: 'accountDetails',
+    },
+    {
+      name: 'action',
+      align: 'center',
+      label: 'Action',
+      field: 'action',
+    },
   ];
+
 
   inputAccount: UserDto = {
     U_First_Name: "",
@@ -547,7 +610,7 @@ export default class ManageAccount extends Vue {
 
   async oneditAccount() {
     await this.editAccount(this.inputAccount);
-    this.editRow = false;
+    this.editRowAccount = false;
     this.resetModel();
     this.$q.notify({
       type: "positive",
@@ -566,23 +629,24 @@ export default class ManageAccount extends Vue {
         await this.deleteAccount(val);
         this.$q.notify({
           type: "warning",
-          message: "Successfully deleted",
+          message: "Successfully removed",
         });
       });
   }
 
   openEditDialog(val: UserDto) {
-    this.editRow = true;
+    this.editRowAccount = true;
     this.inputAccount = { ...val };
   }
 
   resetModel() {
     this.inputAccount = {
       U_First_Name: "",
+      U_Middle_Name: "",
       U_Last_Name: "",
       Gender: "",
-      U_Birth_Date: "",
       Address: "",
+      U_Birth_Date: "",
       U_Contact_Number: "",
       email: "",
       User_Type: "",
