@@ -14,9 +14,9 @@
           name="addCategory"
           label="Add Category"
           icon="library_add"
-          @click="addCategory = true"
+          @click="addNewCategory = true"
         />
-        <q-dialog v-model="addCategory">
+        <q-dialog v-model="addNewCategory">
           <q-card style="width: 400px">
             <q-card-section class="row">
               <div class="text-h6">Add Category</div>
@@ -44,7 +44,7 @@
         ref="tableRef"
         tabindex="0"
         title="List of Categories"
-        :rows="rows"
+        :rows="allCategory"
         :columns="columns"
         row-key="name"
         :pagination="pagination"
@@ -99,9 +99,9 @@
                   size="sm"
                   flat
                   dense
-                  @click="editRow = true"
+                  @click="editRowCategory = true"
                 />
-                <q-dialog v-model="editRow">
+                <q-dialog v-model="editRowCategory">
                   <q-card style="width: 400px">
                     <q-card-section class="row">
                       <div class="text-h6">Edit Category</div>
@@ -182,16 +182,37 @@
 </template>
 
 <script lang="ts">
+import { CategoryDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
+import { mapActions, mapState } from "vuex";
 
-interface IRow {
-  name: string;
-}
-@Options({})
+@Options({
+  computed: {
+    ...mapState("category", ["allCategory"]),
+  },
+  methods: {
+    ...mapActions("category", [
+      "addCategory",
+      "editCategory",
+      "deleteCategory",
+      "getAllCategory",
+    ]),
+  },
+})
 export default class ManageCategories extends Vue {
+  allCategory!: CategoryDto[];
+  addCategory!: (payload: CategoryDto) => Promise<void>;
+  editCategory!: (payload: CategoryDto) => Promise<void>;
+  deleteCategory!: (payload: CategoryDto) => Promise<void>;
+  getAllCategory!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllCategory();
+  }
+
   cancelEnabled = true;
-  addCategory = false;
-  editRow = false;
+  addNewCategory = false;
+  editRowCategory = false;
   filter = "";
   dialog = false;
   categoryid = "";
@@ -203,7 +224,7 @@ export default class ManageCategories extends Vue {
       name: "categoryid",
       align: "center",
       label: "Category ID",
-      field: "categoryid",
+      field: "Category_ID",
       sortable: true,
     },
     {
@@ -211,53 +232,62 @@ export default class ManageCategories extends Vue {
       required: true,
       label: "Name",
       align: "left",
-      field: (row: IRow) => row.name,
+      field: (row: CategoryDto) => row.C_Description,
       format: (val: string) => `${val}`,
       sortable: true,
     },
   ];
 
-  rows = [
-    {
-      categoryid: "001",
-      name: "Circulation",
-    },
-    {
-      categoryid: "002",
-      name: "Reference",
-    },
-    {
-      categoryid: "003",
-      name: "New Arrivals",
-    },
-    {
-      categoryid: "004",
-      name: "Theses",
-    },
-    {
-      categoryid: "005",
-      name: "Filipiniana-000",
-    },
-    {
-      categoryid: "006",
-      name: "Capstone Project",
-    },
-    {
-      categoryid: "009",
-      name: "Filipiniana-1",
-    },
-    {
-      categoryid: "010",
-      name: "Capstone Project-009",
-    },
-    {
-      categoryid: "009",
-      name: "Filipiniana-2",
-    },
-    {
-      categoryid: "010",
-      name: "Capstone Project-989",
-    },
-  ];
+  inputCategory: CategoryDto = {
+    C_Description: "",
+  };
+
+  async onaddCategory() {
+    await this.addCategory(this.inputCategory);
+    this.addNewCategory = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Added.",
+    });
+    debugger;
+  }
+
+  async oneditCategory() {
+    await this.editCategory(this.inputCategory);
+    this.editRowCategory = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Edit.",
+    });
+  }
+
+  deleteSpecificCategory(val: CategoryDto) {
+    this.$q
+      .dialog({
+        message: "Confirm to delete?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        await this.deleteCategory(val);
+        this.$q.notify({
+          type: "warning",
+          message: "Successfully removed",
+        });
+      });
+  }
+
+  openEditDialog(val: CategoryDto) {
+    this.editRowCategory = true;
+    this.inputCategory = { ...val };
+  }
+
+  resetModel() {
+    this.inputCategory = {
+      C_Description: "",
+    };
+  }
 }
 </script>

@@ -31,4 +31,4 @@ class CategoryService extends DefaultApi {
 }
 
 const categoryService = new CategoryService();
-export default CategoryService;
+export default categoryService;
