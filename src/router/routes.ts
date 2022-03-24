@@ -32,8 +32,14 @@ const routes: RouteRecordRaw[] = [
       { path: '/LibrarianIndex',
       component: () => import('src/pages/Librarian/LibrarianIndex.vue') },
 
+      { path: '/ManageAuthor',
+      component: () => import('src/pages/Librarian/ManageAuthor.vue') },
+
       { path: '/ManageCategories',
       component: () => import('src/pages/Librarian/ManageCategories.vue') },
+
+      { path: '/ManagePublisher',
+      component: () => import('src/pages/Librarian/ManagePublisher.vue') },
 
       { path: '/ManageBorrowers',
       component: () => import('src/pages/Librarian/ManageBorrowers.vue') },

@@ -20,6 +20,10 @@ const mutation: MutationTree<CategoryStateInterface> = {
   getOneCategory(state, payload) {
     state.allCategory = payload;
   },
+
+  getProfile(state, payload) {
+    state.allCategory = payload;
+  },
 };
 
 export default mutation;

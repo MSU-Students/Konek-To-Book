@@ -92,7 +92,7 @@
                     />
                   </div>
                 </div>
-                <div class="q-gutter-md row q-pb-sm">
+                <div class="q-gutter-md row q-pb-lg">
                   <div class="col">
                     <q-input
                       dense
@@ -113,7 +113,7 @@
                   </div>
                 </div>
 
-                <div class="q-gutter-md">
+                <div class="q-gutter-md q-pb-lg">
                   <q-input
                     dense
                     outlined
@@ -170,8 +170,6 @@
         row-key="name"
         :rows-per-page-options="[0]"
         :filter="filter"
-        selection="multiple"
-        v-model:selected="selected"
       >
         <template v-slot:top-right>
           <div class="q-pa-md q-gutter-sm row">
@@ -189,24 +187,26 @@
             </q-input>
           </div>
         </template>
+
         <!--------------------------------  SHOW LIST OF ACCOUNT  ------------------------------------------    --->
-        <template v-slot:body-cell-accountDetails="props">
+        <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
               <q-btn
                 round
                 color="blue"
-                icon="description"
-                size="sm"
+                icon="more_vert"
+                size="md"
                 flat
                 dense
                 @click="showAccountDetails = true"
               />
+
               <q-dialog v-model="showAccountDetails">
-                <q-card flat bordered>
+                <q-card style="width: 500px; max-width: 90vw" flat bordered>
                   <q-card-section>
-                    <div class="text-h6">
-                      Account Information
+                    <div class="text-h9 text-left">
+                      BOOK DETAILS
                       <q-btn
                         round
                         flat
@@ -217,36 +217,59 @@
                         v-close-popup
                       ></q-btn>
                     </div>
-                    <div>User ID:</div>
-                    <div>First Name:</div>
-                    <div>Middle Name:</div>
-                    <div>Last Name:</div>
-                    <div>Birth Date:</div>
-                    <div>Address:</div>
-                    <div>Contact Number:</div>
-                    <div>Email:</div>
-                    <div>Username:</div>
-                    <div>UserType:</div>
-                    <div>Status:</div>
                   </q-card-section>
-
                   <q-separator />
-
                   <q-card-section>
-                    Assessing clients needs and present suitable promoted
-                    products. Liaising with and persuading targeted doctors to
-                    prescribe our products utilizing effective sales skills.
+                    <q-card-section class="q-pt-xs col">
+                      <div class="text-overline text-orange-9">01</div>
+                      <div
+                        class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs"
+                      >
+                        Data Structures and Algorithms
+                      </div>
+                      <q-space />
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        ISBN: 9865-865
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">CallNo: 906</div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Author: Sarah Jay
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Edition: 2nd Ed
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Category: Reference
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Publisher: 2026-2029
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Date 0f Publication: 567890
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">Pages: ii</div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Series: 2nd Ed
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">Status: New</div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Notes: From California
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Availability: YES
+                      </div>
+                    </q-card-section>
                   </q-card-section>
+
                   <q-separator />
+
+                  <q-card-section class="col-8 text-italic flex flex-center">
+                    MSU-ISED library management system
+                  </q-card-section>
                 </q-card>
               </q-dialog>
-            </div>
-          </q-td>
-        </template>
 
-        <template v-slot:body-cell-action="props">
-          <q-td :props="props">
-            <div class="q-gutter-sm">
+              <!--------------------------------  EDIT OF ACCOUNT  ------------------------------------------    --->
               <q-btn
                 round
                 color="blue"
@@ -333,7 +356,7 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-sm">
+                      <div class="q-gutter-md row q-pb-lg">
                         <div class="col">
                           <q-input
                             dense
@@ -378,7 +401,7 @@
                         </q-input>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-sm">
+                      <div class="q-gutter-md row q-pb-lg">
                         <div class="col">
                           <q-select
                             outlined
@@ -418,6 +441,7 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
+              <!----------------------------- DELETE BUTTON ----------------------------->
               <q-btn
                 color="red-8"
                 icon="delete"
@@ -444,6 +468,7 @@
                       flat
                       label="Cancel"
                       color="red-8"
+                      @click="resetModel()"
                       v-close-popup="cancelEnabled"
                       :disable="!cancelEnabled"
                     />
@@ -487,13 +512,8 @@ export default class ManageAccount extends Vue {
     await this.getAllUser();
   }
 
-  tableRef = null;
-  navigationActive = false;
-  pagination = {};
-  selected = [];
   filter = "";
   dialog = false;
-  //editRowExpenses = false;
   showAccountDetails = false;
   addNewAccount = false;
   cancelEnabled = true;
@@ -570,12 +590,7 @@ export default class ManageAccount extends Vue {
       align: "center",
       field: "User_Status",
     },
-    {
-      name: "accountDetails",
-      align: "center",
-      label: "Note",
-      field: "accountDetails",
-    },
+
     {
       name: "action",
       align: "center",

@@ -67,7 +67,7 @@
                   v-model="finedate"
                   type="date"
                   readonly
-                  label="Fine Date"
+                  hint="Fine Date"
                 />
               </div>
               <div class="col">
@@ -76,7 +76,7 @@
                   outlined
                   v-model="paymentamount"
                   type="date"
-                  label="Payment Amount"
+                  hint="Payment Amount"
                 />
               </div>
               <div class="col">
@@ -103,14 +103,12 @@
     <!--------------------------------  TABLE_ LISTS OF FINES  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        :rows-per-page-options="[0]"
         title="List of Fines"
         :rows="rows"
         :columns="columns"
         row-key="name"
+        :rows-per-page-options="[0]"
         :filter="filter"
-        selection="multiple"
-        :v-model:selected="selected"
       >
         <template v-slot:top-right>
           <q-input
@@ -139,174 +137,145 @@
             />
           </q-page-scroller>
         </template>
+        <!------------------------------------- EDIT FINES BUTTON   ------------------------------------------    --->
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
+              <q-btn
+                round
+                color="teal-8"
+                icon="edit"
+                size="sm"
+                flat
+                dense
+                @click="editRow = true"
+              />
+              <q-dialog v-model="editRow" persistent>
+                <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+                  <q-card-section class="row">
+                    <q-toolbar>
+                      <q-avatar size="50px">
+                        <q-icon name="payments" />
+                      </q-avatar>
+                      <div class="text-h6">Edit Fines</div>
+                      <q-space />
+                      <q-btn flat round dense icon="close" v-close-popup />
+                    </q-toolbar>
+                  </q-card-section>
 
-        <template v-slot:header="props">
-          <q-tr :props="props">
-            <q-th auto-width />
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.label }}
-            </q-th>
-          </q-tr>
-        </template>
-
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <div>
-              <q-td>
-                <!------------------------------------- EDIT FINES BUTTON   ------------------------------------------    --->
-                <q-btn
-                  round
-                  color="teal-8"
-                  icon="edit"
-                  size="sm"
-                  flat
-                  dense
-                  @click="editRow = true"
-                />
-                <q-dialog v-model="editRow" persistent>
-                  <q-card
-                    style="width: 750px; max-width: 100vw"
-                    class="q-pa-md"
-                  >
-                    <q-card-section class="row">
-                      <q-toolbar>
-                        <q-avatar size="50px">
-                          <q-icon name="payments" />
-                        </q-avatar>
-                        <div class="text-h6">Edit Fines</div>
-                        <q-space />
-                        <q-btn flat round dense icon="close" v-close-popup />
-                      </q-toolbar>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="bookfinesid"
-                          readonly
-                          label="BookFines ID"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="bookid"
-                          :options="options1"
-                          label="Book ID"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md">
-                      <q-input dense outlined readonly label="Title" />
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col-md-3">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="borrowerid"
-                          :options="options2"
-                          label="Borrower ID"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          readonly
-                          label="Borrower Name"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="finedate"
-                          type="date"
-                          readonly
-                          label="Fine Date"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="paymentamount"
-                          type="date"
-                          label="Payment Amount"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="paymentstatus"
-                          :options="options3"
-                          label="Payment Status"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-actions align="right">
-                      <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                      <q-btn flat label="Save" color="primary" v-close-popup />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-                <!--------------------------------------- DELETE FINES BUTTON   ------------------------------------------    --->
-                <q-btn
-                  color="red-8"
-                  icon="delete"
-                  size="sm"
-                  class="q-ml-sm"
-                  flat
-                  round
-                  dense
-                  @click="dialog = true"
-                />
-                <q-dialog v-model="dialog" persistent>
-                  <q-card style="width: 300px">
-                    <q-card-section class="row items-center">
-                      <q-avatar
-                        size="sm"
-                        icon="warning"
-                        color="red-10"
-                        text-color="white"
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="bookfinesid"
+                        readonly
+                        label="BookFines ID"
                       />
-                      <span class="q-ml-sm">Confirm Delete?</span>
-                    </q-card-section>
-                    <q-card-actions align="right">
-                      <q-btn
-                        flat
-                        label="Cancel"
-                        color="red-8"
-                        v-close-popup="cancelEnabled"
-                        :disable="!cancelEnabled"
+                    </div>
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="bookid"
+                        :options="options1"
+                        label="Book ID"
                       />
-                      <q-btn
-                        flat
-                        label="Confirm"
-                        color="primary"
-                        v-close-popup
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md">
+                    <q-input dense outlined readonly label="Title" />
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col-md-3">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="borrowerid"
+                        :options="options2"
+                        label="Borrower ID"
                       />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-              </q-td>
+                    </div>
+                    <div class="col">
+                      <q-input dense outlined readonly label="Borrower Name" />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="finedate"
+                        type="date"
+                        readonly
+                        hint="Fine Date"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="paymentamount"
+                        type="date"
+                        hint="Payment Amount"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="paymentstatus"
+                        :options="options3"
+                        label="Payment Status"
+                      />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="red-10" v-close-popup />
+                    <q-btn flat label="Save" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+              <!--------------------------------------- DELETE FINES BUTTON   ------------------------------------------    --->
+              <q-btn
+                color="red-8"
+                icon="delete"
+                size="sm"
+                class="q-ml-sm"
+                flat
+                round
+                dense
+                @click="dialog = true"
+              />
+              <q-dialog v-model="dialog" persistent>
+                <q-card style="width: 300px">
+                  <q-card-section class="row items-center">
+                    <q-avatar
+                      size="sm"
+                      icon="warning"
+                      color="red-10"
+                      text-color="white"
+                    />
+                    <span class="q-ml-sm">Confirm Delete?</span>
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn
+                      flat
+                      label="Cancel"
+                      color="red-8"
+                      v-close-popup="cancelEnabled"
+                      :disable="!cancelEnabled"
+                    />
+                    <q-btn flat label="Confirm" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
             </div>
-
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
-          </q-tr>
+          </q-td>
         </template>
       </q-table>
     </div>
@@ -385,6 +354,12 @@ export default class ManageFines extends Vue {
       label: "Payment Status",
       align: "center",
       field: "paymentstatus",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
   ];
 

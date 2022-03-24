@@ -28,6 +28,8 @@ class AuthorService extends DefaultApi {
     const response = await lmsApiService.deleteAuthor(id);
     return response.data;
   }
+
+
 }
 
 const authorService = new AuthorService();

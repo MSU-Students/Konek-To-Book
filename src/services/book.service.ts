@@ -30,4 +30,4 @@ class BookService extends DefaultApi {
 }
 
 const bookService = new BookService();
-export default BookService;
+export default bookService;

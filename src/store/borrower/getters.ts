@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex';
 import { StateInterface } from '../index';
-import { AuthorStateInterface } from './state';
+import { BorrowerStateInterface } from './state';
 
-const getters: GetterTree<AuthorStateInterface, StateInterface> = {
+const getters: GetterTree<BorrowerStateInterface, StateInterface> = {
   someGetter (/* context */) {
     // your code
   }

@@ -50,7 +50,7 @@
               </div>
             </q-card-section>
 
-            <!------------------------------ Table for List Of Books --------------------->
+            <!------------------------------ Table for List Of Books (POP-DIALOG) --------------------->
             <q-card-section>
               <q-table
                 class="my-sticky-header-column-table"
@@ -61,7 +61,7 @@
                 row-key="Bname"
               />
             </q-card-section>
-            <!------------------------------        TEXTFIELD                 --------------------->
+            <!------------------------------ -----  TEXTFIELD                 --------------------->
 
             <q-card-section class="q-gutter-md row">
               <div class="col-md-2">
@@ -88,7 +88,7 @@
                   outlined
                   v-model="borrowdate"
                   type="date"
-                  label="Borrow Date"
+                  hint="Borrow Date"
                 />
               </div>
               <div class="col">
@@ -97,7 +97,7 @@
                   outlined
                   v-model="duedate"
                   type="date"
-                  label="Due Date"
+                  hint="Due Date"
                 />
               </div>
             </q-card-section>
@@ -149,9 +149,7 @@
         :rows="rows"
         :columns="columns"
         row-key="name"
-        ref="tableRef"
-        tabindex="0"
-        :pagination="pagination"
+        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
@@ -181,208 +179,179 @@
             />
           </q-page-scroller>
         </template>
+        <!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
+              <q-btn
+                round
+                color="teal-8"
+                icon="edit"
+                size="sm"
+                flat
+                dense
+                @click="editRow = true"
+              />
+              <q-dialog v-model="editRow" persistent full-width>
+                <q-card style="width: 800px; max-width: 100vw" class="q-pa-md">
+                  <q-card-section class="row">
+                    <q-toolbar>
+                      <q-avatar size="50px">
+                        <q-icon name="local_library" />
+                      </q-avatar>
+                      <div class="text-h6">Edit Issued Book</div>
+                      <q-space />
+                      <q-btn flat round dense icon="close" v-close-popup />
+                    </q-toolbar>
+                  </q-card-section>
 
-        <template v-slot:header="props">
-          <q-tr :props="props">
-            <q-th auto-width />
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.label }}
-            </q-th>
-          </q-tr>
-        </template>
-
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <div>
-              <q-td>
-                <!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
-                <q-btn
-                  round
-                  color="teal-8"
-                  icon="edit"
-                  size="sm"
-                  flat
-                  dense
-                  @click="editRow = true"
-                />
-                <q-dialog v-model="editRow" persistent full-width>
-                  <q-card
-                    style="width: 800px; max-width: 100vw"
-                    class="q-pa-md"
-                  >
-                    <q-card-section class="row">
-                      <q-toolbar>
-                        <q-avatar size="50px">
-                          <q-icon name="local_library" />
-                        </q-avatar>
-                        <div class="text-h6">Edit Issued Book</div>
-                        <q-space />
-                        <q-btn flat round dense icon="close" v-close-popup />
-                      </q-toolbar>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col-md-3">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="issuedbookid"
-                          readonly
-                          label="IssuedBook ID"
-                        />
-                      </div>
-                      <div class="col-md-3">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="bookid"
-                          :options="options1"
-                          label="Book ID"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="title"
-                          readonly
-                          label="Title"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <!------------------------------ Table for List Of Books --------------------->
-                    <q-card-section>
-                      <q-table
-                        class="my-sticky-header-column-table"
-                        title="List of Books"
-                        :rows="Brows"
-                        :columns="Bcolumns"
-                        :filter="filter"
-                        row-key="Bname"
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col-md-3">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="issuedbookid"
+                        readonly
+                        label="IssuedBook ID"
                       />
-                    </q-card-section>
-                    <!------------------------------        TEXTFIELD                 --------------------->
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col-md-2">
-                        <q-select
-                          dense
-                          outlined
-                          v-model="borrowerid"
-                          :options="options2"
-                          label="Borrower ID"
-                        />
-                      </div>
-                      <div class="col-md-4">
-                        <q-input
-                          dense
-                          outlined
-                          readonly
-                          label="Borrower Name"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="borrowdate"
-                          type="date"
-                          label="Borrow Date"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="duedate"
-                          type="date"
-                          label="Due Date"
-                        />
-                      </div>
-                    </q-card-section>
+                    </div>
+                    <div class="col-md-3">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="bookid"
+                        :options="options1"
+                        label="Book ID"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="title"
+                        readonly
+                        label="Title"
+                      />
+                    </div>
+                  </q-card-section>
 
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          outlined
-                          dense
-                          v-model="bookstatus"
-                          readonly
-                          label="Book Status"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="issuedbookstatus"
-                          :options="options3"
-                          label="IssuedBook Status"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="bookfinesid"
-                          :options="options4"
-                          label="BookFines ID"
-                        />
-                      </div>
-                    </q-card-section>
+                  <!------------------------------ Table for List Of Books --------------------->
+                  <q-card-section>
+                    <q-table
+                      class="my-sticky-header-column-table"
+                      title="List of Books"
+                      :rows="Brows"
+                      :columns="Bcolumns"
+                      :filter="filter"
+                      row-key="Bname"
+                    />
+                  </q-card-section>
+                  <!------------------------------        TEXTFIELD                 --------------------->
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col-md-2">
+                      <q-select
+                        dense
+                        outlined
+                        v-model="borrowerid"
+                        :options="options2"
+                        label="Borrower ID"
+                      />
+                    </div>
+                    <div class="col-md-4">
+                      <q-input dense outlined readonly label="Borrower Name" />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="borrowdate"
+                        type="date"
+                        hint="Borrow Date"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="duedate"
+                        type="date"
+                        hint="Due Date"
+                      />
+                    </div>
+                  </q-card-section>
 
-                    <q-card-actions align="right">
-                      <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                      <q-btn flat label="Save" color="primary" v-close-popup />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-                <!--------------------------------------- DELETE ISSUEDBOOK BUTTON   ------------------------------------------    --->
-                <q-btn
-                  color="red-8"
-                  icon="delete"
-                  size="sm"
-                  class="q-ml-sm"
-                  flat
-                  round
-                  dense
-                  @click="dialog = true"
-                />
-                <q-dialog v-model="dialog" persistent>
-                  <q-card style="width: 300px">
-                    <q-card-section class="row items-center">
-                      <q-avatar
-                        size="sm"
-                        icon="warning"
-                        color="red-10"
-                        text-color="white"
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input
+                        outlined
+                        dense
+                        v-model="bookstatus"
+                        readonly
+                        label="Book Status"
                       />
-                      <span class="q-ml-sm">Confirm Delete?</span>
-                    </q-card-section>
-                    <q-card-actions align="right">
-                      <q-btn
-                        flat
-                        label="Cancel"
-                        color="red-8"
-                        v-close-popup="cancelEnabled"
-                        :disable="!cancelEnabled"
+                    </div>
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="issuedbookstatus"
+                        :options="options3"
+                        label="IssuedBook Status"
                       />
-                      <q-btn
-                        flat
-                        label="Confirm"
-                        color="primary"
-                        v-close-popup
+                    </div>
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="bookfinesid"
+                        :options="options4"
+                        label="BookFines ID"
                       />
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-              </q-td>
+                    </div>
+                  </q-card-section>
+
+                  <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="red-10" v-close-popup />
+                    <q-btn flat label="Save" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+              <!--------------------------------------- DELETE ISSUEDBOOK BUTTON   ------------------------------------------    --->
+              <q-btn
+                color="red-8"
+                icon="delete"
+                size="sm"
+                class="q-ml-sm"
+                flat
+                round
+                dense
+                @click="dialog = true"
+              />
+              <q-dialog v-model="dialog" persistent>
+                <q-card style="width: 300px">
+                  <q-card-section class="row items-center">
+                    <q-avatar
+                      size="sm"
+                      icon="warning"
+                      color="red-10"
+                      text-color="white"
+                    />
+                    <span class="q-ml-sm">Confirm Delete?</span>
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn
+                      flat
+                      label="Cancel"
+                      color="red-8"
+                      v-close-popup="cancelEnabled"
+                      :disable="!cancelEnabled"
+                    />
+                    <q-btn flat label="Confirm" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
             </div>
-
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
-          </q-tr>
+          </q-td>
         </template>
       </q-table>
     </div>
@@ -483,6 +452,12 @@ export default class ManageIssueBooks extends Vue {
       label: "BookFines ID",
       align: "center",
       field: "bookfinesid",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
   ];
 

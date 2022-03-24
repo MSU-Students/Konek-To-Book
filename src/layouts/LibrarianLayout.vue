@@ -27,7 +27,11 @@
                 <div class="q-mt-md q-mb-xs">201812488</div>
                 <div class="text-weight-bold">Alango, Norjehan</div>
                 <q-list>
-                  <q-item clickable v-ripple to="pages/Librarian/LibrarianChangePass">
+                  <q-item
+                    clickable
+                    v-ripple
+                    to="pages/Librarian/LibrarianChangePass"
+                  >
                     <q-item-section avatar>
                       <q-avatar
                         icon="manage_accounts"
@@ -82,6 +86,13 @@
             </template>
             <q-card>
               <q-card-section>
+                <q-item clickable v-ripple to="pages/Librarian/ManageAuthor">
+                  <q-item-section avatar>
+                    <q-icon name="person" />
+                  </q-item-section>
+                  <q-item-section> Authors </q-item-section>
+                </q-item>
+
                 <q-item
                   clickable
                   v-ripple
@@ -91,6 +102,17 @@
                     <q-icon name="book" />
                   </q-item-section>
                   <q-item-section> Categories </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-ripple
+                  to="pages/Librarian/ManagePublisher"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="publish" />
+                  </q-item-section>
+                  <q-item-section> Publisher </q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="pages/Librarian/ManageBorrowers">

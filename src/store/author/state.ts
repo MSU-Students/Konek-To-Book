@@ -1,10 +1,13 @@
+import { Author } from "src/interfaces/author.interface";
+
 export interface AuthorStateInterface {
-  prop: boolean;
+  allAuthor:Author[],
+  newAuthor?:Author
 }
 
 function state(): AuthorStateInterface {
   return {
-    prop: false,
+    allAuthor:[],
   };
 }
 

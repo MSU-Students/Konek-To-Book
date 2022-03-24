@@ -245,7 +245,7 @@ export default class LoginForm extends Vue {
       if (this.currentUser.User_Type == "admin" || this.currentUser.User_Type == "Admin" ) {
         await this.$router.replace("/AdminIndex");
         this.$q.notify({
-          position: "center",
+          position: "top",
           type: "positive",
           message: "You are logged in",
         });
@@ -253,7 +253,7 @@ export default class LoginForm extends Vue {
       if (this.currentUser.User_Type == "librarian" || this.currentUser.User_Type == "Librarian") {
         await this.$router.replace("/LibrarianIndex");
         this.$q.notify({
-          position: "center",
+          position: "top",
           type: "positive",
           message: "You are logged in",
         });

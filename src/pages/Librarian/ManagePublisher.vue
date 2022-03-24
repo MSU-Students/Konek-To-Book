@@ -1,29 +1,29 @@
 <template>
   <q-page class="bg-image1">
     <div class="q-ma-md">
-      <!--------------------------------  TAB_MENU_Author ------------------------------------------    --->
+      <!--------------------------------  TAB_MENU_PUBLISHER ------------------------------------------    --->
       <q-tabs
         inline-label
         dense
         width="50px"
         align="right"
-        class="bg-teal-8 text-white shadow-2"
+        class="bg-brown-9 text-white shadow-2"
       >
-        <!--------------------------------  ADD NEW Author BUTTON  ------------------------------------------    --->
+        <!--------------------------------  ADD NEW PUBLISHER BUTTON  ------------------------------------------    --->
         <q-tab
-          name="addCategory"
-          icon="library_add"
-          label="Add Category"
-          @click="addNewCategory = true"
+          name="Publisher"
+          icon="person_add"
+          label="Add Publisher"
+          @click="addNewPublisher = true"
         />
-        <q-dialog v-model="addNewCategory" persistent>
+        <q-dialog v-model="addNewPublisher" persistent>
           <q-card style="width: 750px; max-width: 100vw">
             <q-card-section class="row">
               <q-toolbar>
                 <q-avatar size="50px">
                   <q-icon name="person" />
                 </q-avatar>
-                <div class="text-h6">Add Category</div>
+                <div class="text-h6">Add New Publisher</div>
                 <q-space />
                 <q-btn
                   flat
@@ -37,13 +37,32 @@
             </q-card-section>
 
             <q-card-section>
-              <q-form @submit="onaddCategory()" class="q-px-md">
+              <q-form @submit="onaddPublisher()" class="q-px-md">
+                <div class="q-gutter-md q-pb-md">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputPublisher.Publisher"
+                      label="Publisher"
+                    />
+                  </div>
+                </div>
                 <div class="q-gutter-md q-pb-lg">
                   <q-input
                     dense
                     outlined
-                    v-model="inputCategory.C_Description"
-                    label="Category Name"
+                    v-model="inputPublisher.DateOfPublication"
+                    type="date"
+                    hint="Date Of Publication"
+                  />
+                </div>
+                <div class="q-gutter-md q-pb-lg">
+                  <q-input
+                    dense
+                    outlined
+                    v-model="inputPublisher.PlaceOfPublication"
+                    label="Place Of Publication"
                   />
                 </div>
                 <div align="right">
@@ -60,15 +79,15 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print Author ------------------------------------------    --->
+        <!--------------------------------  Print Publisher ------------------------------------------    --->
         <q-tab name="Print" icon="print" label="Print" />
       </q-tabs>
     </div>
-    <!--------------------------------  TABLE LIST OF CATEGORIES  ------------------------------------------    --->
+    <!--------------------------------  TABLE_ LISTS OF Publisher  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of Categories"
-        :rows="allCategory"
+        title="List of Publishers"
+        :rows="allPublisher"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
@@ -91,7 +110,7 @@
           </div>
         </template>
 
-        <!--------------------------------  EDIT CATEGORY   ------------------------------------------    --->
+        <!--------------------------------  EDIT Publisher  ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
@@ -104,18 +123,19 @@
                 dense
                 @click="openEditDialog(props.row)"
               />
-              <q-dialog v-model="editRowCategory" persistent>
-                <q-card style="width: 500px; max-width: 100vw" class="q-pa-md">
+              <q-dialog v-model="editRowPublisher" persistent>
+                <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
                       <q-avatar size="50px">
                         <q-icon name="person" />
                       </q-avatar>
-                      <div class="text-h6">Edit Category</div>
+                      <div class="text-h6">Edit Publisher</div>
                       <q-space />
                       <q-btn
                         flat
                         round
+                        dense
                         icon="close"
                         v-close-popup
                         @click="resetModel()"
@@ -124,13 +144,32 @@
                   </q-card-section>
 
                   <q-card-section>
-                    <q-form @submit="oneditCategory()" class="q-px-md">
+                    <q-form @submit="oneditPublisher()" class="q-px-md">
+                      <div class="q-gutter-md q-pb-md">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputPublisher.Publisher"
+                            label="Publisher"
+                          />
+                        </div>
+                      </div>
                       <div class="q-gutter-md q-pb-lg">
                         <q-input
                           dense
                           outlined
-                          v-model="inputCategory.C_Description"
-                          label="Category Name"
+                          v-model="inputPublisher.DateOfPublication"
+                          type="date"
+                          hint="Date Of Publication"
+                        />
+                      </div>
+                      <div class="q-gutter-md q-pb-lg">
+                        <q-input
+                          dense
+                          outlined
+                          v-model="inputPublisher.PlaceOfPublication"
+                          label="Place Of Publication"
                         />
                       </div>
 
@@ -197,60 +236,71 @@
 </template>
 
 <script lang="ts">
-import { CategoryDto } from "src/services/rest-api";
+import { PublisherDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
-
 @Options({
   computed: {
-    ...mapState("category", ["allCategory"]),
+    ...mapState("publisher", ["allPublisher"]),
   },
   methods: {
-    ...mapActions("category", [
-      "addCategory",
-      "editCategory",
-      "deleteCategory",
-      "getAllCategory",
+    ...mapActions("publisher", [
+      "addPublisher",
+      "editPublisher",
+      "deletePublisher",
+      "getAllPublisher",
     ]),
   },
 })
-export default class ManageCategories extends Vue {
-  allCategory!: CategoryDto[];
-  addCategory!: (payload: CategoryDto) => Promise<void>;
-  editCategory!: (payload: CategoryDto) => Promise<void>;
-  deleteCategory!: (payload: CategoryDto) => Promise<void>;
-  getAllCategory!: () => Promise<void>;
+export default class ManagePublisher extends Vue {
+  allPublisher!: PublisherDto[];
+  addPublisher!: (payload: PublisherDto) => Promise<void>;
+  editPublisher!: (payload: PublisherDto) => Promise<void>;
+  deletePublisher!: (payload: PublisherDto) => Promise<void>;
+  getAllPublisher!: () => Promise<void>;
 
   async mounted() {
-    await this.getAllCategory();
+    await this.getAllPublisher();
   }
-
-  cancelEnabled = true;
-  addNewCategory = false;
-  editRowCategory = false;
 
   filter = "";
   dialog = false;
-  pagination = {};
+  addNewPublisher = false;
+  cancelEnabled = true;
+  editRowPublisher = false;
+  PublisherDetails = "";
 
   columns = [
     {
-      name: "categoryid",
+      name: "publisherid",
+      required: true,
       align: "center",
-      label: "Category ID",
-      field: "Category_ID",
+      label: "Publisher",
+      field: "Publisher_ID",
       sortable: true,
     },
     {
       name: "desc",
       required: true,
-      label: "Name",
-      align: "left",
-      field: (row: CategoryDto) => row.C_Description,
+      label: "Publisher",
+      align: "center",
+      field: (row: PublisherDto) => row.Publisher,
       format: (val: string) => `${val}`,
       sortable: true,
     },
-
+    {
+      name: "dateOfPublication ",
+      label: "Date Of Publication ",
+      align: "center",
+      field: "DateOfPublication",
+    },
+    {
+      name: "placeOfPublication",
+      label: "Place Of Publication",
+      align: "center",
+      field: "PlaceOfPublication",
+      sortable: true,
+    },
     {
       name: "action",
       align: "center",
@@ -259,24 +309,26 @@ export default class ManageCategories extends Vue {
     },
   ];
 
-  inputCategory: CategoryDto = {
-    C_Description: "",
+  inputPublisher: PublisherDto = {
+    Publisher: "",
+    DateOfPublication: "",
+    PlaceOfPublication: "",
   };
 
-  async onaddCategory() {
-    await this.addCategory(this.inputCategory);
-    this.addNewCategory = false;
+  async onaddPublisher() {
+    await this.addPublisher(this.inputPublisher);
+    this.addNewPublisher = false;
     this.resetModel();
     this.$q.notify({
       type: "positive",
       message: "Successfully Added.",
     });
-    debugger;
+
   }
 
-  async oneditCategory() {
-    await this.editCategory(this.inputCategory);
-    this.editRowCategory = false;
+  async oneditPublisher() {
+    await this.editPublisher(this.inputPublisher);
+    this.editRowPublisher = false;
     this.resetModel();
     this.$q.notify({
       type: "positive",
@@ -284,7 +336,7 @@ export default class ManageCategories extends Vue {
     });
   }
 
-  deleteSpecificCategory(val: CategoryDto) {
+  deleteSpecificPublisher(val: PublisherDto) {
     this.$q
       .dialog({
         message: "Confirm to delete?",
@@ -292,7 +344,7 @@ export default class ManageCategories extends Vue {
         persistent: true,
       })
       .onOk(async () => {
-        await this.deleteCategory(val);
+        await this.deletePublisher(val);
         this.$q.notify({
           type: "warning",
           message: "Successfully removed",
@@ -300,14 +352,16 @@ export default class ManageCategories extends Vue {
       });
   }
 
-  openEditDialog(val: CategoryDto) {
-    this.editRowCategory = true;
-    this.inputCategory = { ...val };
+  openEditDialog(val: PublisherDto) {
+    this.editRowPublisher = true;
+    this.inputPublisher = { ...val };
   }
 
   resetModel() {
-    this.inputCategory = {
-      C_Description: "",
+    this.inputPublisher = {
+      Publisher: "",
+      DateOfPublication: "",
+      PlaceOfPublication: "",
     };
   }
 }

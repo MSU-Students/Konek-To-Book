@@ -1,5 +1,5 @@
 <template>
-  <q-page class = "bg-image1">
+  <q-page class="bg-image1">
     <div class="row q-col-gutter-sm q-ma-xs q-mr-sm">
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <q-card>
@@ -134,7 +134,7 @@
                   outlined
                   v-model="datepublication"
                   type="date"
-                  label="Date of Publication"
+                  hint="Date of Publication"
                 />
               </div>
               <div class="col">
@@ -142,9 +142,8 @@
               </div>
             </q-card-section>
 
-
-          <q-card-section class="q-gutter-md row">
-            <div class="col">
+            <q-card-section class="q-gutter-md row">
+              <div class="col">
                 <q-input dense outlined v-model="series" label="Series" />
               </div>
               <div class="col">
@@ -156,13 +155,13 @@
                   label="Status"
                 />
               </div>
-         </q-card-section>
+            </q-card-section>
 
-           <q-card-section class="q-gutter-md row">
-             <div class="col">
+            <q-card-section class="q-gutter-md row">
+              <div class="col">
                 <q-input dense outlined v-model="notes" label="Notes" />
               </div>
-            <div class="col">
+              <div class="col">
                 <q-select
                   outlined
                   dense
@@ -171,13 +170,12 @@
                   label="Availability"
                 />
               </div>
-         </q-card-section>
+            </q-card-section>
 
             <q-card-actions align="right">
-                <q-btn  flat label="Cancel" color="red-8" v-close-popup />
-                <q-btn flat label="Save" color="primary" v-close-popup />
-             </q-card-actions>
-
+              <q-btn flat label="Cancel" color="red-8" v-close-popup />
+              <q-btn flat label="Save" color="primary" v-close-popup />
+            </q-card-actions>
           </q-card>
         </q-dialog>
         <!--------------------------------  -------------Print BOOK ------------------------------------------    --->
@@ -187,12 +185,11 @@
     <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        ref="tableRef"
         title="List of Books"
         :rows="rows"
         :columns="columns"
         row-key="name"
-        :pagination="pagination"
+        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
@@ -222,273 +219,265 @@
             />
           </q-page-scroller>
         </template>
-
-      <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th auto-width />
-          <q-th v-for="col in props.cols" :key="col.name" :props="props">
-            {{ col.label }}
-          </q-th>
-        </q-tr>
-      </template>
         <!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <div>
-              <q-td>
-                <q-btn
-                  round
-                  color="blue"
-                  icon="more_vert"
-                  size="md"
-                  flat
-                  dense
-                  @click="Details = true"
-                />
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
+              <q-btn
+                round
+                color="blue"
+                icon="more_vert"
+                size="md"
+                flat
+                dense
+                @click="Details = true"
+              />
 
-
-                <q-dialog v-model="Details">
-                  <q-card style="width: 500px; max-width: 90vw"  flat bordered>
-                    <q-card-section>
-                      <div class="text-h9 text-left">
-                        BOOK DETAILS
-                        <q-btn
-                          round
-                          flat
-                          dense
-                          icon="close"
-                          class="float-right"
-                          color="grey-8"
-                          v-close-popup
-                        ></q-btn>
-                      </div>
-                    </q-card-section>
-                    <q-separator />
-                    <q-card-section>
-
-                      <q-card-section class="q-pt-xs col">
-                        <div class="text-overline text-orange-9">01</div>
-                        <div class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs "> Data Structures and Algorithms </div>
-                        <q-space/>
-                        <div class = "text-center q-ma-mp q-mb-xs">ISBN: 9865-865</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">CallNo: 906</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Author: Sarah Jay</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs" >Edition: 2nd Ed </div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Category: Reference</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs"> Publisher: 2026-2029 </div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Date 0f Publication: 567890</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Pages: ii</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Series: 2nd Ed</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Status: New</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Notes: From California</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Availability: YES</div>
-                      </q-card-section>
-                    </q-card-section>
-
-                    <q-separator />
-
-                    <q-card-section
-                      class="col-8 text-italic flex flex-center"
-                    >
-                      MSU-ISED library management system
-                    </q-card-section>
-                  </q-card>
-                </q-dialog>
-                <!-------------------------------------------------- EDIT BOOK BUTTON   -------------------------------------------------------------->
-                <q-btn
-                  round
-                  color="teal-8"
-                  icon="edit"
-                  size="sm"
-                  flat
-                  dense
-                  @click="editRow = true"
-                />
-                <q-dialog v-model="editRow" persistent>
-                  <q-card
-                    style="width: 750px; max-width: 100vw"
-                    class="q-pa-md"
-                  >
-                    <q-card-section class="row">
-                      <q-toolbar>
-                        <q-avatar size="50px">
-                          <q-icon name="auto_stories" />
-                        </q-avatar>
-                        <div class="text-h6">Edit Book</div>
-                        <q-space />
-                        <q-btn flat round dense icon="close" v-close-popup />
-                      </q-toolbar>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col-md-3">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="bookid"
-                          readonly
-                          label="Book ID"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input dense outlined v-model="title" label="Title" />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input dense outlined v-model="isbn" label="ISBN" />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="authors"
-                          label="Author"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="callnumber"
-                          label="Call Number"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="edition"
-                          label="Edition"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-select
-                          outlined
-                          dense
-                          v-model="category"
-                          :options="options"
-                          label="category"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="publisher"
-                          label="Publisher"
-                        />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="datepublication"
-                          type="date"
-                          label="Date of Publication"
-                        />
-                      </div>
-                      <div class="col">
-                        <q-input dense outlined v-model="pages" label="Pages" />
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                          <q-input dense outlined v-model="series" label="Series" />
-                        </div>
-                        <div class="col">
-                          <q-select
-                            outlined
-                            dense
-                            v-model="status"
-                            :options="options1"
-                            label="Status"
-                          />
-                        </div>
-                  </q-card-section>
-
-                    <q-card-section class="q-gutter-md row">
-                      <div class="col">
-                          <q-input dense outlined v-model="notes" label="Notes" />
-                        </div>
-                      <div class="col">
-                          <q-select
-                            outlined
-                            dense
-                            v-model="availablity"
-                            :options="options2"
-                            label="Availability"
-                          />
-                        </div>
-                  </q-card-section>
-
-                    <q-card-actions align="right">
-                     <q-btn  flat label="Cancel" color="red-8" v-close-popup />
-                     <q-btn flat label="Save" color="primary" v-close-popup />
-                    </q-card-actions>
-
-                  </q-card>
-                </q-dialog>
-                <!------------------------------------------------------------- DELETE BOOK BUTTON   -----------------------------------------------------------------    --->
-                <q-btn
-                  color="red-8"
-                  icon="delete"
-                  size="sm"
-                  class="q-ml-sm"
-                  flat
-                  round
-                  dense
-                  @click="dialog = true"
-                />
-                <q-dialog v-model="dialog" persistent>
-                  <q-card style="width: 300px">
-                    <q-card-section class="row items-center">
-                      <q-avatar
-                        size="sm"
-                        icon="warning"
-                        color="red-10"
-                        text-color="white"
-                      />
-                      <span class="q-ml-sm">Confirm Delete?</span>
-                    </q-card-section>
-                    <q-card-actions align="right">
+              <q-dialog v-model="Details">
+                <q-card style="width: 500px; max-width: 90vw" flat bordered>
+                  <q-card-section>
+                    <div class="text-h9 text-left">
+                      BOOK DETAILS
                       <q-btn
+                        round
                         flat
-                        label="Cancel"
-                        color="red-8"
-                        v-close-popup="cancelEnabled"
-                        :disable="!cancelEnabled"
-                      />
-                      <q-btn
-                        flat
-                        label="Confirm"
-                        color="primary"
+                        dense
+                        icon="close"
+                        class="float-right"
+                        color="grey-8"
                         v-close-popup
+                      ></q-btn>
+                    </div>
+                  </q-card-section>
+                  <q-separator />
+                  <q-card-section>
+                    <q-card-section class="q-pt-xs col">
+                      <div class="text-overline text-orange-9">01</div>
+                      <div
+                        class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs"
+                      >
+                        Data Structures and Algorithms
+                      </div>
+                      <q-space />
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        ISBN: 9865-865
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">CallNo: 906</div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Author: Sarah Jay
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Edition: 2nd Ed
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Category: Reference
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Publisher: 2026-2029
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Date 0f Publication: 567890
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">Pages: ii</div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Series: 2nd Ed
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">Status: New</div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Notes: From California
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Availability: YES
+                      </div>
+                    </q-card-section>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section class="col-8 text-italic flex flex-center">
+                    MSU-ISED library management system
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
+              <!-------------------------------------------------- EDIT BOOK BUTTON   -------------------------------------------------------------->
+              <q-btn
+                round
+                color="teal-8"
+                icon="edit"
+                size="sm"
+                flat
+                dense
+                @click="editRow = true"
+              />
+              <q-dialog v-model="editRow" persistent>
+                <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+                  <q-card-section class="row">
+                    <q-toolbar>
+                      <q-avatar size="50px">
+                        <q-icon name="auto_stories" />
+                      </q-avatar>
+                      <div class="text-h6">Edit Book</div>
+                      <q-space />
+                      <q-btn flat round dense icon="close" v-close-popup />
+                    </q-toolbar>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col-md-3">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="bookid"
+                        readonly
+                        label="Book ID"
                       />
+                    </div>
+                    <div class="col">
+                      <q-input dense outlined v-model="title" label="Title" />
+                    </div>
+                  </q-card-section>
 
-                    </q-card-actions>
-                  </q-card>
-                </q-dialog>
-              </q-td>
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input dense outlined v-model="isbn" label="ISBN" />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="authors"
+                        label="Author"
+                      />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="callnumber"
+                        label="Call Number"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="edition"
+                        label="Edition"
+                      />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="category"
+                        :options="options"
+                        label="category"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="publisher"
+                        label="Publisher"
+                      />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="datepublication"
+                        type="date"
+                        hint="Date of Publication"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input dense outlined v-model="pages" label="Pages" />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input dense outlined v-model="series" label="Series" />
+                    </div>
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="status"
+                        :options="options1"
+                        label="Status"
+                      />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class="q-gutter-md row">
+                    <div class="col">
+                      <q-input dense outlined v-model="notes" label="Notes" />
+                    </div>
+                    <div class="col">
+                      <q-select
+                        outlined
+                        dense
+                        v-model="availablity"
+                        :options="options2"
+                        label="Availability"
+                      />
+                    </div>
+                  </q-card-section>
+
+                  <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="red-8" v-close-popup />
+                    <q-btn flat label="Save" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+              <!------------------------------------------------------------- DELETE BOOK BUTTON   -----------------------------------------------------------------    --->
+              <q-btn
+                color="red-8"
+                icon="delete"
+                size="sm"
+                class="q-ml-sm"
+                flat
+                round
+                dense
+                @click="dialog = true"
+              />
+              <q-dialog v-model="dialog" persistent>
+                <q-card style="width: 300px">
+                  <q-card-section class="row items-center">
+                    <q-avatar
+                      size="sm"
+                      icon="warning"
+                      color="red-10"
+                      text-color="white"
+                    />
+                    <span class="q-ml-sm">Confirm Delete?</span>
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn
+                      flat
+                      label="Cancel"
+                      color="red-8"
+                      v-close-popup="cancelEnabled"
+                      :disable="!cancelEnabled"
+                    />
+                    <q-btn flat label="Confirm" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
             </div>
-
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
-          </q-tr>
+          </q-td>
         </template>
-
       </q-table>
     </div>
   </q-page>
@@ -534,14 +523,7 @@ export default class LibrarianIndex extends Vue {
     "Reference",
     "Theses",
   ];
-  options1 = [
-    "New",
-    "Damage",
-    "Lost",
-    "Outdated",
-    "Obsolete"
-
-    ];
+  options1 = ["New", "Damage", "Lost", "Outdated", "Obsolete"];
   options2 = ["YES", "NO"];
 
   columns = [
@@ -633,6 +615,12 @@ export default class LibrarianIndex extends Vue {
       label: "Availability",
       align: "center",
       field: "availability",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
   ];
 

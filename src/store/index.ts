@@ -12,6 +12,14 @@ import { AccountStateInterface } from "./account/state";
 import auth from "./auth";
 import { IAuthState } from "./auth/state";
 
+import category from "./category";
+import { CategoryStateInterface } from "./category/state";
+
+import author from "./author";
+import { AuthorStateInterface } from "./author/state";
+
+import publisher from "./publisher";
+import { PublisherStateInterface } from "./publisher/state";
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -27,6 +35,10 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   account: AccountStateInterface;
   auth: IAuthState;
+  category: CategoryStateInterface;
+  publisher: PublisherStateInterface;
+  author: AuthorStateInterface;
+
 }
 
 // provide typings for `this.$store`
@@ -45,6 +57,9 @@ export default store(function (/* { ssrContext } */) {
     modules: {
       account,
       auth,
+      author,
+      category,
+      publisher,
     },
 
     // enable strict mode (adds overhead!)
