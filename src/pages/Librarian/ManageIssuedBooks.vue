@@ -37,6 +37,10 @@
                   v-model="bookid"
                   :options="options1"
                   label="Book ID"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Select the Book ID',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -71,6 +75,11 @@
                   v-model="borrowerid"
                   :options="options2"
                   label="Borrower ID"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'Select the Borrower ID',
+                  ]"
                 />
               </div>
               <div class="col-md-4">
@@ -89,6 +98,10 @@
                   v-model="borrowdate"
                   type="date"
                   hint="Borrow Date"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input the borrow date',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -98,6 +111,10 @@
                   v-model="duedate"
                   type="date"
                   hint="Due Date"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input the due date',
+                  ]"
                 />
               </div>
             </q-card-section>
@@ -119,6 +136,11 @@
                   v-model="issuedbookstatus"
                   :options="options3"
                   label="IssuedBook Status"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'Select the issuedbook status',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -128,6 +150,11 @@
                   v-model="bookfinesid"
                   :options="options4"
                   label="BookFines ID"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'Select the BookFines ID',
+                  ]"
                 />
               </div>
             </q-card-section>
@@ -222,6 +249,11 @@
                         v-model="bookid"
                         :options="options1"
                         label="Book ID"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the Book ID',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -255,6 +287,11 @@
                         v-model="borrowerid"
                         :options="options2"
                         label="Borrower ID"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the Borrower ID',
+                        ]"
                       />
                     </div>
                     <div class="col-md-4">
@@ -267,6 +304,11 @@
                         v-model="borrowdate"
                         type="date"
                         hint="Borrow Date"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Input the borrow date',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -276,6 +318,11 @@
                         v-model="duedate"
                         type="date"
                         hint="Due Date"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Input the due date',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -297,6 +344,12 @@
                         v-model="issuedbookstatus"
                         :options="options3"
                         label="IssuedBook Status"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the issuedbook status',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -306,6 +359,12 @@
                         v-model="bookfinesid"
                         :options="options4"
                         label="BookFines ID"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the BookFines ID',
+                        ]"
                       />
                     </div>
                   </q-card-section>

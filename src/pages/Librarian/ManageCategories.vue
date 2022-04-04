@@ -44,6 +44,11 @@
                     outlined
                     v-model="inputCategory.C_Description"
                     label="Category Name"
+                    lazy-rules
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'Input the category name',
+                    ]"
                   />
                 </div>
                 <div align="right">
@@ -131,6 +136,12 @@
                           outlined
                           v-model="inputCategory.C_Description"
                           label="Category Name"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) ||
+                              'Input the category name',
+                          ]"
                         />
                       </div>
 

@@ -20,6 +20,9 @@ import { AuthorStateInterface } from "./author/state";
 
 import publisher from "./publisher";
 import { PublisherStateInterface } from "./publisher/state";
+
+import borrower from "./borrower";
+import { BorrowerStateInterface } from "./borrower/state";
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -35,9 +38,10 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   account: AccountStateInterface;
   auth: IAuthState;
+  author: AuthorStateInterface;
   category: CategoryStateInterface;
   publisher: PublisherStateInterface;
-  author: AuthorStateInterface;
+  borrower: BorrowerStateInterface;
 
 }
 
@@ -60,6 +64,7 @@ export default store(function (/* { ssrContext } */) {
       author,
       category,
       publisher,
+      borrower,
     },
 
     // enable strict mode (adds overhead!)

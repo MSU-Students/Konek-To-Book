@@ -45,6 +45,11 @@
                       outlined
                       v-model="inputAuthor.A_First_Name"
                       label="First Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the first name',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -53,6 +58,11 @@
                       outlined
                       v-model="inputAuthor.A_Middle_Name"
                       label="Middle Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the middle name',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -61,6 +71,11 @@
                       outlined
                       v-model="inputAuthor.A_Last_Name"
                       label="Last Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the last name',
+                      ]"
                     />
                   </div>
                 </div>
@@ -70,6 +85,10 @@
                     outlined
                     v-model="inputAuthor.Location"
                     label="Location"
+                    lazy-rules
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Input the location',
+                    ]"
                   />
                 </div>
                 <div align="right">
@@ -217,6 +236,12 @@
                             outlined
                             v-model="inputAuthor.A_First_Name"
                             label="First Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the first name',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -225,6 +250,12 @@
                             outlined
                             v-model="inputAuthor.A_Middle_Name"
                             label="Middle Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the middle name',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -233,6 +264,12 @@
                             outlined
                             v-model="inputAuthor.A_Last_Name"
                             label="Last Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the last name',
+                            ]"
                           />
                         </div>
                       </div>
@@ -242,6 +279,11 @@
                           outlined
                           v-model="inputAuthor.Location"
                           label="Location"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) || 'Input the location',
+                          ]"
                         />
                       </div>
 
@@ -338,6 +380,7 @@ export default class ManageAuthor extends Vue {
   pagination = {};
   filter = "";
   dialog = false;
+
   showAuthorDetails = false;
   addNewAuthor = false;
   cancelEnabled = true;
@@ -441,10 +484,10 @@ export default class ManageAuthor extends Vue {
 
   resetModel() {
     this.inputAuthor = {
-    A_First_Name: "",
-    A_Middle_Name: "",
-    A_Last_Name: "",
-    Location: "",
+      A_First_Name: "",
+      A_Middle_Name: "",
+      A_Last_Name: "",
+      Location: "",
     };
   }
 }

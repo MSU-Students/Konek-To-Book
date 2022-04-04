@@ -14,9 +14,9 @@
           name="borrower"
           icon="person_add"
           label="Add Borrower"
-          @click="addBorrower = true"
+          @click="addNewBorrower = true"
         />
-        <q-dialog v-model="addBorrower" persistent>
+        <q-dialog v-model="addNewBorrower" persistent>
           <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
             <q-card-section class="row">
               <q-toolbar>
@@ -25,75 +25,127 @@
                 </q-avatar>
                 <div class="text-h6">Add New Borrower</div>
                 <q-space />
-                <q-btn flat round dense icon="close" v-close-popup />
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="close"
+                  v-close-popup
+                  @click="resetModel()"
+                />
               </q-toolbar>
             </q-card-section>
 
-            <q-card-section class="q-gutter-md row q-pb-sm">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="studentid"
-                  label="Student ID"
-                />
-              </div>
-            </q-card-section>
+            <q-card-section>
+              <q-form @submit="onaddBorrower()" class="q-px-md">
+                <div class="q-gutter-md q-pb-md">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBorrower.Student_ID"
+                      label="Student ID"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the Student ID',
+                      ]"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="firstname"
-                  label="First Name"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="middlename"
-                  label="Middle Name"
-                />
-              </div>
-              <div class="col">
-                <q-input dense outlined v-model="lastname" label="Last Name" />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBorrower.B_First_Name"
+                      label="First Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the first name',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBorrower.B_Middle_Name"
+                      label="Middle Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the middle name',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBorrower.B_Last_Name"
+                      label="Last Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the last name',
+                      ]"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="yearlevel"
-                  label="Year/Level"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="contact"
-                  label="Contact Number"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  outlined
-                  dense
-                  v-model="issuedbookid"
-                  :options="options"
-                  label="IssuedBook_ID"
-                />
-              </div>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBorrower.YearLevel"
+                      label="Year/Level"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the year/level',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBorrower.B_Contact_Number"
+                      label="Contact Number"
+                      mask="(###) #### - #####"
+                      hint="Format: (639) 6312 - 58292"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the contact number',
+                      ]"
+                    />
+                  </div>
+                  <!--- <q-input
+                        dense
+                        outlined
+                        v-model="inputBorrower.IssuedBook_ID"
+                        label="IssuedBookID"
+                      />
+                    </div>
+                    ---->
+                </div>
+                <div align="right">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="red-10"
+                    v-close-popup
+                    @click="resetModel()"
+                  />
+                  <q-btn flat label="Save" color="primary" type="submit" />
+                </div>
+              </q-form>
             </q-card-section>
-
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="red-10" v-close-popup />
-              <q-btn flat label="Save" color="primary" v-close-popup />
-            </q-card-actions>
           </q-card>
         </q-dialog>
         <!--------------------------------  Print BORROWER ------------------------------------------    --->
@@ -104,7 +156,7 @@
     <div class="q-ma-md">
       <q-table
         title="List of Borrowers"
-        :rows="rows"
+        :rows="allBorrower"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
@@ -149,9 +201,9 @@
                 size="sm"
                 flat
                 dense
-                @click="editRow = true"
+                @click="openEditDialog(props.row)"
               />
-              <q-dialog v-model="editRow" persistent>
+              <q-dialog v-model="editRowBorrower" persistent>
                 <q-card style="width: 800px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
@@ -164,85 +216,140 @@
                     </q-toolbar>
                   </q-card-section>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="borrowerid"
-                        readonly
-                        label="Borrower ID"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="studentid"
-                        label="Student ID"
-                      />
-                    </div>
-                  </q-card-section>
+                  <q-card-section>
+                    <q-form @submit="oneditBorrower()" class="q-px-md">
+                      <div class="q-gutter-md q-pb-md">
+                        <!---
+                      <div class="col">
+                        <q-input
+                            dense
+                            outlined
+                            readonly
+                            v-model="inputBorrower.IssuedBook_ID"
+                            label="IssuedBookID"
+                          />
+                        </div>
+                    ---->
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.Student_ID"
+                            label="Student ID"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the Student ID',
+                            ]"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="firstname"
-                        label="First Name"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="middlename"
-                        label="Middle Name"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="lastname"
-                        label="Last Name"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.B_First_Name"
+                            label="First Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the first name',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.B_Middle_Name"
+                            label="Middle Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the middle name',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.B_Last_Name"
+                            label="Last Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the last name',
+                            ]"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="yearlevel"
-                        label="Year/Level"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="contact"
-                        label="Contact Number"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="issuedbookid"
-                        :options="options"
-                        label="IssuedBook_ID"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.YearLevel"
+                            label="Year/Level"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the year/level',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.B_Contact_Number"
+                            label="Contact Number"
+                            mask="(###) #### - #####"
+                            hint="Format: (639) 6312 - 58292"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the contact number',
+                            ]"
+                          />
+                        </div>
+                        <!---    <div class="col">
+                            <q-input
+                            dense
+                            outlined
+                            v-model="inputBorrower.IssuedBook_ID"
+                            label="IssuedBookID"
+                          />
 
-                  <q-card-actions align="right">
-                    <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                    <q-btn flat label="Save" color="primary" v-close-popup />
-                  </q-card-actions>
+
+                    ---->
+                      </div>
+                      <div align="right">
+                        <q-btn
+                          flat
+                          label="Cancel"
+                          color="red-10"
+                          v-close-popup
+                          @click="resetModel()"
+                        />
+                        <q-btn
+                          flat
+                          label="Save"
+                          color="primary"
+                          type="submit"
+                        />
+                      </div>
+                    </q-form>
+                  </q-card-section>
                 </q-card>
               </q-dialog>
               <!--------------------------------------- DELETE BORROWER BUTTON   ------------------------------------------    --->
@@ -272,6 +379,7 @@
                       flat
                       label="Cancel"
                       color="red-8"
+                      @click="resetModel()"
                       v-close-popup="cancelEnabled"
                       :disable="!cancelEnabled"
                     />
@@ -288,29 +396,40 @@
 </template>
 
 <script lang="ts">
+import { BorrowerDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-interface IRow {
-  name: string;
-}
-
+import { mapActions, mapState } from "vuex";
+@Options({
+  computed: {
+    ...mapState("borrower", ["allborrower"]),
+  },
+  methods: {
+    ...mapActions("borrower", [
+      "addBorrower",
+      "editBorrower",
+      "deleteBorrower",
+      "getAllBorrower",
+    ]),
+  },
+})
 export default class ManageBorrowers extends Vue {
-  tableRef = null;
-  navigationActive = false;
+  allBorrower!: BorrowerDto[];
+  addBorrower!: (payload: BorrowerDto) => Promise<void>;
+  editBorrower!: (payload: BorrowerDto) => Promise<void>;
+  deleteBorrower!: (payload: BorrowerDto) => Promise<void>;
+  getAllBorrower!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllBorrower();
+  }
+
   pagination = {};
   cancelEnabled = true;
-  addBorrower = false;
-  editRow = false;
+  addNewBorrower = false;
+  editRowBorrower = false;
   filter = "";
   dialog = false;
-
-  borrowerid = "";
-  studentid = "";
-  firstname = "";
-  middlename = "";
-  lastname = "";
-  yearlevel = "";
-  contact = "";
-  issuedbookid = "";
+  BorrowerDetails = "";
 
   options = ["001", "002", "003", "004", "008", "006"];
 
@@ -319,14 +438,14 @@ export default class ManageBorrowers extends Vue {
       name: "borrowerID",
       align: "center",
       label: "Borrower ID",
-      field: "borrowerID",
+      field: "Borrower_ID",
       sortable: true,
     },
     {
       name: "studentID",
       align: "center",
       label: "Student ID",
-      field: "studentID",
+      field: "Student_ID",
       sortable: true,
     },
     {
@@ -334,7 +453,7 @@ export default class ManageBorrowers extends Vue {
       required: true,
       label: "First Name",
       align: "center",
-      field: (row: IRow) => row.name,
+      field: (row: BorrowerDto) => row.B_First_Name,
       format: (val: string) => `${val}`,
       sortable: true,
     },
@@ -342,33 +461,33 @@ export default class ManageBorrowers extends Vue {
       name: "middlename ",
       label: "Middle name",
       align: "center",
-      field: "middlename",
+      field: "B_Middle_Name",
     },
     {
       name: "lastname",
       label: "Last Name",
       align: "center",
-      field: "lastname",
+      field: "B_Last_Name",
       sortable: true,
     },
     {
       name: "yearlevel",
       label: "Year/Level",
       align: "center",
-      field: "yearlevel",
+      field: "YearLevel",
       sortable: true,
     },
     {
       name: "contact",
       label: "Contact Number",
       align: "center",
-      field: "contact",
+      field: "B_Contact_Number",
     },
     {
       name: "issudebookid",
       label: "IssuedBook ID",
       align: "center",
-      field: "issudebookid",
+      field: "IssuedBook_ID",
     },
     {
       name: "action",
@@ -378,87 +497,67 @@ export default class ManageBorrowers extends Vue {
     },
   ];
 
-  rows = [
-    {
-      borrowerID: "01",
-      studentID: "202012567",
-      name: "Annehayrah",
-      middlename: "P.",
-      lastname: "Racman",
-      yearlevel: "3rd year ",
-      contact: "09876567889",
-      issudebookid: "001",
-    },
-    {
-      borrowerID: "02",
-      studentID: "20187892",
-      name: "Norhani",
-      middlename: "A.",
-      lastname: "Ayaon",
-      yearlevel: "4th year ",
-      contact: "09876567889",
-      issudebookid: "002",
-    },
-    {
-      borrowerID: "03",
-      studentID: "201812507",
-      name: "Bella",
-      middlename: "M.",
-      lastname: "Sangcopan",
-      yearlevel: "4yh year ",
-      contact: "09876560000",
-      issudebookid: "003",
-    },
-    {
-      borrowerID: "04",
-      studentID: "201812507",
-      name: "Norjehan",
-      middlename: "M.",
-      lastname: "Alango",
-      yearlevel: "4yh year ",
-      contact: "09876560000",
-      issudebookid: "005",
-    },
-    {
-      borrowerID: "05",
-      studentID: "202119067",
-      name: "Norhanifah",
-      middlename: "D.",
-      lastname: "Ali",
-      yearlevel: "1st year ",
-      contact: "09009567889",
-      issudebookid: "0011",
-    },
-    {
-      borrowerID: "06",
-      studentID: "202189067",
-      name: "Anisah",
-      middlename: "D.",
-      lastname: "Dayaan",
-      yearlevel: "4th year ",
-      contact: "09889567889",
-      issudebookid: "0013",
-    },
-    {
-      borrowerID: "07",
-      studentID: "20198002",
-      name: "Arifah",
-      middlename: "A.",
-      lastname: "Abdulbasit",
-      yearlevel: "4th  year ",
-      contact: "09456567889",
-      issudebookid: "0019",
-    },
-    {
-      borrowerID: "11",
-      studentID: "20196789",
-      name: "Najmah",
-      middlename: "D.",
-      lastname: "Omar",
-      yearlevel: "4th year ",
-      contact: "09889567889",
-      issudebookid: "011",
-    },
-  ];
+  inputBorrower: BorrowerDto = {
+    Student_ID: "",
+    B_First_Name: "",
+    B_Middle_Name: "",
+    B_Last_Name: "",
+    YearLevel: "",
+    B_Contact_Number: "",
+    //IssuedBook_ID: "",
+  };
+
+  async onaddBorrower() {
+    await this.addBorrower(this.inputBorrower);
+    this.addNewBorrower = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Added.",
+    });
+  }
+
+  async oneditBorrower() {
+    await this.editBorrower(this.inputBorrower);
+    this.editRowBorrower = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Edit.",
+    });
+  }
+
+  deleteSpecificBorrower(val: BorrowerDto) {
+    this.$q
+      .dialog({
+        message: "Confirm to delete?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        await this.deleteBorrower(val);
+        this.$q.notify({
+          type: "warning",
+          message: "Successfully removed",
+        });
+      });
+  }
+
+  openEditDialog(val: BorrowerDto) {
+    this.editRowBorrower = true;
+    this.inputBorrower = { ...val };
+  }
+
+  resetModel() {
+    this.inputBorrower = {
+      Student_ID: "",
+      B_First_Name: "",
+      B_Middle_Name: "",
+      B_Last_Name: "",
+      YearLevel: "",
+      B_Contact_Number: "",
+      //IssuedBook_ID: "",
+    };
+  }
 }
 </script>

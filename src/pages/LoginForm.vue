@@ -83,7 +83,7 @@
                   :type="isPwd ? 'password' : 'text'"
                   lazy-rules
                   :rules="[
-                    (val) => (val && val.length > 0) || 'Input your password',
+                    (val) => (val && val.length > 0) || 'Input your Password',
                   ]"
                 >
                   <template v-slot:append>

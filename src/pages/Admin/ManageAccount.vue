@@ -45,6 +45,11 @@
                       outlined
                       v-model="inputAccount.U_First_Name"
                       label="First Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the first name',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -53,6 +58,11 @@
                       outlined
                       v-model="inputAccount.U_Middle_Name"
                       label="Middle Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the middle name',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -61,6 +71,11 @@
                       outlined
                       v-model="inputAccount.U_Last_Name"
                       label="Last Name"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the last name',
+                      ]"
                     />
                   </div>
                 </div>
@@ -72,6 +87,10 @@
                       v-model="inputAccount.Gender"
                       :options="options"
                       label="Gender"
+                      lazy-rules
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Select the gender',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -81,6 +100,11 @@
                       v-model="inputAccount.U_Birth_Date"
                       type="date"
                       hint="Birth Date"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the birth date',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -89,6 +113,11 @@
                       outlined
                       v-model="inputAccount.Address"
                       label="Address"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the location',
+                      ]"
                     />
                   </div>
                 </div>
@@ -101,6 +130,11 @@
                       label="Contact Number"
                       mask="(###) #### - #####"
                       hint="Format: (639) 6312 - 58292"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the contact number',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -109,6 +143,11 @@
                       outlined
                       v-model="inputAccount.email"
                       label="Email"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the email account',
+                      ]"
                     />
                   </div>
                 </div>
@@ -119,6 +158,10 @@
                     outlined
                     v-model="inputAccount.username"
                     label="Username"
+                    lazy-rules
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Input the username',
+                    ]"
                   />
                   <q-input
                     dense
@@ -126,6 +169,10 @@
                     v-model="inputAccount.password"
                     :type="isPwd ? 'password' : 'text'"
                     label="Password"
+                    lazy-rules
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Input the password',
+                    ]"
                   >
                     <template v-slot:append>
                       <q-icon
@@ -141,6 +188,10 @@
                     v-model="inputAccount.User_Type"
                     :options="options1"
                     label="User type"
+                    lazy-rules
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Input the password',
+                    ]"
                   />
                 </div>
                 <div align="right">
@@ -308,6 +359,12 @@
                             outlined
                             v-model="inputAccount.U_First_Name"
                             label="First Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the first name',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -316,6 +373,12 @@
                             outlined
                             v-model="inputAccount.U_Middle_Name"
                             label="Middle Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the middle name',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -324,6 +387,12 @@
                             outlined
                             v-model="inputAccount.U_Last_Name"
                             label="Last Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the last name',
+                            ]"
                           />
                         </div>
                       </div>
@@ -335,6 +404,11 @@
                             v-model="inputAccount.Gender"
                             :options="options"
                             label="Gender"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Select the gender',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -344,6 +418,12 @@
                             v-model="inputAccount.U_Birth_Date"
                             type="date"
                             hint="Birth Date"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the birth date',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -352,6 +432,11 @@
                             outlined
                             v-model="inputAccount.Address"
                             label="Address"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Input the location',
+                            ]"
                           />
                         </div>
                       </div>
@@ -365,6 +450,12 @@
                             label="Contact Number"
                             mask="(###) #### - #####"
                             hint="Format: (639) 6312 - 58292"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the contact number',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -373,6 +464,12 @@
                             outlined
                             v-model="inputAccount.email"
                             label="Email"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the email account',
+                            ]"
                           />
                         </div>
                       </div>
@@ -383,6 +480,11 @@
                           outlined
                           v-model="inputAccount.username"
                           label="Username"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) || 'Input the username',
+                          ]"
                         />
                         <q-input
                           dense
@@ -390,6 +492,11 @@
                           v-model="inputAccount.password"
                           :type="isPwd ? 'password' : 'text'"
                           label="Password"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) || 'Input the password',
+                          ]"
                         >
                           <template v-slot:append>
                             <q-icon
@@ -409,6 +516,11 @@
                             v-model="inputAccount.User_Type"
                             :options="options1"
                             label="User type"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Input the password',
+                            ]"
                           />
                         </div>
                         <div class="col">
@@ -631,7 +743,7 @@ export default class ManageAccount extends Vue {
     this.resetModel();
     this.$q.notify({
       type: "positive",
-      message: "Successfully Edit.",
+      message: "Successfully Update",
     });
   }
 

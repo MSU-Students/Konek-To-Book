@@ -86,15 +86,46 @@
             </q-card-section>
 
             <q-card-section class="q-gutter-md">
-              <q-input dense outlined v-model="title" label="Title" />
+              <q-input
+                dense
+                outlined
+                v-model="title"
+                label="Title"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Input the title of the book',
+                ]"
+              />
             </q-card-section>
 
             <q-card-section class="q-gutter-md row">
               <div class="col">
-                <q-input dense outlined v-model="isbn" label="ISBN" />
+                <q-input
+                  dense
+                  outlined
+                  v-model="isbn"
+                  label="ISBN"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input the ISBN',
+                  ]"
+                />
               </div>
               <div class="col">
-                <q-input dense outlined v-model="authors" label="Author" />
+                <q-select
+                  dense
+                  outlined
+                  v-model="authors"
+                  :options="optionsAuthors"
+                  label="Author"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      'Select the author/s of the book',
+                  ]"
+                />
               </div>
             </q-card-section>
 
@@ -105,10 +136,25 @@
                   outlined
                   v-model="callnumber"
                   label="Call Number"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      'Input the call number of the book',
+                  ]"
                 />
               </div>
               <div class="col">
-                <q-input dense outlined v-model="edition" label="Edition" />
+                <q-input
+                  dense
+                  outlined
+                  v-model="edition"
+                  label="Edition"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Input the edition',
+                  ]"
+                />
               </div>
             </q-card-section>
 
@@ -118,12 +164,28 @@
                   dense
                   outlined
                   v-model="category"
-                  :options="options"
+                  :options="optionsCategory"
                   label="Category"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Select the category',
+                  ]"
                 />
               </div>
               <div class="col">
-                <q-input dense outlined v-model="publisher" label="Publisher" />
+                <q-select
+                  dense
+                  outlined
+                  v-model="publisher"
+                  :options="optionsPublisher"
+                  label="Publisher"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      'Select the publisher of the book',
+                  ]"
+                />
               </div>
             </q-card-section>
 
@@ -132,9 +194,9 @@
                 <q-input
                   dense
                   outlined
+                  readonly
                   v-model="datepublication"
-                  type="date"
-                  hint="Date of Publication"
+                  label="Date of Publication"
                 />
               </div>
               <div class="col">
@@ -153,6 +215,12 @@
                   v-model="status"
                   :options="options1"
                   label="Status"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      'Select the status of the book',
+                  ]"
                 />
               </div>
             </q-card-section>
@@ -168,6 +236,12 @@
                   v-model="availablity"
                   :options="options2"
                   label="Availability"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) ||
+                      'Select the availability of the book',
+                  ]"
                 />
               </div>
             </q-card-section>
@@ -333,20 +407,47 @@
                       />
                     </div>
                     <div class="col">
-                      <q-input dense outlined v-model="title" label="Title" />
+                      <q-input
+                        dense
+                        outlined
+                        v-model="title"
+                        label="Title"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Input the title of the book',
+                        ]"
+                      />
                     </div>
                   </q-card-section>
 
                   <q-card-section class="q-gutter-md row">
                     <div class="col">
-                      <q-input dense outlined v-model="isbn" label="ISBN" />
-                    </div>
-                    <div class="col">
                       <q-input
                         dense
                         outlined
+                        v-model="isbn"
+                        label="ISBN"
+                        lazy-rules
+                        :rules="[
+                          (val) => (val && val.length > 0) || 'Input the ISBN',
+                        ]"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-select
+                        dense
+                        outlined
                         v-model="authors"
+                        :options="optionsAuthors"
                         label="Author"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the author/s of the book',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -358,6 +459,12 @@
                         outlined
                         v-model="callnumber"
                         label="Call Number"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Input the call number of the book',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -366,6 +473,11 @@
                         outlined
                         v-model="edition"
                         label="Edition"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Input the edition',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -376,16 +488,28 @@
                         outlined
                         dense
                         v-model="category"
-                        :options="options"
-                        label="category"
+                        :options="optionsCategory"
+                        label="Category"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the category',
+                        ]"
                       />
                     </div>
                     <div class="col">
-                      <q-input
+                      <q-select
                         dense
                         outlined
                         v-model="publisher"
+                        :options="optionsPublisher"
                         label="Publisher"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the publisher of the book',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -395,9 +519,9 @@
                       <q-input
                         dense
                         outlined
+                        readonly
                         v-model="datepublication"
-                        type="date"
-                        hint="Date of Publication"
+                        label="Date of Publication"
                       />
                     </div>
                     <div class="col">
@@ -416,6 +540,12 @@
                         v-model="status"
                         :options="options1"
                         label="Status"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the status of the book',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -431,6 +561,12 @@
                         v-model="availablity"
                         :options="options2"
                         label="Availability"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the availability of the book',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -515,7 +651,25 @@ export default class LibrarianIndex extends Vue {
   notes = "";
   availablity = "";
 
-  options = [
+  optionsAuthors = [
+    "Carla M. Sandra",
+    "Mekaela S. Antonio",
+    "Nas Daily",
+    "Ferdinand Magellan",
+    "Jose Rizal",
+    "Kay L. April",
+  ];
+
+  optionsPublisher = [
+    "2026-2029",
+    "2026-1673",
+    "1826-2029",
+    "1998-2021",
+    "1826-1929",
+    "1926-2029",
+  ];
+
+  optionsCategory = [
     "Circulation",
     "Capstone",
     "Filipiniana",

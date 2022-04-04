@@ -37,6 +37,10 @@
                   v-model="bookid"
                   :options="options1"
                   label="Book ID"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Select the Book ID',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -52,6 +56,11 @@
                   v-model="borrowerid"
                   :options="options2"
                   label="Borrower ID"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'Select the Borrower ID',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -65,9 +74,12 @@
                   dense
                   outlined
                   v-model="finedate"
-                  type="date"
                   readonly
                   hint="Fine Date"
+                  lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Select the fine date',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -77,6 +89,11 @@
                   v-model="paymentamount"
                   type="date"
                   hint="Payment Amount"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'Select the payment amount',
+                  ]"
                 />
               </div>
               <div class="col">
@@ -86,6 +103,11 @@
                   v-model="paymentstatus"
                   :options="options3"
                   label="Payment Status"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'Select the payment status',
+                  ]"
                 />
               </div>
             </q-card-section>
@@ -180,6 +202,11 @@
                         v-model="bookid"
                         :options="options1"
                         label="Book ID"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the Book ID',
+                        ]"
                       />
                     </div>
                   </q-card-section>
@@ -196,6 +223,11 @@
                         v-model="borrowerid"
                         :options="options2"
                         label="Borrower ID"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the Borrower ID',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -209,9 +241,13 @@
                         dense
                         outlined
                         v-model="finedate"
-                        type="date"
                         readonly
                         hint="Fine Date"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the fine date',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -221,6 +257,12 @@
                         v-model="paymentamount"
                         type="date"
                         hint="Payment Amount"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the payment amount',
+                        ]"
                       />
                     </div>
                     <div class="col">
@@ -230,6 +272,12 @@
                         v-model="paymentstatus"
                         :options="options3"
                         label="Payment Status"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Select the payment status',
+                        ]"
                       />
                     </div>
                   </q-card-section>

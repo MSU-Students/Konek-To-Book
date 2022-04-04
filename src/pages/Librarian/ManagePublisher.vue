@@ -45,6 +45,11 @@
                       outlined
                       v-model="inputPublisher.Publisher"
                       label="Publisher"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the publisher',
+                      ]"
                     />
                   </div>
                 </div>
@@ -55,6 +60,12 @@
                     v-model="inputPublisher.DateOfPublication"
                     type="date"
                     hint="Date Of Publication"
+                    lazy-rules
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) ||
+                        'Input the date of publication',
+                    ]"
                   />
                 </div>
                 <div class="q-gutter-md q-pb-lg">
@@ -63,6 +74,12 @@
                     outlined
                     v-model="inputPublisher.PlaceOfPublication"
                     label="Place Of Publication"
+                    lazy-rules
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) ||
+                        'Input the place of publication',
+                    ]"
                   />
                 </div>
                 <div align="right">
@@ -152,6 +169,12 @@
                             outlined
                             v-model="inputPublisher.Publisher"
                             label="Publisher"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the publisher',
+                            ]"
                           />
                         </div>
                       </div>
@@ -162,6 +185,12 @@
                           v-model="inputPublisher.DateOfPublication"
                           type="date"
                           hint="Date Of Publication"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) ||
+                              'Input the date of publication',
+                          ]"
                         />
                       </div>
                       <div class="q-gutter-md q-pb-lg">
@@ -170,6 +199,12 @@
                           outlined
                           v-model="inputPublisher.PlaceOfPublication"
                           label="Place Of Publication"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) ||
+                              'Input the place of publication',
+                          ]"
                         />
                       </div>
 
@@ -323,7 +358,6 @@ export default class ManagePublisher extends Vue {
       type: "positive",
       message: "Successfully Added.",
     });
-
   }
 
   async oneditPublisher() {
