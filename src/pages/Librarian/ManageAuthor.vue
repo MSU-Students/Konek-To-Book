@@ -41,6 +41,7 @@
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
                     <q-input
+                      autofocus
                       dense
                       outlined
                       v-model="inputAuthor.A_First_Name"
@@ -91,6 +92,7 @@
                     ]"
                   />
                 </div>
+
                 <div align="right">
                   <q-btn
                     flat
