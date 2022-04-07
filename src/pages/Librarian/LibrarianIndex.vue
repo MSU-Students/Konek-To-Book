@@ -87,6 +87,7 @@
 
             <q-card-section class="q-gutter-md">
               <q-input
+                autofocus
                 dense
                 outlined
                 v-model="title"

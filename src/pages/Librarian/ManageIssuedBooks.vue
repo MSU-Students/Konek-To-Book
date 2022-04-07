@@ -32,6 +32,7 @@
             <q-card-section class="q-gutter-md row">
               <div class="col-md-3">
                 <q-select
+                  autofocus
                   outlined
                   dense
                   v-model="bookid"

@@ -41,10 +41,12 @@
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
                     <q-input
+                      autofocus
                       dense
                       outlined
                       v-model="inputAccount.U_First_Name"
                       label="First Name"
+                      color="green"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -128,8 +130,8 @@
                       outlined
                       v-model="inputAccount.U_Contact_Number"
                       label="Contact Number"
-                      mask="(###) #### - #####"
-                      hint="Format: (639) 6312 - 58292"
+                      mask="(####) ### - ####"
+                      hint="Format: (0963) 135 - 8292"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -143,6 +145,7 @@
                       outlined
                       v-model="inputAccount.email"
                       label="Email"
+                      type="email"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -359,6 +362,7 @@
                             outlined
                             v-model="inputAccount.U_First_Name"
                             label="First Name"
+                            color="green"
                             lazy-rules
                             :rules="[
                               (val) =>
@@ -448,8 +452,8 @@
                             outlined
                             v-model="inputAccount.U_Contact_Number"
                             label="Contact Number"
-                            mask="(###) #### - #####"
-                            hint="Format: (639) 6312 - 58292"
+                            mask="(####) ### - ####"
+                            hint="Format: (0963) 135 - 8292"
                             lazy-rules
                             :rules="[
                               (val) =>
@@ -464,6 +468,7 @@
                             outlined
                             v-model="inputAccount.email"
                             label="Email"
+                            type="email"
                             lazy-rules
                             :rules="[
                               (val) =>

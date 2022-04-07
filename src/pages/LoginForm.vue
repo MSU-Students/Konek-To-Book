@@ -20,13 +20,9 @@
             flat
             class="bg-primary text-overline text-white"
             label="Home"
+            icon="home"
+            size="14px"
             to="/"
-          />
-          <q-btn
-            flat
-            class="bg-primary text-overline text-white"
-            label="Sign-in as Admin"
-            @click="adminLogin = true"
           />
         </div>
       </q-toolbar>
@@ -111,92 +107,6 @@
                   />
                 </div>
 
-                <!------------------------------------Admin LoginForm--------------------------------------------->
-
-                <q-dialog v-model="adminLogin" persistent>
-                  <q-card class="bg-grey-11">
-                    <q-card-section class="row items-center q-pb-none">
-                      <div class="text-h6"></div>
-                      <q-space />
-                      <q-btn icon="close" flat round dense v-close-popup />
-                    </q-card-section>
-                    <q-card-section>
-                      <div class="col text-h6 ellipsis flex justify-center">
-                        <div
-                          class="text-h4 text-primary q-my-none text-weight-bold"
-                        >
-                          LOGIN
-                        </div>
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section>
-                      <!--------------- Admin form-------------------->
-                      <q-form @submit="adminUser">
-                        <div class="q-pl-xl q-pr-xl">
-                          <q-input
-                            v-model="admin_user"
-                            dense
-                            label="Username"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input your Username',
-                            ]"
-                          >
-                            <template v-slot:prepend>
-                              <q-icon name="person" />
-                            </template>
-                          </q-input>
-
-                          <q-input
-                            v-model="admin_pass"
-                            dense
-                            label="Password"
-                            :type="isPwd ? 'password' : 'text'"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input your password',
-                            ]"
-                          >
-                            <template v-slot:append>
-                              <q-icon
-                                :name="isPwd ? 'visibility_off' : 'visibility'"
-                                class="cursor-pointer"
-                                @click="isPwd = !isPwd"
-                              />
-                            </template>
-                            <template v-slot:prepend>
-                              <q-icon name="lock" />
-                            </template>
-                          </q-input>
-
-                          <div class="flex justify-center">
-                            <q-btn
-                              :ripple="false"
-                              unelevated
-                              rounded
-                              dense
-                              class="glossy q-mt-xs full-width"
-                              label="Login"
-                              color="primary"
-                              type="submit"
-                            />
-                          </div>
-
-                          <div class="text-center q-mt-sm d-qutter-lg">
-                            <router-link class="text-red-9 text-caption" to="/"
-                              >forgot password?</router-link
-                            >
-                          </div>
-                        </div>
-                      </q-form>
-                    </q-card-section>
-                  </q-card>
-                </q-dialog>
                 <!------------------------------------ FOOTER OF LOGINFORM -------------------------------------->
                 <div class="text-center q-mt-lg d-qutter-lg"></div>
                 <div
@@ -242,7 +152,10 @@ export default class LoginForm extends Vue {
         userName: this.username,
         password: this.password,
       });
-      if (this.currentUser.User_Type == "admin" || this.currentUser.User_Type == "Admin" ) {
+      if (
+        this.currentUser.User_Type == "admin" ||
+        this.currentUser.User_Type == "Admin"
+      ) {
         await this.$router.replace("/AdminIndex");
         this.$q.notify({
           position: "top",
@@ -250,7 +163,10 @@ export default class LoginForm extends Vue {
           message: "You are logged in",
         });
       }
-      if (this.currentUser.User_Type == "librarian" || this.currentUser.User_Type == "Librarian") {
+      if (
+        this.currentUser.User_Type == "librarian" ||
+        this.currentUser.User_Type == "Librarian"
+      ) {
         await this.$router.replace("/LibrarianIndex");
         this.$q.notify({
           position: "top",

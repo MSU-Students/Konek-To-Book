@@ -1,7 +1,7 @@
 <template>
   <q-page class="bg-image1">
     <div class="q-ma-md">
-      <!--------------------------------  TAB_MENU_Author ------------------------------------------    --->
+      <!--------------------------------  TAB_MENU_CATEGORIES ------------------------------------------    --->
       <q-tabs
         inline-label
         dense
@@ -9,7 +9,7 @@
         align="right"
         class="bg-teal-8 text-white shadow-2"
       >
-        <!--------------------------------  ADD NEW Author BUTTON  ------------------------------------------    --->
+        <!--------------------------------  ADD NEW CATEGORIES BUTTON  ------------------------------------------    --->
         <q-tab
           name="addCategory"
           icon="library_add"
@@ -17,7 +17,7 @@
           @click="addNewCategory = true"
         />
         <q-dialog v-model="addNewCategory" persistent>
-          <q-card style="width: 750px; max-width: 100vw">
+          <q-card style="width: 600px; max-width: 70vw" class="q-pa-md">
             <q-card-section class="row">
               <q-toolbar>
                 <q-avatar size="50px">
@@ -40,6 +40,7 @@
               <q-form @submit="onaddCategory()" class="q-px-md">
                 <div class="q-gutter-md q-pb-lg">
                   <q-input
+                    autofocus
                     dense
                     outlined
                     v-model="inputCategory.C_Description"
@@ -65,7 +66,7 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print Author ------------------------------------------    --->
+        <!--------------------------------  Print CATEGORIES ------------------------------------------    --->
         <q-tab name="Print" icon="print" label="Print" />
       </q-tabs>
     </div>
@@ -99,7 +100,7 @@
         <!--------------------------------  EDIT CATEGORY   ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
-            <div class="q-gutter-sm">
+            <div class="q-gutter-md">
               <q-btn
                 round
                 color="blue"
@@ -110,7 +111,7 @@
                 @click="openEditDialog(props.row)"
               />
               <q-dialog v-model="editRowCategory" persistent>
-                <q-card style="width: 500px; max-width: 100vw" class="q-pa-md">
+                <q-card style="width: 600px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
                       <q-avatar size="50px">

@@ -17,7 +17,7 @@
           @click="addNewBorrower = true"
         />
         <q-dialog v-model="addNewBorrower" persistent>
-          <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+          <q-card style="width: 750px; max-width: 100vw">
             <q-card-section class="row">
               <q-toolbar>
                 <q-avatar size="50px">
@@ -41,6 +41,7 @@
                 <div class="q-gutter-md q-pb-md">
                   <div class="col">
                     <q-input
+                      autofocus
                       dense
                       outlined
                       v-model="inputBorrower.Student_ID"
@@ -116,8 +117,8 @@
                       outlined
                       v-model="inputBorrower.B_Contact_Number"
                       label="Contact Number"
-                      mask="(###) #### - #####"
-                      hint="Format: (639) 6312 - 58292"
+                      mask="(####) ### - ####"
+                      hint="Format: (0963) 135 - 8292"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -401,7 +402,7 @@ import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 @Options({
   computed: {
-    ...mapState("borrower", ["allborrower"]),
+    ...mapState("borrower", ["allBorrower"]),
   },
   methods: {
     ...mapActions("borrower", [

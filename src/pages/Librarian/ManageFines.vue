@@ -14,9 +14,9 @@
           name="fines"
           icon="person_add"
           label="Add New"
-          @click="addFines = true"
+          @click="addNewFines = true"
         />
-        <q-dialog v-model="addFines" persistent>
+        <q-dialog v-model="addNewFines" persistent>
           <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
             <q-card-section class="row">
               <q-toolbar>
@@ -25,97 +25,119 @@
                 </q-avatar>
                 <div class="text-h6">Add Fines</div>
                 <q-space />
-                <q-btn flat round dense icon="close" v-close-popup />
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="close"
+                  @click="resetModel()"
+                  v-close-popup
+                />
               </q-toolbar>
             </q-card-section>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col-md-3">
-                <q-select
-                  outlined
-                  dense
-                  v-model="bookid"
-                  :options="options1"
-                  label="Book ID"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Select the Book ID',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-input dense outlined readonly label="Title" />
-              </div>
-            </q-card-section>
+            <q-card-section>
+              <q-form @submit="onaddBookFines()" class="q-px-md">
+                <!---
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col-md-3">
+                    <q-select
+                      autofocus
+                      outlined
+                      dense
+                      v-model="inputBookFines.Book_ID"
+                      :options="options1"
+                      label="Book ID"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Select the Book ID',
+                      ]"
+                    />
+                  </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col-md-3">
-                <q-select
-                  outlined
-                  dense
-                  v-model="borrowerid"
-                  :options="options2"
-                  label="Borrower ID"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Select the Borrower ID',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-input dense outlined readonly label="Borrower Name" />
-              </div>
-            </q-card-section>
+                  <div class="col">
+                    <q-input dense outlined readonly  label="Title" />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="finedate"
-                  readonly
-                  hint="Fine Date"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Select the fine date',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="paymentamount"
-                  type="date"
-                  hint="Payment Amount"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Select the payment amount',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  outlined
-                  dense
-                  v-model="paymentstatus"
-                  :options="options3"
-                  label="Payment Status"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Select the payment status',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col-md-3">
+                     <q-select
+                        outlined
+                        dense
+                        v-model="inputBookFines.Borrower_ID"
+                        :options="options2"
+                        label="Borrower ID"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Select the Borrower ID',
+                        ]"
+                      />
+                    </div>
+                    <div class="col">
+                      <q-input dense outlined readonly label="Borrower Name" />
+                    </div>
+                      </div>
+  --->
 
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="red-10" v-close-popup />
-              <q-btn flat label="Save" color="primary" v-close-popup />
-            </q-card-actions>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBookFines.Fine_Date"
+                      readonly
+                      hint="Fine Date"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBookFines.Payment_Amount"
+                      label="Payment Amount"
+                      prefix="₱"
+                      mask="#.##"
+                      fill-mask="0"
+                      reverse-fill-mask
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Select the payment amount',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputBookFines.Payment_Status"
+                      :options="options3"
+                      label="Payment Status"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Select the payment status',
+                      ]"
+                    />
+                  </div>
+                </div>
+                <div align="right">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="red-10"
+                    v-close-popup
+                    @click="resetModel()"
+                  />
+                  <q-btn flat label="Save" color="primary" type="submit" />
+                </div>
+              </q-form>
+            </q-card-section>
           </q-card>
         </q-dialog>
         <!--------------------------------  Print FINES ------------------------------------------    --->
@@ -126,7 +148,7 @@
     <div class="q-ma-md">
       <q-table
         title="List of Fines"
-        :rows="rows"
+        :rows="allBookFines"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
@@ -170,9 +192,9 @@
                 size="sm"
                 flat
                 dense
-                @click="editRow = true"
+                @click="openEditDialog(props.row)"
               />
-              <q-dialog v-model="editRow" persistent>
+              <q-dialog v-model="editRowFines" persistent>
                 <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
@@ -185,8 +207,11 @@
                     </q-toolbar>
                   </q-card-section>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
+                  <q-card-section>
+                    <q-form @submit="oneditBookFines()" class="q-px-md">
+                      <!---
+                 <div class="q-gutter-md row q-pb-md">
+                      <div class="col">
                       <q-input
                         dense
                         outlined
@@ -195,32 +220,34 @@
                         label="BookFines ID"
                       />
                     </div>
-                    <div class="col">
-                      <q-select
+
+                  <div class="col">
+                    <q-select
+                      autofocus
+                      outlined
+                      dense
+                      v-model="inputBookFines.Book_ID"
+                      :options="options1"
+                      label="Book ID"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Select the Book ID',
+                      ]"
+                    />
+                  </div>
+                </div>
+
+                  <div class="q-gutter-md row q-pb-md">
+                    <q-input dense outlined readonly  label="Title" />
+                  </div>
+
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col-md-3">
+                     <q-select
                         outlined
                         dense
-                        v-model="bookid"
-                        :options="options1"
-                        label="Book ID"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the Book ID',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
-
-                  <q-card-section class="q-gutter-md">
-                    <q-input dense outlined readonly label="Title" />
-                  </q-card-section>
-
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col-md-3">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="borrowerid"
+                        v-model="inputBookFines.Borrower_ID"
                         :options="options2"
                         label="Borrower ID"
                         lazy-rules
@@ -233,59 +260,70 @@
                     <div class="col">
                       <q-input dense outlined readonly label="Borrower Name" />
                     </div>
-                  </q-card-section>
+                      </div>
+  --->
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="finedate"
-                        readonly
-                        hint="Fine Date"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the fine date',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="paymentamount"
-                        type="date"
-                        hint="Payment Amount"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the payment amount',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="paymentstatus"
-                        :options="options3"
-                        label="Payment Status"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the payment status',
-                        ]"
-                      />
-                    </div>
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBookFines.Fine_Date"
+                            readonly
+                            hint="Fine Date"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBookFines.Payment_Amount"
+                            hint="Payment Amount"
+                            prefix="₱"
+                            mask="#.##"
+                            fill-mask="0"
+                            reverse-fill-mask
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the payment amount',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            outlined
+                            dense
+                            v-model="inputBookFines.Payment_Status"
+                            :options="options3"
+                            label="Payment Status"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the payment status',
+                            ]"
+                          />
+                        </div>
+                      </div>
+                      <div align="right">
+                        <q-btn
+                          flat
+                          label="Cancel"
+                          color="red-10"
+                          v-close-popup
+                          @click="resetModel()"
+                        />
+                        <q-btn
+                          flat
+                          label="Save"
+                          color="primary"
+                          type="submit"
+                        />
+                      </div>
+                    </q-form>
                   </q-card-section>
-
-                  <q-card-actions align="right">
-                    <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                    <q-btn flat label="Save" color="primary" v-close-popup />
-                  </q-card-actions>
                 </q-card>
               </q-dialog>
               <!--------------------------------------- DELETE FINES BUTTON   ------------------------------------------    --->
@@ -315,6 +353,7 @@
                       flat
                       label="Cancel"
                       color="red-8"
+                      @click="resetModel()"
                       v-close-popup="cancelEnabled"
                       :disable="!cancelEnabled"
                     />
@@ -332,29 +371,40 @@
 
 <!--------------------------------------- DETAILS OF ISSUEDBOOK    ------------------------------------------    --->
 <script lang="ts">
+import { BookFinesDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-interface IRow {
-  name: string;
-}
+import { mapActions, mapState } from "vuex";
 
-Options({});
+@Options({
+  computed: {
+    ...mapState("book-fines", ["allBookFines"]),
+  },
+  methods: {
+    ...mapActions("book-fines", [
+      "addBookFines",
+      "editBookFines",
+      "deleteBookFines",
+      "getAllBookFines",
+    ]),
+  },
+})
 export default class ManageFines extends Vue {
-  selected = [];
-  tableRef = null;
-  navigationActive = false;
+  allBookFines!: BookFinesDto[];
+  addBookFines!: (payload: BookFinesDto) => Promise<void>;
+  editBookFines!: (payload: BookFinesDto) => Promise<void>;
+  deleteBookFines!: (payload: BookFinesDto) => Promise<void>;
+  getAllBookFines!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllBookFines();
+  }
+
   pagination = {};
   cancelEnabled = true;
-  addFines = false;
-  editRow = false;
+  addNewFines = false;
+  editRowFines = false;
   filter = "";
   dialog = false;
-
-  bookfinesid = "";
-  bookid = "";
-  borrowerid = "";
-  finedate = "";
-  paymentamount = "";
-  paymentstatus = "";
 
   options1 = ["001", "02", "003", "006", "078", "0672", "0898", "04332"];
   options2 = ["01", "02", "03", "04", "05", "06", "021", "034"];
@@ -365,21 +415,21 @@ export default class ManageFines extends Vue {
       name: "bookfinesid",
       align: "center",
       label: "BookFines ID",
-      field: "bookfinesid",
+      field: "BookFines_ID",
       sortable: true,
     },
     {
       name: "bookID",
       align: "center",
       label: "Book ID",
-      field: "bookID",
+      field: "Book_ID",
       sortable: true,
     },
     {
       name: "borrowerID",
       align: "center",
       label: "Borrower ID",
-      field: "borrowerID",
+      field: "Borrower_ID",
       sortable: true,
     },
     {
@@ -387,7 +437,7 @@ export default class ManageFines extends Vue {
       required: true,
       label: "Fine Date",
       align: "center",
-      field: (row: IRow) => row.name,
+      field: (row: BookFinesDto) => row.Fine_Date,
       format: (val: string) => `${val}`,
       sortable: true,
     },
@@ -395,13 +445,13 @@ export default class ManageFines extends Vue {
       name: "paymentamount",
       label: "Payment Amount",
       align: "center",
-      field: "paymentamount",
+      field: "Payment_Amount",
     },
     {
       name: "paymentstatus ",
       label: "Payment Status",
       align: "center",
-      field: "paymentstatus",
+      field: "Payment_Status",
     },
     {
       name: "action",
@@ -411,55 +461,66 @@ export default class ManageFines extends Vue {
     },
   ];
 
-  rows = [
-    {
-      bookfinesid: "001",
-      bookID: "01",
-      borrowerID: "01",
-      name: "03-04-21",
-      paymentamount: "P5.00 ",
-      paymentstatus: "Pay",
-    },
-    {
-      bookfinesid: "003",
-      bookID: "02",
-      borrowerID: "02",
-      name: "05-23-21",
-      paymentamount: "P10.00",
-      paymentstatus: "Pay ",
-    },
-    {
-      bookfinesid: "005",
-      bookID: "03",
-      borrowerID: "03",
-      name: "05-24-21",
-      paymentamount: "P100.00",
-      paymentstatus: "Fine",
-    },
-    {
-      bookfinesid: "006",
-      bookID: "04",
-      borrowerID: "06",
-      name: "07-20-21",
-      paymentamount: "P0.00",
-      paymentstatus: " ",
-    },
-    {
-      bookfinesid: "007",
-      bookID: "06",
-      borrowerID: "11",
-      name: "07-29-21",
-      paymentamount: "P0.00",
-      paymentstatus: " ",
-    },
-    {
-      bookfinesid: "008",
-      bookID: "08",
-      borrowerID: "07",
-      name: "08-03-21",
-      paymentamount: "P10.00",
-      paymentstatus: "Overdue",
-    },
-  ];
+  inputBookFines: BookFinesDto = {
+    // BookFines_ID: "",
+    // Book_ID: "",
+    // Borrower_ID: "",
+    Fine_Date: "",
+    Payment_Amount: "",
+    Payment_Status: "",
+  };
+
+  async onaddBookFines() {
+    await this.addBookFines(this.inputBookFines);
+    this.addNewFines = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Added.",
+    });
+    debugger;
+  }
+
+  async oneditBookFines() {
+    await this.editBookFines(this.inputBookFines);
+    this.editRowFines = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Update",
+    });
+  }
+
+  deleteSpecificBookFines(val: BookFinesDto) {
+    this.$q
+      .dialog({
+        message: "Confirm to delete?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        await this.deleteBookFines(val);
+        this.$q.notify({
+          type: "warning",
+          message: "Successfully removed",
+        });
+      });
+  }
+
+  openEditDialog(val: BookFinesDto) {
+    this.editRowFines = true;
+    this.inputBookFines = { ...val };
+  }
+
+  resetModel() {
+    this.inputBookFines = {
+      // BookFines_ID: "",
+      // Book_ID: "",
+      // Borrower_ID: "",
+      Fine_Date: "",
+      Payment_Amount: "",
+      Payment_Status: "",
+    };
+  }
 }
 </script>

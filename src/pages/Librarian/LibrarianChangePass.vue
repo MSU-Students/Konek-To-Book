@@ -20,6 +20,7 @@
             <q-form @submit="onSubmit" class="q-gutter-md">
               <div class="q-pl-xl q-pr-xl">
                 <q-input
+                  autofocus
                   v-model="username"
                   dense
                   label="Username"
