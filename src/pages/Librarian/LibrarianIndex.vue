@@ -10,7 +10,7 @@
             <div class="row">
               <div class="col-10">
                 <div class="text-h6">Total of Books</div>
-                <div class="text-h5">356</div>
+                <div class="text-h5">{{ allBook.length }}</div>
               </div>
               <div class="col-2">
                 <q-icon size="62px" name="auto_stories" />
@@ -28,7 +28,7 @@
             <div class="row">
               <div class="col-10">
                 <div class="text-h6">Issued Books</div>
-                <div class="text-h5">45</div>
+                <div class="text-h5">{{ allIssuedBook.length }}</div>
               </div>
               <div class="col-2">
                 <q-icon size="62px" name="local_library" />
@@ -195,6 +195,7 @@
                       optine-value="Publisher"
                       map-options
                       emit-value
+                      @update:model-value="onSelectPublisher"
                       v-model="inputBook.publishers"
                     />
                   </div>
@@ -330,7 +331,7 @@
                 size="md"
                 flat
                 dense
-                @click="Details = true"
+                @click="openDialog(props.row)"
               />
 
               <q-dialog v-model="Details">
@@ -356,38 +357,45 @@
                       <div
                         class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs"
                       >
-                        Data Structures and Algorithms
+                        {{ inputBook.Title }}
                       </div>
                       <q-space />
                       <div class="text-center q-ma-mp q-mb-xs">
-                        ISBN: 9865-865
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">CallNo: 906</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Author: Sarah Jay
+                        ISBN: {{ inputBook.ISBN }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Edition: 2nd Ed
+                        CallNo: {{ inputBook.Call_Number }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Category: Reference
+                        Author:
+                        {{
+                          inputBook.authors?.A_Last_Name +
+                          ", " +
+                          inputBook.authors?.A_First_Name
+                        }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Publisher: 2026-2029
+                        Edition: {{ inputBook.Edition }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Date 0f Publication: 567890
+                        Category: {{ inputBook.categories?.C_Description }}
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Publisher: {{ inputBook.publishers?.Publisher }}
+                      </div>
+                      <div class="text-center q-ma-mp q-mb-xs">
+                        Date 0f Publication: {{ inputBook.publishers?.DateOfPublication }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">Pages: ii</div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Series: 2nd Ed
+                        Series: {{ inputBook.Series }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">Status: New</div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Notes: From California
+                        Notes: {{ inputBook.Notes }}
                       </div>
                       <div class="text-center q-ma-mp q-mb-xs">
-                        Availability: YES
+                        Availability: {{ inputBook.Availability }}
                       </div>
                     </q-card-section>
                   </q-card-section>
@@ -605,32 +613,8 @@
                 flat
                 round
                 dense
-                @click="dialog = true"
+                @click="deleteSpecificBook(props.row)"
               />
-              <q-dialog v-model="dialog" persistent>
-                <q-card style="width: 300px">
-                  <q-card-section class="row items-center">
-                    <q-avatar
-                      size="sm"
-                      icon="warning"
-                      color="red-10"
-                      text-color="white"
-                    />
-                    <span class="q-ml-sm">Confirm Delete?</span>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn
-                      flat
-                      label="Cancel"
-                      color="red-8"
-                      @click="resetModel()"
-                      v-close-popup="cancelEnabled"
-                      :disable="!cancelEnabled"
-                    />
-                    <q-btn flat label="Confirm" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
             </div>
           </q-td>
         </template>
@@ -644,6 +628,7 @@ import {
   AuthorDto,
   BookDto,
   CategoryDto,
+  IssuedBookDto,
   PublisherDto,
 } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
@@ -655,6 +640,7 @@ import { mapActions, mapState } from "vuex";
     ...mapState("author", ["allAuthor"]),
     ...mapState("category", ["allCategory"]),
     ...mapState("publisher", ["allPublisher"]),
+    ...mapState("issuedbook", ["allIssuedBook"]),
   },
   methods: {
     ...mapActions("book", ["addBook", "editBook", "deleteBook", "getAllBook"]),
@@ -665,6 +651,8 @@ export default class LibrarianIndex extends Vue {
   allAuthor!: AuthorDto[];
   allCategory!: CategoryDto[];
   allPublisher!: PublisherDto[];
+
+  allIssuedBook!: IssuedBookDto[];
 
   addBook!: (payload: BookDto) => Promise<void>;
   editBook!: (payload: BookDto) => Promise<void>;
@@ -798,7 +786,9 @@ export default class LibrarianIndex extends Vue {
     Book_Status: "New",
     Availability: "Yes",
   };
-
+  onSelectPublisher(publisher: any) {
+    this.inputBook.DateOfPublication = publisher.DateOfPublication;
+  }
   async onaddBook() {
     await this.addBook(this.inputBook);
     this.addNewBook = false;
@@ -837,6 +827,11 @@ export default class LibrarianIndex extends Vue {
 
   openEditDialog(val: BookDto) {
     this.editRowBook = true;
+    this.inputBook = { ...val };
+  }
+
+  openDialog(val: BookDto) {
+    this.Details = true;
     this.inputBook = { ...val };
   }
 

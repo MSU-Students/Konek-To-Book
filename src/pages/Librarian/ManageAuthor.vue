@@ -173,6 +173,16 @@
                 <q-card-section>
                   <q-form @submit="oneditAuthor()" class="q-px-md">
                     <div class="q-gutter-md row q-pb-md">
+                         <div class="col-md-2">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="Author ID"
+                            v-model="inputAuthor.Author_ID"
+                          />
+                        </div>
+
                       <div class="col">
                         <q-input
                           dense

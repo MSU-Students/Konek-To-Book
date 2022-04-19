@@ -48,6 +48,12 @@ export interface AccessTokenDto {
 export interface AuthorDto {
     /**
      * 
+     * @type {number}
+     * @memberof AuthorDto
+     */
+    'Author_ID'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof AuthorDto
      */

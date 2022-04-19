@@ -13,18 +13,18 @@ class BookService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(id: number): Promise<BookDto> {
-    const response = await lmsApiService.getBook(id);
+  async getOne(Book_ID: number): Promise<BookDto> {
+    const response = await lmsApiService.getBook(Book_ID);
     return response.data;
   }
 
-  async update(id: number, payload: any) {
-    const response = await lmsApiService.updateBook(id, payload);
+  async update(Book_ID: number, payload: any) {
+    const response = await lmsApiService.updateBook(Book_ID, payload);
     return response.data;
   }
 
-  async delete(id: number) {
-    const response = await lmsApiService.deleteBook(id);
+  async delete(Book_ID: number) {
+    const response = await lmsApiService.deleteBook(Book_ID);
     return response.data;
   }
 }

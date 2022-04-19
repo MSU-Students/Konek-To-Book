@@ -11,8 +11,8 @@ const actions: ActionTree<PublisherStateInterface, StateInterface> = {
   },
 
   async editPublisher(context, payload: any): Promise<any> {
-    const result = await publisherService.update(payload.id, payload);
-    context.commit("updatePublisher", result);
+    const result = await publisherService.update(payload.Publisher_ID, payload);
+    context.commit("updatePublisher", payload);
     await context.dispatch("getAllpublisher");
   },
 

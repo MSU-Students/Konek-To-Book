@@ -11,8 +11,8 @@ const actions: ActionTree<BookFinestateInterface, StateInterface> = {
   },
 
   async editBookFines(context, payload: any): Promise<any> {
-    const result = await bookfinesService.update(payload.id, payload);
-    context.commit('updateBookFines', result);
+    const result = await bookfinesService.update(payload.BookFines_ID, payload);
+    context.commit('updateBookFines', payload);
     await context.dispatch('getAllBookFines');
   },
 

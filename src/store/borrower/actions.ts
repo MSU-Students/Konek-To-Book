@@ -11,8 +11,8 @@ const actions: ActionTree<BorrowerStateInterface, StateInterface> = {
   },
 
   async editBorrower(context, payload: any): Promise<any> {
-    const result = await borrowerService.update(payload.id, payload);
-    context.commit('updateBorrower', result);
+    const result = await borrowerService.update(payload.Borrower_ID, payload);
+    context.commit('updateBorrower', payload);
     await context.dispatch('getAllBorrower');
   },
 

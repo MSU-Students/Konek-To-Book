@@ -11,8 +11,8 @@ const actions: ActionTree<AuthorStateInterface, StateInterface> = {
   },
 
   async editAuthor(context, payload: any): Promise<any> {
-    const result = await authorService.update(payload.authorID, payload);
-    context.commit('updateAuthor', result);
+    const result = await authorService.update(payload.Author_ID, payload);
+    context.commit('updateAuthor', payload);
     await context.dispatch('getAllAuthor');
 
   },

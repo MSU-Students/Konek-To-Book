@@ -11,13 +11,13 @@ const actions: ActionTree<BookStateInterface, StateInterface> = {
   },
 
   async editBook(context, payload: any): Promise<any> {
-    const result = await bookService.update(payload.id, payload);
-    context.commit('updateBook', result);
+    const result = await bookService.update(payload.Book_ID, payload);
+    context.commit('updateBook', payload);
     await context.dispatch('getAllBook');
   },
 
-  async deleteBook(context, id: number): Promise<any> {
-    const result = await bookService.delete(id);
+  async deleteBook(context, Book_ID: number): Promise<any> {
+    const result = await bookService.delete(Book_ID);
     context.commit('deleteBook', result);
     await context.dispatch('getAllBook');
   },
@@ -30,8 +30,8 @@ const actions: ActionTree<BookStateInterface, StateInterface> = {
     await this.dispatch('publisher/getAllPublisher')
   },
 
-  async getOneBook(context, id: number): Promise<any> {
-    const res = await bookService.getOne(id);
+  async getOneBook(context, Book_ID: number): Promise<any> {
+    const res = await bookService.getOne(Book_ID);
     context.commit('getOneBook', res);
   },
 };

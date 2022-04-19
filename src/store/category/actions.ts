@@ -11,8 +11,8 @@ const actions: ActionTree<CategoryStateInterface, StateInterface> = {
   },
 
   async editCategory(context, payload: any): Promise<any> {
-    const result = await categoryService.update(payload.id, payload);
-    context.commit('updateCategory', result);
+    const result = await categoryService.update(payload.Category_ID, payload);
+    context.commit('updateCategory', payload);
     await context.dispatch('getAllCategory');
   },
 

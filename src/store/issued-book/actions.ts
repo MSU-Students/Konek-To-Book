@@ -11,8 +11,8 @@ const actions: ActionTree<IssuedBookStateInterface, StateInterface> = {
   },
 
   async editIssuedBook(context, payload: any): Promise<any> {
-    const result = await issuedbookService.update(payload.id, payload);
-    context.commit('updateIssuedBook', result);
+    const result = await issuedbookService.update(payload.IssuedBook_ID, payload);
+    context.commit('updateIssuedBook', payload);
     await context.dispatch('getAllIssuedBook');
   },
 
