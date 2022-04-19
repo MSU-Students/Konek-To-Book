@@ -17,8 +17,8 @@
           @click="addNewBorrower = true"
         />
         <q-dialog v-model="addNewBorrower" persistent>
-          <q-card style="width: 750px; max-width: 100vw">
-            <q-card-section class="row">
+          <q-card style="width: 800px; max-width: 100vw" class="q-pa-md">
+            <q-card-section class="row q-pa-md">
               <q-toolbar>
                 <q-avatar size="50px">
                   <q-icon name="person" />
@@ -37,7 +37,7 @@
             </q-card-section>
 
             <q-card-section>
-              <q-form @submit="onaddBorrower()" class="q-px-md">
+              <q-form @submit="onaddBorrower()" class="q-px-sm">
                 <div class="q-gutter-md q-pb-md">
                   <div class="col">
                     <q-input
@@ -126,14 +126,18 @@
                       ]"
                     />
                   </div>
-                  <!--- <q-input
-                        dense
-                        outlined
-                        v-model="inputBorrower.IssuedBook_ID"
-                        label="IssuedBookID"
-                      />
-                    </div>
-                    ---->
+                  <div class="col">
+                    <q-select
+                      dense
+                      outlined
+                      label="IssuedBook ID"
+                      :options="allIssuedBook"
+                      option-label="IssuedBook_ID"
+                      optine-value="IssuedBook_ID"
+                      map-options
+                      emit-value
+                    />
+                  </div>
                 </div>
                 <div align="right">
                   <q-btn
@@ -206,31 +210,36 @@
               />
               <q-dialog v-model="editRowBorrower" persistent>
                 <q-card style="width: 800px; max-width: 100vw" class="q-pa-md">
-                  <q-card-section class="row">
+                  <q-card-section class="row q-pa-md">
                     <q-toolbar>
                       <q-avatar size="50px">
                         <q-icon name="person" />
                       </q-avatar>
                       <div class="text-h6">Edit Borrower</div>
                       <q-space />
-                      <q-btn flat round dense icon="close" v-close-popup />
+                      <q-btn
+                        flat
+                        round
+                        dense
+                        icon="close"
+                        v-close-popup
+                        @click="resetModel()"
+                      />
                     </q-toolbar>
                   </q-card-section>
 
                   <q-card-section>
-                    <q-form @submit="oneditBorrower()" class="q-px-md">
-                      <div class="q-gutter-md q-pb-md">
-                        <!---
-                      <div class="col">
-                        <q-input
+                    <q-form @submit="oneditBorrower()">
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col">
+                          <q-input
                             dense
                             outlined
                             readonly
-                            v-model="inputBorrower.IssuedBook_ID"
-                            label="IssuedBookID"
+                            label="Borrower ID"
                           />
                         </div>
-                    ---->
+
                         <div class="col">
                           <q-input
                             dense
@@ -323,16 +332,24 @@
                             ]"
                           />
                         </div>
-                        <!---    <div class="col">
-                            <q-input
+
+                        <div class="col">
+                          <q-select
                             dense
                             outlined
-                            v-model="inputBorrower.IssuedBook_ID"
-                            label="IssuedBookID"
+                            label="IssuedBook ID"
+                            :options="allIssuedBook"
+                            option-label="IssuedBook_ID"
+                            optine-value="IssuedBook_ID"
+                            map-options
+                            emit-value
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the IssuedBook',
+                            ]"
                           />
-
-
-                    ---->
+                        </div>
                       </div>
                       <div align="right">
                         <q-btn
@@ -397,12 +414,13 @@
 </template>
 
 <script lang="ts">
-import { BorrowerDto } from "src/services/rest-api";
+import { BorrowerDto, IssuedBookDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 @Options({
   computed: {
     ...mapState("borrower", ["allBorrower"]),
+    ...mapState("issued-book", ["allIssuedBook"]),
   },
   methods: {
     ...mapActions("borrower", [
@@ -415,6 +433,8 @@ import { mapActions, mapState } from "vuex";
 })
 export default class ManageBorrowers extends Vue {
   allBorrower!: BorrowerDto[];
+  allIssuedBook!: IssuedBookDto[];
+
   addBorrower!: (payload: BorrowerDto) => Promise<void>;
   editBorrower!: (payload: BorrowerDto) => Promise<void>;
   deleteBorrower!: (payload: BorrowerDto) => Promise<void>;
@@ -422,6 +442,7 @@ export default class ManageBorrowers extends Vue {
 
   async mounted() {
     await this.getAllBorrower();
+    console.log(this.allBorrower);
   }
 
   pagination = {};

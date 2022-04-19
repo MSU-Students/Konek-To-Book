@@ -23,6 +23,16 @@ import { PublisherStateInterface } from "./publisher/state";
 
 import borrower from "./borrower";
 import { BorrowerStateInterface } from "./borrower/state";
+
+import issuedbook from "./issued-book";
+import { IssuedBookStateInterface } from "./issued-book/state";
+
+import book from "./book";
+import { BookStateInterface } from "./book/state";
+
+import bookfines from "./book-fines";
+import { BookFinestateInterface } from "./book-fines/state";
+
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -42,6 +52,9 @@ export interface StateInterface {
   category: CategoryStateInterface;
   publisher: PublisherStateInterface;
   borrower: BorrowerStateInterface;
+  issuedbook: IssuedBookStateInterface;
+  book: BookStateInterface;
+  bookfines: BookFinestateInterface;
 
 }
 
@@ -65,6 +78,9 @@ export default store(function (/* { ssrContext } */) {
       category,
       publisher,
       borrower,
+      issuedbook,
+      book,
+      bookfines,
     },
 
     // enable strict mode (adds overhead!)

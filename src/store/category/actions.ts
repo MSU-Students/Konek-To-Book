@@ -19,6 +19,7 @@ const actions: ActionTree<CategoryStateInterface, StateInterface> = {
   async deleteCategory(context, id: number): Promise<any> {
     const result = await categoryService.delete(id);
     context.commit('deleteCategory', result);
+    await context.dispatch('getAllCategory');
   },
 
   async getAllCategory(context): Promise<any> {

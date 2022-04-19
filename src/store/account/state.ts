@@ -7,8 +7,7 @@ export interface AccountStateInterface {
 
 function state(): AccountStateInterface {
   return {
-    allAccount: [
-    ],
+    allAccount: [],
   };
 }
 

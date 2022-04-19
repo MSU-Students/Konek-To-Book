@@ -1,7 +1,6 @@
 import { lmsApiService } from "./lms-api.service";
 import { DefaultApi } from "./rest-api";
-import {AuthorDto} from "./rest-api"
-
+import { AuthorDto } from "./rest-api";
 
 class AuthorService extends DefaultApi {
   async create(payload: any): Promise<AuthorDto> {
@@ -14,22 +13,20 @@ class AuthorService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(id: number): Promise<AuthorDto> {
-    const response = await lmsApiService.getAuthor(id);
+  async getOne(authorID: number): Promise<AuthorDto> {
+    const response = await lmsApiService.getAuthor(authorID);
     return response.data;
   }
 
-  async update(id: number, payload: any) {
-    const response = await lmsApiService.updateAuthor(id, payload);
+  async update(authorID: number, payload: any) {
+    const response = await lmsApiService.updateAuthor(authorID, payload);
     return response.data;
   }
 
-  async delete(id: number) {
-    const response = await lmsApiService.deleteAuthor(id);
+  async delete(authorID: number) {
+    const response = await lmsApiService.deleteAuthor(authorID);
     return response.data;
   }
-
-
 }
 
 const authorService = new AuthorService();

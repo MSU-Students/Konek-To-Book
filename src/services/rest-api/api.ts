@@ -57,7 +57,7 @@ export interface AuthorDto {
      * @type {string}
      * @memberof AuthorDto
      */
-    'A_Middle_Name': string;
+    'A_Middle_Name'?: string;
     /**
      * 
      * @type {string}
@@ -79,6 +79,12 @@ export interface AuthorDto {
 export interface BookDto {
     /**
      * 
+     * @type {number}
+     * @memberof BookDto
+     */
+    'Book_ID'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof BookDto
      */
@@ -88,7 +94,7 @@ export interface BookDto {
      * @type {string}
      * @memberof BookDto
      */
-    'Call_Number': string;
+    'Call_Number'?: string;
     /**
      * 
      * @type {string}
@@ -100,31 +106,31 @@ export interface BookDto {
      * @type {string}
      * @memberof BookDto
      */
-    'Edition': string;
+    'Edition'?: string;
     /**
      * 
      * @type {string}
      * @memberof BookDto
      */
-    'DateOfPublication': string;
+    'DateOfPublication'?: string;
     /**
      * 
      * @type {string}
      * @memberof BookDto
      */
-    'Pages': string;
+    'Pages'?: string;
     /**
      * 
      * @type {string}
      * @memberof BookDto
      */
-    'Series': string;
+    'Series'?: string;
     /**
      * 
      * @type {string}
      * @memberof BookDto
      */
-    'Notes': string;
+    'Notes'?: string;
     /**
      * 
      * @type {string}
@@ -137,6 +143,24 @@ export interface BookDto {
      * @memberof BookDto
      */
     'Availability': string;
+    /**
+     * 
+     * @type {AuthorDto}
+     * @memberof BookDto
+     */
+    'authors'?: AuthorDto;
+    /**
+     * 
+     * @type {CategoryDto}
+     * @memberof BookDto
+     */
+    'categories'?: CategoryDto;
+    /**
+     * 
+     * @type {PublisherDto}
+     * @memberof BookDto
+     */
+    'publishers'?: PublisherDto;
 }
 /**
  * 
@@ -144,6 +168,12 @@ export interface BookDto {
  * @interface BookFinesDto
  */
 export interface BookFinesDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof BookFinesDto
+     */
+    'BookFines_ID'?: number;
     /**
      * 
      * @type {string}
@@ -162,6 +192,18 @@ export interface BookFinesDto {
      * @memberof BookFinesDto
      */
     'Payment_Status': string;
+    /**
+     * 
+     * @type {BorrowerDto}
+     * @memberof BookFinesDto
+     */
+    'borrower'?: BorrowerDto;
+    /**
+     * 
+     * @type {BookDto}
+     * @memberof BookFinesDto
+     */
+    'book'?: BookDto;
 }
 /**
  * 
@@ -169,6 +211,12 @@ export interface BookFinesDto {
  * @interface BorrowerDto
  */
 export interface BorrowerDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof BorrowerDto
+     */
+    'Borrower_ID'?: number;
     /**
      * 
      * @type {string}
@@ -214,6 +262,12 @@ export interface BorrowerDto {
 export interface CategoryDto {
     /**
      * 
+     * @type {number}
+     * @memberof CategoryDto
+     */
+    'Category_ID'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof CategoryDto
      */
@@ -227,10 +281,22 @@ export interface CategoryDto {
 export interface IssuedBookDto {
     /**
      * 
+     * @type {number}
+     * @memberof IssuedBookDto
+     */
+    'IssuedBook_ID'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof IssuedBookDto
      */
     'Title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof IssuedBookDto
+     */
+    'Borrower_Name': string;
     /**
      * 
      * @type {string}
@@ -255,6 +321,18 @@ export interface IssuedBookDto {
      * @memberof IssuedBookDto
      */
     'IssuedBook_Status': string;
+    /**
+     * 
+     * @type {BorrowerDto}
+     * @memberof IssuedBookDto
+     */
+    'borrowerss'?: BorrowerDto;
+    /**
+     * 
+     * @type {BorrowerDto}
+     * @memberof IssuedBookDto
+     */
+    'fines'?: BorrowerDto;
 }
 /**
  * 
@@ -267,19 +345,19 @@ export interface PublisherDto {
      * @type {string}
      * @memberof PublisherDto
      */
-    'Publisher': string;
+    'Publisher'?: string;
     /**
      * 
      * @type {string}
      * @memberof PublisherDto
      */
-    'DateOfPublication': string;
+    'DateOfPublication'?: string;
     /**
      * 
      * @type {string}
      * @memberof PublisherDto
      */
-    'PlaceOfPublication': string;
+    'PlaceOfPublication'?: string;
 }
 /**
  * 

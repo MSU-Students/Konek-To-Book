@@ -70,9 +70,9 @@
           name="book"
           icon="library_add"
           label="Add Book"
-          @click="addBook = true"
+          @click="addNewBook = true"
         />
-        <q-dialog v-model="addBook" persistent>
+        <q-dialog v-model="addNewBook" persistent>
           <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
             <q-card-section class="row">
               <q-toolbar>
@@ -81,178 +81,203 @@
                 </q-avatar>
                 <div class="text-h6">Add New Book</div>
                 <q-space />
-                <q-btn flat round dense icon="close" v-close-popup />
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="close"
+                  @click="resetModel()"
+                  v-close-popup
+                />
               </q-toolbar>
             </q-card-section>
 
-            <q-card-section class="q-gutter-md">
-              <q-input
-                autofocus
-                dense
-                outlined
-                v-model="title"
-                label="Title"
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) || 'Input the title of the book',
-                ]"
-              />
-            </q-card-section>
+            <q-card-section>
+              <q-form @submit="onaddBook()" class="q-px-sm">
+                <div class="q-gutter-md q-pb-sm">
+                  <div class="col">
+                    <q-input
+                      autofocus
+                      dense
+                      outlined
+                      color="primary"
+                      v-model="inputBook.Title"
+                      label="Title"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Input the title of the book',
+                      ]"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="isbn"
-                  label="ISBN"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Input the ISBN',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  dense
-                  outlined
-                  v-model="authors"
-                  :options="optionsAuthors"
-                  label="Author"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      'Select the author/s of the book',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-sm">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBook.ISBN"
+                      label="ISBN"
+                      type="number"
+                      lazy-rules
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Input the ISBN',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      dense
+                      outlined
+                      label="Author"
+                      :options="allAuthor"
+                      option-label="A_First_Name"
+                      optine-value="Author_ID"
+                      map-options
+                      emit-value
+                      v-model="inputBook.authors"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBook.Call_Number"
+                      label="Call Number"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Input the call number of the book',
+                      ]"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="callnumber"
-                  label="Call Number"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      'Input the call number of the book',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="edition"
-                  label="Edition"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Input the edition',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-sm">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBook.Edition"
+                      label="Edition"
+                      lazy-rules
+                      :rules="[
+                        (val) => (val && val.length > 0) || 'Input the edition',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      dense
+                      outlined
+                      label="Category"
+                      :options="allCategory"
+                      option-label="C_Description"
+                      optine-value="C_Description"
+                      map-options
+                      emit-value
+                      v-model="inputBook.categories"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-select
-                  dense
-                  outlined
-                  v-model="category"
-                  :options="optionsCategory"
-                  label="Category"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Select the category',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  dense
-                  outlined
-                  v-model="publisher"
-                  :options="optionsPublisher"
-                  label="Publisher"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      'Select the publisher of the book',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-lg">
+                  <div class="col">
+                    <q-select
+                      dense
+                      outlined
+                      label="Publisher"
+                      :options="allPublisher"
+                      option-label="Publisher"
+                      optine-value="Publisher"
+                      map-options
+                      emit-value
+                      v-model="inputBook.publishers"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      readonly
+                      v-model="inputBook.DateOfPublication"
+                      label="Date of Publication"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  readonly
-                  v-model="datepublication"
-                  label="Date of Publication"
-                />
-              </div>
-              <div class="col">
-                <q-input dense outlined v-model="pages" label="Pages" />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-lg">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBook.Pages"
+                      label="Pages"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBook.Series"
+                      label="Series"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input dense outlined v-model="series" label="Series" />
-              </div>
-              <div class="col">
-                <q-select
-                  outlined
-                  dense
-                  v-model="status"
-                  :options="options1"
-                  label="Status"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      'Select the status of the book',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-lg">
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputBook.Book_Status"
+                      :options="options1"
+                      label="Status"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBook.Notes"
+                      label="Notes"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputBook.Availability"
+                      :options="options2"
+                      label="Availability"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Select the availability of the book',
+                      ]"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input dense outlined v-model="notes" label="Notes" />
-              </div>
-              <div class="col">
-                <q-select
-                  outlined
-                  dense
-                  v-model="availablity"
-                  :options="options2"
-                  label="Availability"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) ||
-                      'Select the availability of the book',
-                  ]"
-                />
-              </div>
+                <div align="right">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="red-10"
+                    v-close-popup
+                    @click="resetModel()"
+                  />
+                  <q-btn flat label="Save" color="primary" type="submit" />
+                </div>
+              </q-form>
             </q-card-section>
-
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="red-8" v-close-popup />
-              <q-btn flat label="Save" color="primary" v-close-popup />
-            </q-card-actions>
           </q-card>
         </q-dialog>
+
         <!--------------------------------  -------------Print BOOK ------------------------------------------    --->
         <q-tab name="Print" icon="print" label="Print" />
       </q-tabs>
@@ -261,7 +286,7 @@
     <div class="q-ma-md">
       <q-table
         title="List of Books"
-        :rows="rows"
+        :rows="allBook"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
@@ -382,9 +407,9 @@
                 size="sm"
                 flat
                 dense
-                @click="editRow = true"
+                @click="openEditDialog(props.row)"
               />
-              <q-dialog v-model="editRow" persistent>
+              <q-dialog v-model="editRowBook" persistent>
                 <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
@@ -397,185 +422,178 @@
                     </q-toolbar>
                   </q-card-section>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col-md-3">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="bookid"
-                        readonly
-                        label="Book ID"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="title"
-                        label="Title"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Input the title of the book',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                  <q-card-section>
+                    <q-form @submit="oneditBook()" class="q-px-sm">
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col-md-2">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="Book ID"
+                            v-model="inputBook.Book_ID"
+                          />
+                        </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="isbn"
-                        label="ISBN"
-                        lazy-rules
-                        :rules="[
-                          (val) => (val && val.length > 0) || 'Input the ISBN',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        dense
-                        outlined
-                        v-model="authors"
-                        :options="optionsAuthors"
-                        label="Author"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the author/s of the book',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                        <div class="col">
+                          <q-input
+                            autofocus
+                            dense
+                            outlined
+                            color="primary"
+                            v-model="inputBook.Title"
+                            label="Title"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="callnumber"
-                        label="Call Number"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Input the call number of the book',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="edition"
-                        label="Edition"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Input the edition',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBook.ISBN"
+                            label="ISBN"
+                            type="number"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            dense
+                            outlined
+                            label="Author"
+                            :options="allAuthor"
+                            option-label="A_First_Name"
+                            optine-value="A_First_Name"
+                            map-options
+                            emit-value
+                            v-model="inputBook.authors"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBook.Call_Number"
+                            label="Call Number"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="category"
-                        :options="optionsCategory"
-                        label="Category"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the category',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        dense
-                        outlined
-                        v-model="publisher"
-                        :options="optionsPublisher"
-                        label="Publisher"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the publisher of the book',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBook.Edition"
+                            label="Edition"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            dense
+                            outlined
+                            label="Category"
+                            :options="allCategory"
+                            option-label="C_Description"
+                            optine-value="C_Description"
+                            map-options
+                            emit-value
+                            v-model="inputBook.categories"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        readonly
-                        v-model="datepublication"
-                        label="Date of Publication"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input dense outlined v-model="pages" label="Pages" />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col">
+                          <q-select
+                            dense
+                            outlined
+                            label="Publisher"
+                            :options="allPublisher"
+                            option-label="Publisher"
+                            optine-value="Publisher"
+                            map-options
+                            emit-value
+                            v-model="inputBook.publishers"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            v-model="inputBook.DateOfPublication"
+                            label="Date of Publication"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input dense outlined v-model="series" label="Series" />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="status"
-                        :options="options1"
-                        label="Status"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the status of the book',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-lg">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBook.Pages"
+                            label="Pages"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBook.Series"
+                            label="Series"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input dense outlined v-model="notes" label="Notes" />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="availablity"
-                        :options="options2"
-                        label="Availability"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the availability of the book',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row q-pb-lg">
+                        <div class="col">
+                          <q-select
+                            outlined
+                            dense
+                            v-model="inputBook.Book_Status"
+                            :options="options1"
+                            label="Status"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBook.Notes"
+                            label="Notes"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            outlined
+                            dense
+                            v-model="inputBook.Availability"
+                            :options="options2"
+                            label="Availability"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-actions align="right">
-                    <q-btn flat label="Cancel" color="red-8" v-close-popup />
-                    <q-btn flat label="Save" color="primary" v-close-popup />
-                  </q-card-actions>
+                      <div align="right">
+                        <q-btn
+                          flat
+                          label="Cancel"
+                          color="red-10"
+                          v-close-popup
+                          @click="resetModel()"
+                        />
+                        <q-btn
+                          flat
+                          label="Save"
+                          color="primary"
+                          type="submit"
+                        />
+                      </div>
+                    </q-form>
+                  </q-card-section>
                 </q-card>
               </q-dialog>
               <!------------------------------------------------------------- DELETE BOOK BUTTON   -----------------------------------------------------------------    --->
@@ -605,6 +623,7 @@
                       flat
                       label="Cancel"
                       color="red-8"
+                      @click="resetModel()"
                       v-close-popup="cancelEnabled"
                       :disable="!cancelEnabled"
                     />
@@ -621,63 +640,50 @@
 </template>
 
 <script lang="ts">
+import {
+  AuthorDto,
+  BookDto,
+  CategoryDto,
+  PublisherDto,
+} from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
+import { mapActions, mapState } from "vuex";
 
-interface IRow {
-  name: string;
-}
-@Options({})
+@Options({
+  computed: {
+    ...mapState("book", ["allBook"]),
+    ...mapState("author", ["allAuthor"]),
+    ...mapState("category", ["allCategory"]),
+    ...mapState("publisher", ["allPublisher"]),
+  },
+  methods: {
+    ...mapActions("book", ["addBook", "editBook", "deleteBook", "getAllBook"]),
+  },
+})
 export default class LibrarianIndex extends Vue {
-  tableRef = null;
-  navigationActive = false;
+  allBook!: BookDto[];
+  allAuthor!: AuthorDto[];
+  allCategory!: CategoryDto[];
+  allPublisher!: PublisherDto[];
+
+  addBook!: (payload: BookDto) => Promise<void>;
+  editBook!: (payload: BookDto) => Promise<void>;
+  deleteBook!: (payload: BookDto) => Promise<void>;
+  getAllBook!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllBook();
+    console.log(this.allBook);
+  }
+
   pagination = {};
   cancelEnabled = true;
-  addBook = false;
-  editRow = false;
+  addNewBook = false;
+  editRowBook = false;
   filter = "";
   dialog = false;
   Details = false;
-  bookid = "";
-  title = "";
-  isbn = "";
-  callnumber = "";
-  authors = "";
-  edition = "";
-  category = "";
-  publisher = "";
-  datepublication = "";
-  pages = "";
-  series = "";
-  status = "";
-  notes = "";
-  availablity = "";
 
-  optionsAuthors = [
-    "Carla M. Sandra",
-    "Mekaela S. Antonio",
-    "Nas Daily",
-    "Ferdinand Magellan",
-    "Jose Rizal",
-    "Kay L. April",
-  ];
-
-  optionsPublisher = [
-    "2026-2029",
-    "2026-1673",
-    "1826-2029",
-    "1998-2021",
-    "1826-1929",
-    "1926-2029",
-  ];
-
-  optionsCategory = [
-    "Circulation",
-    "Capstone",
-    "Filipiniana",
-    "New Arrivals",
-    "Reference",
-    "Theses",
-  ];
   options1 = ["New", "Damage", "Lost", "Outdated", "Obsolete"];
   options2 = ["YES", "NO"];
 
@@ -686,7 +692,7 @@ export default class LibrarianIndex extends Vue {
       name: "bookID",
       align: "center",
       label: "Book ID",
-      field: "bookID",
+      field: "Book_ID",
       sortable: true,
     },
     {
@@ -694,38 +700,39 @@ export default class LibrarianIndex extends Vue {
       required: true,
       label: "Title",
       align: "center",
-      field: (row: IRow) => row.name,
+      field: (row: BookDto) => row.Title,
       format: (val: string) => `${val}`,
       sortable: true,
     },
 
-    { name: "isbn", label: "ISBN", align: "center", field: "isbn" },
+    { name: "isbn", label: "ISBN", align: "center", field: "ISBN" },
     {
       name: "callnumber ",
       label: "Call Number",
       align: "center",
-      field: "callnumber",
+      field: "Call_Number",
     },
     {
       name: "authors",
       label: "Author/s",
       align: "center",
-      field: "authors",
+      field: (row: any) =>
+        row.authors?.A_Last_Name + ", " + row.authors?.A_First_Name || "None",
       sortable: true,
     },
-    { name: "edition", label: "Edition", align: "center", field: "edition" },
+    { name: "edition", label: "Edition", align: "center", field: "Edition" },
 
     {
       name: "category",
       label: "Category",
-      field: "category",
+      field: (row: any) => row.categories?.C_Description || "None",
       align: "center",
       sortable: true,
     },
     {
       name: "publisher",
       label: "Publisher",
-      field: "publisher",
+      field: (row: any) => row.publishers?.Publisher || "None",
       align: "center",
       sortable: true,
     },
@@ -733,7 +740,7 @@ export default class LibrarianIndex extends Vue {
     {
       name: "dateofpublication",
       label: "Date of Publication",
-      field: "dateofpublication",
+      field: "DateOfPublication",
       align: "center",
       sortable: true,
     },
@@ -741,35 +748,35 @@ export default class LibrarianIndex extends Vue {
       name: "pages",
       label: "Pages",
       align: "center",
-      field: "pages",
+      field: "Pages",
     },
 
     {
       name: "series",
       label: "Series",
       align: "center",
-      field: "series",
+      field: "Series",
     },
 
     {
       name: "status",
       label: "Status",
       align: "center",
-      field: "status",
+      field: "Book_Status",
     },
 
     {
       name: "notes",
       label: "Notes",
       align: "center",
-      field: "notes",
+      field: "Notes",
     },
 
     {
       name: "availability",
       label: "Availability",
       align: "center",
-      field: "availability",
+      field: "Availability",
     },
     {
       name: "action",
@@ -779,216 +786,73 @@ export default class LibrarianIndex extends Vue {
     },
   ];
 
-  rows = [
-    {
-      bookID: "01",
-      name: "Data Structures and Algorithms",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "sarah jay",
-      edition: "2nd ed",
-      category: "reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "Donation",
-      availability: "YES",
-    },
-    {
-      bookID: "02",
-      name: "Algorithms",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "sarah jay",
-      edition: "2nd ed",
-      category: "Capstone",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "Donation",
-      availability: "NO",
-    },
+  inputBook: BookDto = {
+    ISBN: "",
+    Call_Number: "",
+    Title: "",
+    Edition: "",
+    DateOfPublication: "",
+    Pages: "",
+    Series: "",
+    Notes: "",
+    Book_Status: "New",
+    Availability: "Yes",
+  };
 
-    {
-      bookID: "03",
-      name: "Integrating",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Jyasa",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "04",
-      name: "Robotics",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady gerry",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "05",
-      name: "Robotics and systematic system",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "iii",
-      series: "tvhj",
-      status: "Old",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "06",
-      name: "Oracles",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "07",
-      name: "Programming Language",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "iii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "08",
-      name: "Java Language",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "iv",
-      series: "yuio",
-      status: "New",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "09",
-      name: "Programming Languages",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "i",
-      series: "tvhj",
-      status: "New",
-      notes: "No comment",
-      availability: "YES",
-    },
-    {
-      bookID: "10",
-      name: "Robotics",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "xi",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "11",
-      name: "Cinderella",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "x",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "15",
-      name: "Github",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "xii",
-      series: "tvhj",
-      status: "New",
-      notes: "Donation",
-      availability: "YES",
-    },
-    {
-      bookID: "13",
-      name: "Integrated",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "vi",
-      series: "tvhj",
-      status: "New",
-      notes: "Donation",
-      availability: "YES",
-    },
-  ];
+  async onaddBook() {
+    await this.addBook(this.inputBook);
+    this.addNewBook = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Added.",
+    });
+  }
+
+  async oneditBook() {
+    await this.editBook(this.inputBook);
+    this.editRowBook = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Edit.",
+    });
+  }
+
+  deleteSpecificBook(val: BookDto) {
+    this.$q
+      .dialog({
+        message: "Confirm to delete?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        await this.deleteBook(val.Book_ID as any);
+        this.$q.notify({
+          type: "warning",
+          message: "Successfully removed",
+        });
+      });
+  }
+
+  openEditDialog(val: BookDto) {
+    this.editRowBook = true;
+    this.inputBook = { ...val };
+  }
+
+  resetModel() {
+    this.inputBook = {
+      ISBN: "",
+      Call_Number: "",
+      Title: "",
+      Edition: "",
+      DateOfPublication: "",
+      Pages: "",
+      Series: "",
+      Notes: "",
+      Book_Status: "New",
+      Availability: "Yes",
+    };
+  }
 }
 </script>

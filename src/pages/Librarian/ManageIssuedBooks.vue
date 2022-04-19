@@ -14,156 +14,154 @@
           name="issuedbook"
           icon="library_add"
           label="Add Issued Book"
-          @click="addIssuedBook = true"
+          @click="addNewIssuedBook = true"
         />
-        <q-dialog v-model="addIssuedBook" persistent full-width>
-          <q-card style="width: 800px; max-width: 100vw" class="q-pa-md">
-            <q-card-section class="row">
+        <q-dialog v-model="addNewIssuedBook" persistent>
+          <q-card style="width: 1150px; max-width: 250vw" class="q-pa-md">
+            <q-card-section class="row q-pa-md">
               <q-toolbar>
                 <q-avatar size="50px">
                   <q-icon name="local_library" />
                 </q-avatar>
                 <div class="text-h6">Add IssuedBook</div>
                 <q-space />
-                <q-btn flat round dense icon="close" v-close-popup />
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="close"
+                  @click="resetModel()"
+                  v-close-popup
+                />
               </q-toolbar>
             </q-card-section>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col-md-3">
-                <q-select
-                  autofocus
-                  outlined
-                  dense
-                  v-model="bookid"
-                  :options="options1"
-                  label="Book ID"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Select the Book ID',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="title"
-                  readonly
-                  label="Title"
-                />
-              </div>
-            </q-card-section>
-
-            <!------------------------------ Table for List Of Books (POP-DIALOG) --------------------->
             <q-card-section>
-              <q-table
-                class="my-sticky-header-column-table"
-                title="List of Books"
-                :rows="Brows"
-                :columns="Bcolumns"
-                :filter="filter"
-                row-key="Bname"
-              />
-            </q-card-section>
-            <!------------------------------ -----  TEXTFIELD                 --------------------->
+              <q-form @submit="onaddIssuedBook()" class="q-px-md">
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col-md-3">
+                    <q-select
+                      autofocus
+                      outlined
+                      dense
+                      :options="options1"
+                      label="Book_ID"
+                      lazy-rules
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputIssuedBook.Title"
+                      readonly
+                      label="Title"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col-md-2">
-                <q-select
-                  dense
-                  outlined
-                  v-model="borrowerid"
-                  :options="options2"
-                  label="Borrower ID"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Select the Borrower ID',
-                  ]"
-                />
-              </div>
-              <div class="col-md-4">
-                <q-input
-                  dense
-                  outlined
-                  v-model="borrowername"
-                  readonly
-                  label="Borrower Name"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="borrowdate"
-                  type="date"
-                  hint="Borrow Date"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Input the borrow date',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-input
-                  dense
-                  outlined
-                  v-model="duedate"
-                  type="date"
-                  hint="Due Date"
-                  lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Input the due date',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col-md-2">
+                    <q-select
+                      dense
+                      outlined
+                      :options="options2"
+                      label="Borrower ID"
+                      lazy-rules
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputIssuedBook.Borrower_Name"
+                      readonly
+                      label="Borrower Name"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputIssuedBook.Borrow_Date"
+                      type="date"
+                      hint="Borrow Date"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the borrow date',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputIssuedBook.Due_Date"
+                      type="date"
+                      hint="Due Date"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the due date',
+                      ]"
+                    />
+                  </div>
+                </div>
 
-            <q-card-section class="q-gutter-md row">
-              <div class="col">
-                <q-input
-                  outlined
-                  dense
-                  v-model="bookstatus"
-                  readonly
-                  label="Book Status"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  outlined
-                  dense
-                  v-model="issuedbookstatus"
-                  :options="options3"
-                  label="IssuedBook Status"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Select the issuedbook status',
-                  ]"
-                />
-              </div>
-              <div class="col">
-                <q-select
-                  outlined
-                  dense
-                  v-model="bookfinesid"
-                  :options="options4"
-                  label="BookFines ID"
-                  lazy-rules
-                  :rules="[
-                    (val) =>
-                      (val && val.length > 0) || 'Select the BookFines ID',
-                  ]"
-                />
-              </div>
-            </q-card-section>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col">
+                    <q-input
+                      outlined
+                      dense
+                      v-model="inputIssuedBook.Book_Status"
+                      readonly
+                      label="Book Status"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputIssuedBook.IssuedBook_Status"
+                      :options="options3"
+                      label="IssuedBook Status"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Select the issuedbook status',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      :options="options4"
+                      label="BookFines ID"
+                    />
+                  </div>
+                </div>
 
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="red-10" v-close-popup />
-              <q-btn flat label="Save" color="primary" v-close-popup />
-            </q-card-actions>
+                <div align="right">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="red-10"
+                    @click="resetModel()"
+                    v-close-popup
+                  />
+                  <q-btn
+                    flat
+                    label="Save"
+                    color="primary"
+                    v-close-popup
+                    type="submit"
+                  />
+                </div>
+              </q-form>
+            </q-card-section>
           </q-card>
         </q-dialog>
         <!--------------------------------  Print ISSUEDBOOK ------------------------------------------    --->
@@ -174,7 +172,7 @@
     <div class="q-ma-md">
       <q-table
         title="List of IssuedBooks"
-        :rows="rows"
+        :rows="allIssuedBook"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
@@ -218,10 +216,10 @@
                 size="sm"
                 flat
                 dense
-                @click="editRow = true"
+                @click="editRowIssuedBook = true"
               />
-              <q-dialog v-model="editRow" persistent full-width>
-                <q-card style="width: 800px; max-width: 100vw" class="q-pa-md">
+              <q-dialog v-model="editRowIssuedBook" persistent>
+                <q-card style="width: 1150px; max-width: 250vw" class="q-pa-lg">
                   <q-card-section class="row">
                     <q-toolbar>
                       <q-avatar size="50px">
@@ -233,147 +231,156 @@
                     </q-toolbar>
                   </q-card-section>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col-md-3">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="issuedbookid"
-                        readonly
-                        label="IssuedBook ID"
-                      />
-                    </div>
-                    <div class="col-md-3">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="bookid"
-                        :options="options1"
-                        label="Book ID"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the Book ID',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="title"
-                        readonly
-                        label="Title"
-                      />
-                    </div>
-                  </q-card-section>
-
-                  <!------------------------------ Table for List Of Books --------------------->
                   <q-card-section>
-                    <q-table
-                      class="my-sticky-header-column-table"
-                      title="List of Books"
-                      :rows="Brows"
-                      :columns="Bcolumns"
-                      :filter="filter"
-                      row-key="Bname"
-                    />
-                  </q-card-section>
-                  <!------------------------------        TEXTFIELD                 --------------------->
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col-md-2">
-                      <q-select
-                        dense
-                        outlined
-                        v-model="borrowerid"
-                        :options="options2"
-                        label="Borrower ID"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the Borrower ID',
-                        ]"
-                      />
-                    </div>
-                    <div class="col-md-4">
-                      <q-input dense outlined readonly label="Borrower Name" />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="borrowdate"
-                        type="date"
-                        hint="Borrow Date"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Input the borrow date',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="duedate"
-                        type="date"
-                        hint="Due Date"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Input the due date',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                    <q-form @submit="oneditIssuedBook()" class="q-px-sm">
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col-md-3">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="IssuedBook ID"
+                          />
+                        </div>
+                        <div class="col-md-3">
+                          <q-select
+                            autofocus
+                            outlined
+                            dense
+                            :options="options1"
+                            label="Book_ID"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Select the Book ID',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputIssuedBook.Title"
+                            readonly
+                            label="Title"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-section class="q-gutter-md row">
-                    <div class="col">
-                      <q-input
-                        outlined
-                        dense
-                        v-model="bookstatus"
-                        readonly
-                        label="Book Status"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="issuedbookstatus"
-                        :options="options3"
-                        label="IssuedBook Status"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the issuedbook status',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-select
-                        outlined
-                        dense
-                        v-model="bookfinesid"
-                        :options="options4"
-                        label="BookFines ID"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) ||
-                            'Select the BookFines ID',
-                        ]"
-                      />
-                    </div>
-                  </q-card-section>
+                      <div class="q-gutter-md row">
+                        <div class="col-md-2">
+                          <q-select
+                            dense
+                            outlined
+                            :options="options2"
+                            label="Borrower ID"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the Borrower ID',
+                            ]"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputIssuedBook.Borrower_Name"
+                            readonly
+                            label="Borrower Name"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputIssuedBook.Borrow_Date"
+                            type="date"
+                            hint="Borrow Date"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the borrow date',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputIssuedBook.Due_Date"
+                            type="date"
+                            hint="Due Date"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Input the due date',
+                            ]"
+                          />
+                        </div>
+                      </div>
 
-                  <q-card-actions align="right">
-                    <q-btn flat label="Cancel" color="red-10" v-close-popup />
-                    <q-btn flat label="Save" color="primary" v-close-popup />
-                  </q-card-actions>
+                      <div class="q-gutter-md row">
+                        <div class="col">
+                          <q-input
+                            outlined
+                            dense
+                            v-model="inputIssuedBook.Book_Status"
+                            readonly
+                            label="Book Status"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            outlined
+                            dense
+                            v-model="inputIssuedBook.IssuedBook_Status"
+                            :options="options3"
+                            label="IssuedBook Status"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the issuedbook status',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-select
+                            outlined
+                            dense
+                            :options="options4"
+                            label="BookFines ID"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the BookFines ID',
+                            ]"
+                          />
+                        </div>
+                      </div>
+
+                      <div align="right">
+                        <q-btn
+                          flat
+                          label="Cancel"
+                          color="red-10"
+                          @click="resetModel()"
+                          v-close-popup
+                        />
+                        <q-btn
+                          flat
+                          label="Save"
+                          color="primary"
+                          v-close-popup
+                          type="submit"
+                        />
+                      </div>
+                    </q-form>
+                  </q-card-section>
                 </q-card>
               </q-dialog>
               <!--------------------------------------- DELETE ISSUEDBOOK BUTTON   ------------------------------------------    --->
@@ -385,9 +392,9 @@
                 flat
                 round
                 dense
-                @click="dialog = true"
+                @click="deleteSpecificIssuedBook(props.row)"
               />
-              <q-dialog v-model="dialog" persistent>
+              <q-dialog v-model="deleteSpecificIssuedBook" persistent>
                 <q-card style="width: 300px">
                   <q-card-section class="row items-center">
                     <q-avatar
@@ -403,6 +410,7 @@
                       flat
                       label="Cancel"
                       color="red-8"
+                      @click="resetModel()"
                       v-close-popup="cancelEnabled"
                       :disable="!cancelEnabled"
                     />
@@ -420,41 +428,58 @@
 
 <!--------------------------------------- Information OF ISSUEDBOOK    ------------------------------------------    --->
 <script lang="ts">
+import {
+  BookDto,
+  BookFinesDto,
+  BorrowerDto,
+  IssuedBookDto,
+} from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-interface IRow {
-  name: string;
-}
+import { mapState, mapActions } from "vuex";
 
-Options({});
+@Options({
+  computed: {
+    ...mapState("issuedbook", ["allIssuedBook"]),
+    ...mapState("book", ["allBook"]),
+    ...mapState("borrower", ["allBorrower"]),
+    ...mapState("book-fines", ["allBookFines"]),
+  },
+  methods: {
+    ...mapActions("issuedbook", [
+      "addIssuedBook",
+      "editIssuedBook",
+      "deleteIssuedBook",
+      "getAllIssuedBook",
+    ]),
+  },
+})
+export default class ManageIssuedBooks extends Vue {
+  allIssuedBook!: IssuedBookDto[];
+  allBook!: BookDto[];
+  allBorrower!: BorrowerDto[];
+  allBookFines!: BookFinesDto[];
 
-interface Brows {
-  Bname: string;
-}
+  addIssuedBook!: (payload: IssuedBookDto) => Promise<void>;
+  editIssuedBook!: (payload: IssuedBookDto) => Promise<void>;
+  deleteIssuedBook!: (payload: IssuedBookDto) => Promise<void>;
+  getAllIssuedBook!: () => Promise<void>;
 
-Options({});
-export default class ManageIssueBooks extends Vue {
-  tableRef = null;
-  navigationActive = false;
+  async mounted() {
+    await this.getAllIssuedBook();
+    console.log(this.allIssuedBook);
+  }
+
   pagination = {};
+  confirmDelete = false;
   cancelEnabled = true;
-  addIssuedBook = false;
-  editRow = false;
-  filter = "";
+  addNewIssuedBook = false;
+  editRowIssuedBook = false;
+  filter = '';
   dialog = false;
-
-  issuedbookid = "";
-  bookid = "";
-  borrowerid = "";
-  title = "";
-  borrowdate = "";
-  duedate = "";
-  bookstatus = "";
-  issuedbookstatus = "";
-  bookfinesid = "";
 
   options1 = ["001", "02", "003", "006", "078", "0672", "0898", "04332"];
   options2 = ["01", "02", "03", "04", "05", "06", "021", "034"];
-  options3 = ["Lost", "Issued/Borrow", "Return"];
+  options3 = ["Issued/Borrowed", "Lost", "Return"];
   options4 = ["001", "002", "003", "004", "005", "021", "034"];
 
   columns = [
@@ -462,21 +487,21 @@ export default class ManageIssueBooks extends Vue {
       name: "issuedbookID",
       align: "center",
       label: "IssuedBook ID",
-      field: "issuedbookID",
+      field: "IssuedBook_ID",
       sortable: true,
     },
     {
       name: "bookID",
       align: "center",
       label: "Book ID",
-      field: "bookID",
+      field: "Book_ID",
       sortable: true,
     },
     {
       name: "borrowerID",
       align: "center",
       label: "Borrower ID",
-      field: "borrowerID",
+      field: "Borrower_ID",
       sortable: true,
     },
     {
@@ -484,34 +509,40 @@ export default class ManageIssueBooks extends Vue {
       required: true,
       label: "Title",
       align: "center",
-      field: (row: IRow) => row.name,
+      field: (row: IssuedBookDto) => row.Title,
       format: (val: string) => `${val}`,
       sortable: true,
+    },
+    {
+      name: "borrowname",
+      label: "Borrower Name",
+      align: "center",
+      field: "Borrower_Name",
     },
     {
       name: "borrowdate",
       label: "Borrow Date",
       align: "center",
-      field: "borrowdate",
+      field: "Borrow_Date",
     },
-    { name: "duedate ", label: "Due Date", align: "center", field: "duedate" },
+    { name: "duedate ", label: "Due Date", align: "center", field: "Due_Date" },
     {
       name: "bookstatus",
       label: "Book Status",
       align: "center",
-      field: "bookstatus",
+      field: "Book_Status",
     },
     {
       name: "issuedbookstatus",
       label: "IssuedBook Status",
       align: "center",
-      field: "issuedbookstatus",
+      field: "IssuedBook_Status",
     },
     {
       name: "bookfinesid",
       label: "BookFines ID",
       align: "center",
-      field: "bookfinesid",
+      field: "BookFines_ID",
     },
     {
       name: "action",
@@ -521,296 +552,65 @@ export default class ManageIssueBooks extends Vue {
     },
   ];
 
-  rows = [
-    {
-      issuedbookID: "001",
-      bookID: "01",
-      borrowerID: "01",
-      name: "Data Structures and Algorithms",
-      borrowdate: "03-02-21",
-      duedate: "03-04-21",
-      bookstatus: "New",
-      issuedbookstatus: "Return",
-      bookfinesid: "001",
-    },
-    {
-      issuedbookID: "002",
-      bookID: "02",
-      borrowerID: "02",
-      name: "Algorithms",
-      borrowdate: "05-21-21",
-      duedate: "05-23-21",
-      bookstatus: "New",
-      issuedbookstatus: "Borrow",
-      bookfinesid: "003",
-    },
-    {
-      issuedbookID: "003",
-      bookID: "03",
-      borrowerID: "03",
-      name: "Integrating",
-      borrowdate: "05-22-21",
-      duedate: "05-24-21",
-      bookstatus: "New",
-      issuedbookstatus: "Lost",
-      bookfinesid: "005",
-    },
-    {
-      issuedbookID: "005",
-      bookID: "04",
-      borrowerID: "06",
-      name: "Robotics",
-      borrowdate: "07-18-21",
-      duedate: "07-20-21",
-      bookstatus: "Old",
-      issuedbookstatus: "Return",
-      bookfinesid: "006",
-    },
-    {
-      issuedbookID: "011",
-      bookID: "06",
-      borrowerID: "11",
-      name: "Oracles",
-      borrowdate: "07-27-21",
-      duedate: "07-29-21",
-      bookstatus: "Old",
-      issuedbookstatus: "Return",
-      bookfinesid: "007",
-    },
-    {
-      issuedbookID: "0019",
-      bookID: "08",
-      borrowerID: "07",
-      name: "Java Language",
-      borrowdate: "08-01-21",
-      duedate: "08-03-21",
-      bookstatus: "New",
-      issuedbookstatus: "Borrow",
-      bookfinesid: "008",
-    },
-  ];
+  inputIssuedBook: IssuedBookDto = {
+    Title: "",
+    Borrower_Name: "",
+    Borrow_Date: "",
+    Due_Date: "",
+    Book_Status: "",
+    IssuedBook_Status: "",
+  };
 
-  Bcolumns = [
-    {
-      name: "bookID",
-      align: "center",
-      label: "Book ID",
-      field: "bookID",
-      sortable: true,
-    },
-    {
-      name: "desc",
-      required: true,
-      label: "Title",
-      align: "center",
-      field: (row: IRow) => row.name,
-      format: (val: string) => `${val}`,
-      sortable: true,
-    },
+  async onaddIssuedBook() {
+    await this.addIssuedBook(this.inputIssuedBook);
+    this.addNewIssuedBook = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Added.",
+    });
+  }
 
-    { name: "isbn", label: "ISBN", align: "center", field: "isbn" },
-    {
-      name: "callnumber ",
-      label: "Call Number",
-      align: "center",
-      field: "callnumber",
-    },
-    {
-      name: "authors",
-      label: "Author/s",
-      align: "center",
-      field: "authors",
-      sortable: true,
-    },
-    { name: "edition", label: "Edition", align: "center", field: "edition" },
+  async oneditIssuedBook() {
+    await this.editIssuedBook(this.inputIssuedBook);
+    this.editRowIssuedBook = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Edit.",
+    });
+  }
 
-    {
-      name: "category",
-      label: "Category",
-      field: "category",
-      align: "center",
-      sortable: true,
-    },
-    {
-      name: "publisher",
-      label: "Publisher",
-      field: "publisher",
-      align: "center",
-      sortable: true,
-    },
+  deleteSpecificIssuedBook(val: IssuedBookDto) {
+    this.$q
+      .dialog({
+        message: "Confirm to delete?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        await this.deleteIssuedBook(val.IssuedBook_ID as any);
+        this.$q.notify({
+          type: "warning",
+          message: "Successfully removed",
+        });
+      });
+  }
 
-    {
-      name: "dateofpublication",
-      label: "Date of Publication",
-      field: "dateofpublication",
-      align: "center",
-      sortable: true,
-    },
-    {
-      name: "pages",
-      label: "Pages",
-      align: "center",
-      field: "pages",
-    },
+  openEditDialog(val: IssuedBookDto) {
+    this.editRowIssuedBook = true;
+    this.inputIssuedBook = { ...val };
+  }
 
-    {
-      name: "series",
-      label: "Series",
-      align: "center",
-      field: "series",
-    },
-
-    {
-      name: "status",
-      label: "Status",
-      align: "center",
-      field: "status",
-    },
-    {
-      name: "availability",
-      label: "Availability",
-      align: "center",
-      field: "availability",
-    },
-  ];
-
-  Brows = [
-    {
-      bookID: "01",
-      name: "Data Structures and Algorithms",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "sarah jay",
-      edition: "2nd ed",
-      category: "reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      availability: "YES",
-    },
-    {
-      bookID: "02",
-      name: "Algorithms",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "sarah jay",
-      edition: "2nd ed",
-      category: "Capstone",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      availability: "NO",
-    },
-
-    {
-      bookID: "03",
-      name: "Integrating",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Jyasa",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      availability: "NO",
-    },
-    {
-      bookID: "04",
-      name: "Robotics",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady gerry",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      availability: "YES",
-    },
-    {
-      bookID: "05",
-      name: "Robotics and systematic system",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "iii",
-      series: "tvhj",
-      status: "Old",
-      availability: "NO",
-    },
-    {
-      bookID: "06",
-      name: "Oracles",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      availability: "YES",
-    },
-    {
-      bookID: "07",
-      name: "Programming Language",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "iii",
-      series: "tvhj",
-      status: "New",
-      availability: "YES",
-    },
-    {
-      bookID: "08",
-      name: "Java Language",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "iv",
-      series: "yuio",
-      status: "New",
-      availability: "NO",
-    },
-    {
-      bookID: "09",
-      name: "Programming Languages",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "i",
-      series: "tvhj",
-      status: "New",
-      availability: "YES",
-    },
-  ];
+  resetModel() {
+    this.inputIssuedBook = {
+      Title: "",
+      Borrower_Name: "",
+      Borrow_Date: "",
+      Due_Date: "",
+      Book_Status: "",
+      IssuedBook_Status: "",
+    };
+  }
 }
 </script>

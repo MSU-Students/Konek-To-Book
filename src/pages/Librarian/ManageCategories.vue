@@ -131,19 +131,30 @@
 
                   <q-card-section>
                     <q-form @submit="oneditCategory()" class="q-px-md">
-                      <div class="q-gutter-md q-pb-lg">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputCategory.C_Description"
-                          label="Category Name"
-                          lazy-rules
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) ||
-                              'Input the category name',
-                          ]"
-                        />
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="Category ID"
+                          />
+                        </div>
+
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputCategory.C_Description"
+                            label="Category Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the category name',
+                            ]"
+                          />
+                        </div>
                       </div>
 
                       <div align="right">

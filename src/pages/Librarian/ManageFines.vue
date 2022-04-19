@@ -38,49 +38,35 @@
 
             <q-card-section>
               <q-form @submit="onaddBookFines()" class="q-px-md">
-                <!---
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col-md-3">
                     <q-select
                       autofocus
                       outlined
                       dense
-                      v-model="inputBookFines.Book_ID"
                       :options="options1"
                       label="Book ID"
-                      lazy-rules
-                      :rules="[
-                        (val) =>
-                          (val && val.length > 0) || 'Select the Book ID',
-                      ]"
                     />
                   </div>
 
                   <div class="col">
-                    <q-input dense outlined readonly  label="Title" />
+                    <q-input dense outlined readonly label="Title" />
                   </div>
                 </div>
 
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col-md-3">
-                     <q-select
-                        outlined
-                        dense
-                        v-model="inputBookFines.Borrower_ID"
-                        :options="options2"
-                        label="Borrower ID"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the Borrower ID',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input dense outlined readonly label="Borrower Name" />
-                    </div>
-                      </div>
-  --->
+                    <q-select
+                      outlined
+                      dense
+                      :options="options2"
+                      label="Borrower ID"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input dense outlined readonly label="Borrower Name" />
+                  </div>
+                </div>
 
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
@@ -102,6 +88,7 @@
                       mask="#.##"
                       fill-mask="0"
                       reverse-fill-mask
+                      input-class="text-right"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -209,59 +196,60 @@
 
                   <q-card-section>
                     <q-form @submit="oneditBookFines()" class="q-px-md">
-                      <!---
-                 <div class="q-gutter-md row q-pb-md">
-                      <div class="col">
-                      <q-input
-                        dense
-                        outlined
-                        v-model="bookfinesid"
-                        readonly
-                        label="BookFines ID"
-                      />
-                    </div>
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="BookFines ID"
+                          />
+                        </div>
 
-                  <div class="col">
-                    <q-select
-                      autofocus
-                      outlined
-                      dense
-                      v-model="inputBookFines.Book_ID"
-                      :options="options1"
-                      label="Book ID"
-                      lazy-rules
-                      :rules="[
-                        (val) =>
-                          (val && val.length > 0) || 'Select the Book ID',
-                      ]"
-                    />
-                  </div>
-                </div>
-
-                  <div class="q-gutter-md row q-pb-md">
-                    <q-input dense outlined readonly  label="Title" />
-                  </div>
-
-                <div class="q-gutter-md row q-pb-md">
-                  <div class="col-md-3">
-                     <q-select
-                        outlined
-                        dense
-                        v-model="inputBookFines.Borrower_ID"
-                        :options="options2"
-                        label="Borrower ID"
-                        lazy-rules
-                        :rules="[
-                          (val) =>
-                            (val && val.length > 0) || 'Select the Borrower ID',
-                        ]"
-                      />
-                    </div>
-                    <div class="col">
-                      <q-input dense outlined readonly label="Borrower Name" />
-                    </div>
+                        <div class="col">
+                          <q-select
+                            autofocus
+                            outlined
+                            dense
+                            :options="options1"
+                            label="Book ID"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Select the Book ID',
+                            ]"
+                          />
+                        </div>
                       </div>
-  --->
+
+                      <div class="q-gutter-lg q-pb-lg">
+                        <q-input dense outlined readonly label="Title" />
+                      </div>
+
+                      <div class="q-gutter-md row q-pb-sm">
+                        <div class="col-md-3">
+                          <q-select
+                            outlined
+                            dense
+                            :options="options2"
+                            label="Borrower ID"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the Borrower ID',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="Borrower Name"
+                          />
+                        </div>
+                      </div>
 
                       <div class="q-gutter-md row q-pb-md">
                         <div class="col">
@@ -283,6 +271,7 @@
                             mask="#.##"
                             fill-mask="0"
                             reverse-fill-mask
+                            input-class="text-right"
                             lazy-rules
                             :rules="[
                               (val) =>
@@ -377,10 +366,10 @@ import { mapActions, mapState } from "vuex";
 
 @Options({
   computed: {
-    ...mapState("book-fines", ["allBookFines"]),
+    ...mapState("bookfines", ["allBookFines"]),
   },
   methods: {
-    ...mapActions("book-fines", [
+    ...mapActions("bookfines", [
       "addBookFines",
       "editBookFines",
       "deleteBookFines",
@@ -408,7 +397,7 @@ export default class ManageFines extends Vue {
 
   options1 = ["001", "02", "003", "006", "078", "0672", "0898", "04332"];
   options2 = ["01", "02", "03", "04", "05", "06", "021", "034"];
-  options3 = [" ", "Fine", "Pay", "Overdue", "Overpaid"];
+  options3 = [" ", "Fine", "Paid", "Overdue", "Overpaid"];
 
   columns = [
     {

@@ -19,11 +19,13 @@ const actions: ActionTree<BorrowerStateInterface, StateInterface> = {
   async deleteBorrower(context, id: number): Promise<any> {
     const result = await borrowerService.delete(id);
     context.commit('deleteBorrower', result);
+    await this.dispatch('getAllBorrower');
   },
 
   async getAllBorrower(context): Promise<any> {
     const res = await borrowerService.getAll();
     context.commit('getAllBorrower', res);
+    await this.dispatch('issued-book/getAllIssuedBook')
   },
 
   async getOneBorrower(context, id: number): Promise<any> {

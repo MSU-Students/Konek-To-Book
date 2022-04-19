@@ -38,7 +38,7 @@
 
             <q-card-section>
               <q-form @submit="onaddPublisher()" class="q-px-md">
-                <div class="q-gutter-md q-pb-md">
+                <div class="q-gutter-md row q-pb-md">
                   <div class="col">
                     <q-input
                       autofocus
@@ -53,9 +53,6 @@
                       ]"
                     />
                   </div>
-                </div>
-
-                <div class="q-gutter-md row q-pb-md">
                   <div class="col">
                     <q-input
                       dense
@@ -167,9 +164,18 @@
 
                   <q-card-section>
                     <q-form @submit="oneditPublisher()" class="q-px-md">
-                      <div class="q-gutter-md q-pb-md">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="Publisher ID"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            autofocus
                             dense
                             outlined
                             v-model="inputPublisher.Publisher"
@@ -183,34 +189,37 @@
                           />
                         </div>
                       </div>
-                      <div class="q-gutter-md q-pb-lg">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputPublisher.DateOfPublication"
-                          type="date"
-                          hint="Date Of Publication"
-                          lazy-rules
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) ||
-                              'Input the date of publication',
-                          ]"
-                        />
-                      </div>
-                      <div class="q-gutter-md q-pb-lg">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputPublisher.PlaceOfPublication"
-                          label="Place Of Publication"
-                          lazy-rules
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) ||
-                              'Input the place of publication',
-                          ]"
-                        />
+
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputPublisher.DateOfPublication"
+                            type="date"
+                            hint="Date Of Publication"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the date of publication',
+                            ]"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputPublisher.PlaceOfPublication"
+                            label="Place Of Publication"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the place of publication',
+                            ]"
+                          />
+                        </div>
                       </div>
 
                       <div align="right">

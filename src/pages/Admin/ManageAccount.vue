@@ -46,7 +46,7 @@
                       outlined
                       v-model="inputAccount.U_First_Name"
                       label="First Name"
-                      color="green"
+                      color="orange"
                       lazy-rules
                       :rules="[
                         (val) =>

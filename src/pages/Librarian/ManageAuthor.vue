@@ -80,7 +80,7 @@
                     />
                   </div>
                 </div>
-                <div class="q-gutter-md q-pb-lg">
+                <div class="q-gutter-md q-pb-md">
                   <q-input
                     dense
                     outlined
@@ -138,212 +138,145 @@
           </div>
         </template>
 
-        <!--------------------------------  SHOW LIST OF Author  ------------------------------------------    --->
+        <!--------------------------------  EDIT AUTHOR  ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
-            <div class="q-gutter-sm">
-              <q-btn
-                round
-                color="blue"
-                icon="more_vert"
-                size="md"
-                flat
-                dense
-                @click="showAuthorDetails = true"
-              />
+            <q-btn
+              round
+              color="blue"
+              icon="edit"
+              size="sm"
+              flat
+              dense
+              @click="openEditDialog(props.row)"
+            />
+            <q-dialog v-model="editRowAuthor" persistent>
+              <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+                <q-card-section class="row">
+                  <q-toolbar>
+                    <q-avatar size="50px">
+                      <q-icon name="person" />
+                    </q-avatar>
+                    <div class="text-h6">Edit Author</div>
+                    <q-space />
+                    <q-btn
+                      flat
+                      round
+                      dense
+                      icon="close"
+                      v-close-popup
+                      @click="resetModel()"
+                    />
+                  </q-toolbar>
+                </q-card-section>
 
-              <q-dialog v-model="showAuthorDetails">
-                <q-card style="width: 500px; max-width: 90vw" flat bordered>
-                  <q-card-section>
-                    <div class="text-h9 text-left">
-                      BOOK DETAILS
-                      <q-btn
-                        round
-                        flat
-                        dense
-                        icon="close"
-                        class="float-right"
-                        color="grey-8"
-                        v-close-popup
-                      ></q-btn>
-                    </div>
-                  </q-card-section>
-                  <q-separator />
-                  <q-card-section>
-                    <q-card-section class="q-pt-xs col">
-                      <div class="text-overline text-orange-9">01</div>
-                      <div
-                        class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs"
-                      >
-                        Data Structures and Algorithms
-                      </div>
-                      <q-space />
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        ISBN: 9865-865
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">CallNo: 906</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Author: Sarah Jay
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Edition: 2nd Ed
-                      </div>
-                    </q-card-section>
-                  </q-card-section>
-
-                  <q-separator />
-
-                  <q-card-section class="col-8 text-italic flex flex-center">
-                    MSU-ISED library management system
-                  </q-card-section>
-                </q-card>
-              </q-dialog>
-
-              <!--------------------------------  EDIT AUTHOR  ------------------------------------------    --->
-              <q-btn
-                round
-                color="blue"
-                icon="edit"
-                size="sm"
-                flat
-                dense
-                @click="openEditDialog(props.row)"
-              />
-              <q-dialog v-model="editRowAuthor" persistent>
-                <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
-                  <q-card-section class="row">
-                    <q-toolbar>
-                      <q-avatar size="50px">
-                        <q-icon name="person" />
-                      </q-avatar>
-                      <div class="text-h6">Edit Author</div>
-                      <q-space />
-                      <q-btn
-                        flat
-                        round
-                        dense
-                        icon="close"
-                        v-close-popup
-                        @click="resetModel()"
-                      />
-                    </q-toolbar>
-                  </q-card-section>
-
-                  <q-card-section>
-                    <q-form @submit="oneditAuthor()" class="q-px-md">
-                      <div class="q-gutter-md row q-pb-md">
-                        <div class="col">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputAuthor.A_First_Name"
-                            label="First Name"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the first name',
-                            ]"
-                          />
-                        </div>
-                        <div class="col">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputAuthor.A_Middle_Name"
-                            label="Middle Name"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the middle name',
-                            ]"
-                          />
-                        </div>
-                        <div class="col">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputAuthor.A_Last_Name"
-                            label="Last Name"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the last name',
-                            ]"
-                          />
-                        </div>
-                      </div>
-                      <div class="q-gutter-md q-pb-lg">
+                <q-card-section>
+                  <q-form @submit="oneditAuthor()" class="q-px-md">
+                    <div class="q-gutter-md row q-pb-md">
+                      <div class="col">
                         <q-input
                           dense
                           outlined
-                          v-model="inputAuthor.Location"
-                          label="Location"
+                          v-model="inputAuthor.A_First_Name"
+                          label="First Name"
                           lazy-rules
                           :rules="[
                             (val) =>
-                              (val && val.length > 0) || 'Input the location',
+                              (val && val.length > 0) || 'Input the first name',
                           ]"
                         />
                       </div>
-
-                      <div align="right">
-                        <q-btn
-                          flat
-                          label="Cancel"
-                          color="red-10"
-                          v-close-popup
-                          @click="resetModel()"
-                        />
-                        <q-btn
-                          flat
-                          label="Save"
-                          color="primary"
-                          type="submit"
+                      <div class="col">
+                        <q-input
+                          dense
+                          outlined
+                          v-model="inputAuthor.A_Middle_Name"
+                          label="Middle Name"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) ||
+                              'Input the middle name',
+                          ]"
                         />
                       </div>
-                    </q-form>
-                  </q-card-section>
-                </q-card>
-              </q-dialog>
-              <!----------------------------- DELETE BUTTON ----------------------------->
-              <q-btn
-                color="red-8"
-                icon="delete"
-                size="sm"
-                class="q-ml-sm"
-                flat
-                round
-                dense
-                @click="dialog = true"
-              />
-              <q-dialog v-model="dialog" persistent>
-                <q-card style="width: 300px">
-                  <q-card-section class="row items-center">
-                    <q-avatar
-                      size="sm"
-                      icon="warning"
-                      color="red-10"
-                      text-color="white"
-                    />
-                    <span class="q-ml-sm">Confirm Delete?</span>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn
-                      flat
-                      label="Cancel"
-                      color="red-8"
-                      @click="resetModel()"
-                      v-close-popup="cancelEnabled"
-                      :disable="!cancelEnabled"
-                    />
-                    <q-btn flat label="Confirm" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
-            </div>
+                      <div class="col">
+                        <q-input
+                          dense
+                          outlined
+                          v-model="inputAuthor.A_Last_Name"
+                          label="Last Name"
+                          lazy-rules
+                          :rules="[
+                            (val) =>
+                              (val && val.length > 0) || 'Input the last name',
+                          ]"
+                        />
+                      </div>
+                    </div>
+                    <div class="q-gutter-md q-pb-lg">
+                      <q-input
+                        dense
+                        outlined
+                        v-model="inputAuthor.Location"
+                        label="Location"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || 'Input the location',
+                        ]"
+                      />
+                    </div>
+
+                    <div align="right">
+                      <q-btn
+                        flat
+                        label="Cancel"
+                        color="red-10"
+                        v-close-popup
+                        @click="resetModel()"
+                      />
+                      <q-btn flat label="Save" color="primary" type="submit" />
+                    </div>
+                  </q-form>
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+            <!----------------------------- DELETE BUTTON ----------------------------->
+            <q-btn
+              color="red-8"
+              icon="delete"
+              size="sm"
+              class="q-ml-sm"
+              flat
+              round
+              dense
+              @click="dialog = true"
+            />
+            <q-dialog v-model="dialog" persistent>
+              <q-card style="width: 300px">
+                <q-card-section class="row items-center">
+                  <q-avatar
+                    size="sm"
+                    icon="warning"
+                    color="red-10"
+                    text-color="white"
+                  />
+                  <span class="q-ml-sm">Confirm Delete?</span>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn
+                    flat
+                    label="Cancel"
+                    color="red-8"
+                    @click="resetModel()"
+                    v-close-popup="cancelEnabled"
+                    :disable="!cancelEnabled"
+                  />
+                  <q-btn flat label="Confirm" color="primary" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
           </q-td>
         </template>
       </q-table>
@@ -368,6 +301,7 @@ import { mapActions, mapState } from "vuex";
     ]),
   },
 })
+
 export default class ManageAuthor extends Vue {
   allAuthor!: AuthorDto[];
   addAuthor!: (payload: AuthorDto) => Promise<void>;

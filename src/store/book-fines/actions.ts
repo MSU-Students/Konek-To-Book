@@ -19,6 +19,7 @@ const actions: ActionTree<BookFinestateInterface, StateInterface> = {
   async deleteBookFines(context, id: number): Promise<any> {
     const result = await bookfinesService.delete(id);
     context.commit('deleteBookFines', result);
+    await context.dispatch('getAllBookFines');
   },
 
   async getAllBookFines(context): Promise<any> {
