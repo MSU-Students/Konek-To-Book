@@ -104,11 +104,7 @@
                   <q-item-section> Categories </q-item-section>
                 </q-item>
 
-                <q-item
-                  clickable
-                  v-ripple
-                  to="pages/Librarian/ManagePublisher"
-                >
+                <q-item clickable v-ripple to="pages/Librarian/ManagePublisher">
                   <q-item-section avatar>
                     <q-icon name="publish" />
                   </q-item-section>

@@ -13,18 +13,18 @@ class AuthorService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(authorID: number): Promise<AuthorDto> {
-    const response = await lmsApiService.getAuthor(authorID);
+  async getOne(Author_ID: number): Promise<AuthorDto> {
+    const response = await lmsApiService.getAuthor(Author_ID);
     return response.data;
   }
 
-  async update(authorID: number, payload: any) {
-    const response = await lmsApiService.updateAuthor(authorID, payload);
+  async update(Author_ID: number, payload: any) {
+    const response = await lmsApiService.updateAuthor(Author_ID, payload);
     return response.data;
   }
 
-  async delete(authorID: number) {
-    const response = await lmsApiService.deleteAuthor(authorID);
+  async delete(Author_ID: number) {
+    const response = await lmsApiService.deleteAuthor(Author_ID);
     return response.data;
   }
 }

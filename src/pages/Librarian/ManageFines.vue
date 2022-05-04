@@ -39,32 +39,32 @@
             <q-card-section>
               <q-form @submit="onaddBookFines()" class="q-px-md">
                 <div class="q-gutter-md row q-pb-md">
-                  <div class="col-md-3">
+                  <div class="col-sm-6">
                     <q-select
                       autofocus
                       outlined
                       dense
-                      :options="options1"
-                      label="Book ID"
+                      label="Book_ID"
+                      :options="allBook"
+                      option-label="Title"
+                      option-value="Book_ID"
+                      map-options
+                      emit-value
+                      v-model="inputBookFines.book"
                     />
                   </div>
-
                   <div class="col">
-                    <q-input dense outlined readonly label="Title" />
-                  </div>
-                </div>
-
-                <div class="q-gutter-md row q-pb-md">
-                  <div class="col-md-3">
                     <q-select
-                      outlined
                       dense
-                      :options="options2"
+                      outlined
                       label="Borrower ID"
+                      :options="allBorrower"
+                      option-label="B_First_Name"
+                      option-value="Borrower_ID"
+                      map-options
+                      emit-value
+                      v-model="inputBookFines.borrower"
                     />
-                  </div>
-                  <div class="col">
-                    <q-input dense outlined readonly label="Borrower Name" />
                   </div>
                 </div>
 
@@ -102,7 +102,7 @@
                       outlined
                       dense
                       v-model="inputBookFines.Payment_Status"
-                      :options="options3"
+                      :options="options1"
                       label="Payment Status"
                       lazy-rules
                       :rules="[
@@ -196,57 +196,44 @@
 
                   <q-card-section>
                     <q-form @submit="oneditBookFines()" class="q-px-md">
-                      <div class="q-gutter-md row q-pb-sm">
-                        <div class="col">
+                      <div class="q-gutter-md row q-pb-md">
+                        <div class="col-md-2">
                           <q-input
                             dense
                             outlined
                             readonly
                             label="BookFines ID"
+                            v-model="inputBookFines.BookFines_ID"
                           />
                         </div>
-
                         <div class="col">
                           <q-select
                             autofocus
                             outlined
                             dense
-                            :options="options1"
-                            label="Book ID"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) || 'Select the Book ID',
-                            ]"
+                            label="Book_ID"
+                            :options="allBook"
+                            option-label="Title"
+                            option-value="Book_ID"
+                            map-options
+                            emit-value
+                            v-model="inputBookFines.book"
                           />
                         </div>
                       </div>
 
-                      <div class="q-gutter-lg q-pb-lg">
-                        <q-input dense outlined readonly label="Title" />
-                      </div>
-
-                      <div class="q-gutter-md row q-pb-sm">
-                        <div class="col-md-3">
-                          <q-select
-                            outlined
-                            dense
-                            :options="options2"
-                            label="Borrower ID"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Select the Borrower ID',
-                            ]"
-                          />
-                        </div>
+                      <div class="q-gutter-md q-pb-md">
                         <div class="col">
-                          <q-input
+                          <q-select
                             dense
                             outlined
-                            readonly
-                            label="Borrower Name"
+                            label="Borrower ID"
+                            :options="allBorrower"
+                            option-label="B_First_Name"
+                            option-value="Borrower_ID"
+                            map-options
+                            emit-value
+                            v-model="inputBookFines.borrower"
                           />
                         </div>
                       </div>
@@ -266,7 +253,7 @@
                             dense
                             outlined
                             v-model="inputBookFines.Payment_Amount"
-                            hint="Payment Amount"
+                            label="Payment Amount"
                             prefix="₱"
                             mask="#.##"
                             fill-mask="0"
@@ -285,7 +272,7 @@
                             outlined
                             dense
                             v-model="inputBookFines.Payment_Status"
-                            :options="options3"
+                            :options="options1"
                             label="Payment Status"
                             lazy-rules
                             :rules="[
@@ -326,30 +313,6 @@
                 dense
                 @click="dialog = true"
               />
-              <q-dialog v-model="dialog" persistent>
-                <q-card style="width: 300px">
-                  <q-card-section class="row items-center">
-                    <q-avatar
-                      size="sm"
-                      icon="warning"
-                      color="red-10"
-                      text-color="white"
-                    />
-                    <span class="q-ml-sm">Confirm Delete?</span>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn
-                      flat
-                      label="Cancel"
-                      color="red-8"
-                      @click="resetModel()"
-                      v-close-popup="cancelEnabled"
-                      :disable="!cancelEnabled"
-                    />
-                    <q-btn flat label="Confirm" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
             </div>
           </q-td>
         </template>
@@ -360,13 +323,15 @@
 
 <!--------------------------------------- DETAILS OF ISSUEDBOOK    ------------------------------------------    --->
 <script lang="ts">
-import { BookFinesDto } from "src/services/rest-api";
+import { BookDto, BookFinesDto, BorrowerDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 
 @Options({
   computed: {
     ...mapState("bookfines", ["allBookFines"]),
+    ...mapState("book", ["allBook"]),
+    ...mapState("borrower", ["allBorrower"]),
   },
   methods: {
     ...mapActions("bookfines", [
@@ -379,6 +344,9 @@ import { mapActions, mapState } from "vuex";
 })
 export default class ManageFines extends Vue {
   allBookFines!: BookFinesDto[];
+  allBook!: BookDto[];
+  allBorrower!: BorrowerDto[];
+
   addBookFines!: (payload: BookFinesDto) => Promise<void>;
   editBookFines!: (payload: BookFinesDto) => Promise<void>;
   deleteBookFines!: (payload: BookFinesDto) => Promise<void>;
@@ -386,6 +354,7 @@ export default class ManageFines extends Vue {
 
   async mounted() {
     await this.getAllBookFines();
+    console.log(this.allBookFines);
   }
 
   pagination = {};
@@ -395,9 +364,7 @@ export default class ManageFines extends Vue {
   filter = "";
   dialog = false;
 
-  options1 = ["001", "02", "003", "006", "078", "0672", "0898", "04332"];
-  options2 = ["01", "02", "03", "04", "05", "06", "021", "034"];
-  options3 = [" ", "Fine", "Paid", "Overdue", "Overpaid"];
+  options1 = [" ", "Fine", "Paid", "Overdue", "Overpaid"];
 
   columns = [
     {
@@ -411,14 +378,14 @@ export default class ManageFines extends Vue {
       name: "bookID",
       align: "center",
       label: "Book ID",
-      field: "Book_ID",
+      field: (row: any) => row.book?.Book_ID || "None",
       sortable: true,
     },
     {
       name: "borrowerID",
       align: "center",
       label: "Borrower ID",
-      field: "Borrower_ID",
+      field: (row: any) => row.borrower?.Borrower_ID || "None",
       sortable: true,
     },
     {
@@ -451,9 +418,6 @@ export default class ManageFines extends Vue {
   ];
 
   inputBookFines: BookFinesDto = {
-    // BookFines_ID: "",
-    // Book_ID: "",
-    // Borrower_ID: "",
     Fine_Date: "",
     Payment_Amount: "",
     Payment_Status: "",
@@ -488,7 +452,7 @@ export default class ManageFines extends Vue {
         persistent: true,
       })
       .onOk(async () => {
-        await this.deleteBookFines(val);
+        await this.deleteBookFines(val.BookFines_ID as any);
         this.$q.notify({
           type: "warning",
           message: "Successfully removed",
@@ -503,9 +467,6 @@ export default class ManageFines extends Vue {
 
   resetModel() {
     this.inputBookFines = {
-      // BookFines_ID: "",
-      // Book_ID: "",
-      // Borrower_ID: "",
       Fine_Date: "",
       Payment_Amount: "",
       Payment_Status: "",

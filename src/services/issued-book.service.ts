@@ -14,18 +14,18 @@ class IssuedBookService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(id: number): Promise<IssuedBookDto> {
-    const response = await lmsApiService.getIssuedBook(id);
+  async getOne(IssuedBook_ID: number): Promise<IssuedBookDto> {
+    const response = await lmsApiService.getIssuedBook(IssuedBook_ID);
     return response.data;
   }
 
-  async update(id: number, payload: any) {
-    const response = await lmsApiService.updateIssuedBook(id, payload);
+  async update(IssuedBook_ID: number, payload: any) {
+    const response = await lmsApiService.updateIssuedBook(IssuedBook_ID, payload);
     return response.data;
   }
 
-  async delete(id: number) {
-    const response = await lmsApiService.deleteIssuedBook(id);
+  async delete(IssuedBook_ID: number) {
+    const response = await lmsApiService.deleteIssuedBook(IssuedBook_ID);
     return response.data;
   }
 }

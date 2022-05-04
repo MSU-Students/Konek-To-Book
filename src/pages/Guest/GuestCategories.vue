@@ -6,7 +6,7 @@
         grid
         card-class="bg-white text-black"
         title="Lists of Available Categories"
-        :rows="rows"
+        :rows="allCategory"
         :columns="columns"
         row-key="name"
         :filter="filter"
@@ -19,7 +19,6 @@
               dense
               bg-color="white"
               outlined
-              color="light-green-9"
               v-model="filter"
               placeholder="Search"
             >
@@ -47,13 +46,27 @@
 </template>
 
 <script lang="ts">
+import { CategoryDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-interface IRow {
-  name: string;
-}
-Options({});
+import { mapActions, mapState } from "vuex";
 
+@Options({
+  computed: {
+    ...mapState("category", ["allCategory"]),
+  },
+  methods: {
+    ...mapActions("category", ["getAllCategory"]),
+  },
+})
 export default class GuestCategories extends Vue {
+  allCategory!: CategoryDto[];
+  getAllCategory!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllCategory();
+    console.log(this.allCategory);
+  }
+
   filter = "";
 
   columns = [
@@ -61,7 +74,7 @@ export default class GuestCategories extends Vue {
       name: "categoryid",
       align: "center",
       label: "Category ID",
-      field: "categoryid",
+      field: "Category_ID",
       sortable: true,
     },
     {
@@ -69,53 +82,14 @@ export default class GuestCategories extends Vue {
       required: true,
       label: "Name",
       align: "left",
-      field: (row: IRow) => row.name,
+      field: (row: CategoryDto) => row.C_Description,
       format: (val: string) => `${val}`,
       sortable: true,
     },
   ];
 
-  rows = [
-    {
-      categoryid: "001",
-      name: "Circulation",
-    },
-    {
-      categoryid: "002",
-      name: "Reference",
-    },
-    {
-      categoryid: "003",
-      name: "New Arrivals",
-    },
-    {
-      categoryid: "004",
-      name: "Theses",
-    },
-    {
-      categoryid: "005",
-      name: "Filipiniana-000",
-    },
-    {
-      categoryid: "006",
-      name: "Capstone Project",
-    },
-    {
-      categoryid: "009",
-      name: "Filipiniana-1",
-    },
-    {
-      categoryid: "010",
-      name: "Capstone Project-009",
-    },
-    {
-      categoryid: "009",
-      name: "Filipiniana-2",
-    },
-    {
-      categoryid: "010",
-      name: "Capstone Project-989",
-    },
-  ];
+  inputCategory: CategoryDto = {
+    C_Description: "",
+  };
 }
 </script>

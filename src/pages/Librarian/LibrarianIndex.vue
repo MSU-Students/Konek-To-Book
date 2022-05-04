@@ -46,9 +46,10 @@
             <div class="row">
               <div class="col-10">
                 <div class="text-h6">Borrowers</div>
+
                 <div class="text-h5">
                   <q-icon name="people" />
-                  Second Semester
+                  {{ allBorrower.length }}
                 </div>
               </div>
             </div>
@@ -176,7 +177,7 @@
                       label="Category"
                       :options="allCategory"
                       option-label="C_Description"
-                      optine-value="C_Description"
+                      optine-value="Category_ID"
                       map-options
                       emit-value
                       v-model="inputBook.categories"
@@ -337,73 +338,59 @@
               <q-dialog v-model="Details">
                 <q-card style="width: 500px; max-width: 90vw" flat bordered>
                   <q-card-section>
-                    <div class="text-h9 text-left">
-                      BOOK DETAILS
-                      <q-btn
-                        round
-                        flat
-                        dense
-                        icon="close"
-                        class="float-right"
-                        color="grey-8"
-                        v-close-popup
-                      ></q-btn>
+                    <div class="text-subtitle2">01</div>
+                    <div class="text-h6">{{ inputBook.Title }}</div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      ISBN: {{ inputBook.ISBN }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      CallNo: {{ inputBook.Call_Number }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Author:
+                      {{
+                        inputBook.authors?.A_Last_Name +
+                        ", " +
+                        inputBook.authors?.A_First_Name
+                      }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Edition: {{ inputBook.Edition }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Category: {{ inputBook.categories?.C_Description }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Publisher: {{ inputBook.publishers?.Publisher }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Date 0f Publication:
+                      {{ inputBook.publishers?.DateOfPublication }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">Pages: ii</div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Series: {{ inputBook.Series }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Status: {{ inputBook.Book_Status }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Notes: {{ inputBook.Notes }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Availability: {{ inputBook.Availability }}
                     </div>
                   </q-card-section>
-                  <q-separator />
-                  <q-card-section>
-                    <q-card-section class="q-pt-xs col">
-                      <div class="text-overline text-orange-9">01</div>
-                      <div
-                        class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs"
-                      >
-                        {{ inputBook.Title }}
-                      </div>
-                      <q-space />
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        ISBN: {{ inputBook.ISBN }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        CallNo: {{ inputBook.Call_Number }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Author:
-                        {{
-                          inputBook.authors?.A_Last_Name +
-                          ", " +
-                          inputBook.authors?.A_First_Name
-                        }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Edition: {{ inputBook.Edition }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Category: {{ inputBook.categories?.C_Description }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Publisher: {{ inputBook.publishers?.Publisher }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Date 0f Publication: {{ inputBook.publishers?.DateOfPublication }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">Pages: ii</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Series: {{ inputBook.Series }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">Status: New</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Notes: {{ inputBook.Notes }}
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Availability: {{ inputBook.Availability }}
-                      </div>
-                    </q-card-section>
-                  </q-card-section>
 
-                  <q-separator />
-
-                  <q-card-section class="col-8 text-italic flex flex-center">
-                    MSU-ISED library management system
+                  <q-card-section
+                    class="bg-primary text-center text-caption text-white"
+                  >
+                    Mindanao State University - Marawi City
                   </q-card-section>
                 </q-card>
               </q-dialog>
@@ -418,7 +405,7 @@
                 @click="openEditDialog(props.row)"
               />
               <q-dialog v-model="editRowBook" persistent>
-                <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+                <q-card style="width: 800px; max-width: 110vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
                       <q-avatar size="50px">
@@ -431,8 +418,8 @@
                   </q-card-section>
 
                   <q-card-section>
-                    <q-form @submit="oneditBook()" class="q-px-sm">
-                      <div class="q-gutter-md row q-pb-sm">
+                    <q-form @submit="oneditBook()" class="q-px-md">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col-md-2">
                           <q-input
                             dense
@@ -455,7 +442,7 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-sm">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-input
                             dense
@@ -472,7 +459,7 @@
                             label="Author"
                             :options="allAuthor"
                             option-label="A_First_Name"
-                            optine-value="A_First_Name"
+                            option-value="A_First_Name"
                             map-options
                             emit-value
                             v-model="inputBook.authors"
@@ -488,7 +475,7 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-sm">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-input
                             dense
@@ -504,7 +491,7 @@
                             label="Category"
                             :options="allCategory"
                             option-label="C_Description"
-                            optine-value="C_Description"
+                            option-value="Category_ID"
                             map-options
                             emit-value
                             v-model="inputBook.categories"
@@ -512,7 +499,7 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-sm">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-select
                             dense
@@ -520,9 +507,9 @@
                             label="Publisher"
                             :options="allPublisher"
                             option-label="Publisher"
-                            optine-value="Publisher"
+                            option-value="Publisher_ID"
                             map-options
-                            emit-value
+                            @update:model-value="onSelectPublisher"
                             v-model="inputBook.publishers"
                           />
                         </div>
@@ -556,7 +543,7 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-lg">
+                      <div class="q-gutter-md row q-pb-sm">
                         <div class="col">
                           <q-select
                             outlined
@@ -627,6 +614,7 @@
 import {
   AuthorDto,
   BookDto,
+  BorrowerDto,
   CategoryDto,
   IssuedBookDto,
   PublisherDto,
@@ -640,7 +628,9 @@ import { mapActions, mapState } from "vuex";
     ...mapState("author", ["allAuthor"]),
     ...mapState("category", ["allCategory"]),
     ...mapState("publisher", ["allPublisher"]),
+
     ...mapState("issuedbook", ["allIssuedBook"]),
+    ...mapState("borrower", ["allBorrower"]),
   },
   methods: {
     ...mapActions("book", ["addBook", "editBook", "deleteBook", "getAllBook"]),
@@ -652,6 +642,7 @@ export default class LibrarianIndex extends Vue {
   allCategory!: CategoryDto[];
   allPublisher!: PublisherDto[];
 
+  allBorrower!: BorrowerDto[];
   allIssuedBook!: IssuedBookDto[];
 
   addBook!: (payload: BookDto) => Promise<void>;
@@ -728,7 +719,7 @@ export default class LibrarianIndex extends Vue {
     {
       name: "dateofpublication",
       label: "Date of Publication",
-      field: "DateOfPublication",
+      field: (row: any) => row.publishers?.DateOfPublication || "None",
       align: "center",
       sortable: true,
     },

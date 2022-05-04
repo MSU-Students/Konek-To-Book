@@ -16,8 +16,8 @@ const actions: ActionTree<BookFinestateInterface, StateInterface> = {
     await context.dispatch('getAllBookFines');
   },
 
-  async deleteBookFines(context, id: number): Promise<any> {
-    const result = await bookfinesService.delete(id);
+  async deleteBookFines(context, BookFines_ID: number): Promise<any> {
+    const result = await bookfinesService.delete(BookFines_ID);
     context.commit('deleteBookFines', result);
     await context.dispatch('getAllBookFines');
   },
@@ -25,10 +25,12 @@ const actions: ActionTree<BookFinestateInterface, StateInterface> = {
   async getAllBookFines(context): Promise<any> {
     const res = await bookfinesService.getAll();
     context.commit('getAllBookFines', res);
+    await this.dispatch('borrower/getAllBorrower');
+    await this.dispatch('book/getAllBook');
   },
 
-  async getOneBookFines(context, id: number): Promise<any> {
-    const res = await bookfinesService.getOne(id);
+  async getOneBookFines(context, BookFines_ID: number): Promise<any> {
+    const res = await bookfinesService.getOne(BookFines_ID);
     context.commit('getOneBookFines', res);
   },
 };

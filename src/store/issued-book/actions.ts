@@ -14,10 +14,11 @@ const actions: ActionTree<IssuedBookStateInterface, StateInterface> = {
     const result = await issuedbookService.update(payload.IssuedBook_ID, payload);
     context.commit('updateIssuedBook', payload);
     await context.dispatch('getAllIssuedBook');
+    await this.dispatch('book-fines/getAllBookFines')
   },
 
-  async deleteIssuedBook(context, id: number): Promise<any> {
-    const result = await issuedbookService.delete(id);
+  async deleteIssuedBook(context, IssuedBook_ID: number): Promise<any> {
+    const result = await issuedbookService.delete(IssuedBook_ID);
     context.commit('deleteIssuedBook', result);
     await context.dispatch('getAllIssuedBook');
   },
@@ -30,8 +31,8 @@ const actions: ActionTree<IssuedBookStateInterface, StateInterface> = {
     await this.dispatch('book-fines/getAllBookFines')
   },
 
-  async getOneIssuedBook(context, id: number): Promise<any> {
-    const res = await issuedbookService.getOne(id);
+  async getOneIssuedBook(context, IssuedBook_ID: number): Promise<any> {
+    const res = await issuedbookService.getOne(IssuedBook_ID);
     context.commit('getOneIssuedBook', res);
   },
 };

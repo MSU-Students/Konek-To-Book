@@ -339,6 +339,12 @@ export interface IssuedBookDto {
      * @memberof IssuedBookDto
      */
     'fines'?: BorrowerDto;
+    /**
+     * 
+     * @type {BookDto}
+     * @memberof IssuedBookDto
+     */
+    'books'?: BookDto;
 }
 /**
  * 
@@ -346,6 +352,12 @@ export interface IssuedBookDto {
  * @interface PublisherDto
  */
 export interface PublisherDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof PublisherDto
+     */
+    'Publisher_ID'?: number;
     /**
      * 
      * @type {string}
@@ -384,6 +396,12 @@ export interface RefreshDto {
  * @interface UserDto
  */
 export interface UserDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserDto
+     */
+    'id'?: number;
     /**
      * 
      * @type {string}

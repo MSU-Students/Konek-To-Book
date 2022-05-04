@@ -104,6 +104,9 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+     <q-footer bordered class="bg-primary text-center text-caption text-white">
+        Mindanao State University - Marawi City
+      </q-footer>
   </q-layout>
 </template>
 

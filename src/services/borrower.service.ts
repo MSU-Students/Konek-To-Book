@@ -12,18 +12,18 @@ class BorrowerService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(id: number): Promise<BorrowerDto> {
-    const response = await lmsApiService.getBorrower(id);
+  async getOne(Borrower_ID: number): Promise<BorrowerDto> {
+    const response = await lmsApiService.getBorrower(Borrower_ID);
     return response.data;
   }
 
-  async update(id: number, payload: any) {
-    const response = await lmsApiService.updateBorrower(id, payload);
+  async update(Borrower_ID: number, payload: any) {
+    const response = await lmsApiService.updateBorrower(Borrower_ID, payload);
     return response.data;
   }
 
-  async delete(id: number) {
-    const response = await lmsApiService.deleteBorrower(id);
+  async delete(Borrower_ID: number) {
+    const response = await lmsApiService.deleteBorrower(Borrower_ID);
     return response.data;
   }
 }

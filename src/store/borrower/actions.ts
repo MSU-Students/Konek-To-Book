@@ -16,20 +16,19 @@ const actions: ActionTree<BorrowerStateInterface, StateInterface> = {
     await context.dispatch('getAllBorrower');
   },
 
-  async deleteBorrower(context, id: number): Promise<any> {
-    const result = await borrowerService.delete(id);
+  async deleteBorrower(context, Borrower_ID: number): Promise<any> {
+    const result = await borrowerService.delete(Borrower_ID);
     context.commit('deleteBorrower', result);
-    await this.dispatch('getAllBorrower');
+    await context.dispatch('getAllBorrower');
   },
 
   async getAllBorrower(context): Promise<any> {
     const res = await borrowerService.getAll();
     context.commit('getAllBorrower', res);
-    await this.dispatch('issued-book/getAllIssuedBook')
   },
 
-  async getOneBorrower(context, id: number): Promise<any> {
-    const res = await borrowerService.getOne(id);
+  async getOneBorrower(context, Borrower_ID: number): Promise<any> {
+    const res = await borrowerService.getOne(Borrower_ID);
     context.commit('getOneBorrower', res);
   },
 };

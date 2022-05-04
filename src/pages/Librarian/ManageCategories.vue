@@ -138,6 +138,7 @@
                             outlined
                             readonly
                             label="Category ID"
+                            v-model="inputCategory.Category_ID"
                           />
                         </div>
 
@@ -185,32 +186,8 @@
                 flat
                 round
                 dense
-                @click="dialog = true"
+                @click="deleteSpecificCategory(props.row)"
               />
-              <q-dialog v-model="dialog" persistent>
-                <q-card style="width: 300px">
-                  <q-card-section class="row items-center">
-                    <q-avatar
-                      size="sm"
-                      icon="warning"
-                      color="red-10"
-                      text-color="white"
-                    />
-                    <span class="q-ml-sm">Confirm Delete?</span>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn
-                      flat
-                      label="Cancel"
-                      color="red-8"
-                      @click="resetModel()"
-                      v-close-popup="cancelEnabled"
-                      :disable="!cancelEnabled"
-                    />
-                    <q-btn flat label="Confirm" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
             </div>
           </q-td>
         </template>
@@ -294,7 +271,6 @@ export default class ManageCategories extends Vue {
       type: "positive",
       message: "Successfully Added.",
     });
-    debugger;
   }
 
   async oneditCategory() {
@@ -315,7 +291,7 @@ export default class ManageCategories extends Vue {
         persistent: true,
       })
       .onOk(async () => {
-        await this.deleteCategory(val);
+        await this.deleteCategory(val.Category_ID as any);
         this.$q.notify({
           type: "warning",
           message: "Successfully removed",

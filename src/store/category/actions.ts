@@ -16,8 +16,8 @@ const actions: ActionTree<CategoryStateInterface, StateInterface> = {
     await context.dispatch('getAllCategory');
   },
 
-  async deleteCategory(context, id: number): Promise<any> {
-    const result = await categoryService.delete(id);
+  async deleteCategory(context, Category_ID: number): Promise<any> {
+    const result = await categoryService.delete(Category_ID);
     context.commit('deleteCategory', result);
     await context.dispatch('getAllCategory');
   },
@@ -27,8 +27,8 @@ const actions: ActionTree<CategoryStateInterface, StateInterface> = {
     context.commit('getAllCategory', res);
   },
 
-  async getOneCategory(context, id: number): Promise<any> {
-    const res = await categoryService.getOne(id);
+  async getOneCategory(context, Category_ID: number): Promise<any> {
+    const res = await categoryService.getOne(Category_ID);
     context.commit('getOneCategory', res);
   },
 };

@@ -14,18 +14,18 @@ class CategoryService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(id: number): Promise<CategoryDto> {
-    const response = await lmsApiService.getCategory(id);
+  async getOne(Category_ID: number): Promise<CategoryDto> {
+    const response = await lmsApiService.getCategory(Category_ID);
     return response.data;
   }
 
-  async update(id: number, payload: any) {
-    const response = await lmsApiService.updateCategory(id, payload);
+  async update(Category_ID: number, payload: any) {
+    const response = await lmsApiService.updateCategory(Category_ID, payload);
     return response.data;
   }
 
-  async delete(id: number) {
-    const response = await lmsApiService.deleteCategory(id);
+  async delete(Category_ID: number) {
+    const response = await lmsApiService.deleteCategory(Category_ID);
     return response.data;
   }
 }

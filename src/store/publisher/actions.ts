@@ -7,19 +7,19 @@ const actions: ActionTree<PublisherStateInterface, StateInterface> = {
   async addPublisher(context, payload: any): Promise<any> {
     const result = await publisherService.create(payload);
     context.commit("setNewPublisher", result);
-    await context.dispatch("getAllpublisher");
+    await context.dispatch("getAllPublisher");
   },
 
   async editPublisher(context, payload: any): Promise<any> {
     const result = await publisherService.update(payload.Publisher_ID, payload);
     context.commit("updatePublisher", payload);
-    await context.dispatch("getAllpublisher");
+    await context.dispatch("getAllPublisher");
   },
 
-  async deletePublisher(context, id: number): Promise<any> {
-    const result = await publisherService.delete(id);
+  async deletePublisher(context, Publisher_ID: number): Promise<any> {
+    const result = await publisherService.delete(Publisher_ID);
     context.commit("deletePublisher", result);
-    await context.dispatch("getAllpublisher");
+    await context.dispatch("getAllPublisher");
   },
 
   async getAllPublisher(context): Promise<any> {
@@ -27,8 +27,8 @@ const actions: ActionTree<PublisherStateInterface, StateInterface> = {
     context.commit("getAllPublisher", res);
   },
 
-  async getOnePublisher(context, id: number): Promise<any> {
-    const res = await publisherService.getOne(id);
+  async getOnePublisher(context, Publisher_ID: number): Promise<any> {
+    const res = await publisherService.getOne(Publisher_ID);
     context.commit("getOnePublisher", res);
   },
 };

@@ -1,30 +1,28 @@
 <template>
-  <q-page class="bg-image1">
+  <q-page class="bg-image2">
     <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        ref="tableRef"
-        title="BOOKS"
-        :rows="rows"
+        title="List of Books"
+        :rows="allBook"
         :columns="columns"
         row-key="name"
-        :pagination="pagination"
+        :rows-per-page-options="[0]"
         :filter="filter"
-
       >
         <template v-slot:top-right>
-            <q-input
-              outlined
-              rounded
-              dense
-              debounce="300"
-              v-model="filter"
-              placeholder="Search"
-            >
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
+          <q-input
+            outlined
+            rounded
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Search"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
 
           <q-page-scroller
             position="bottom-right"
@@ -40,166 +38,173 @@
           </q-page-scroller>
         </template>
 
-        <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th auto-width />
-          <q-th v-for="col in props.cols" :key="col.name" :props="props">
-            {{ col.label }}
-          </q-th>
-        </q-tr>
-      </template>
+        <!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
+              <q-btn
+                round
+                color="blue"
+                icon="more_vert"
+                size="md"
+                flat
+                dense
+                @click="openDialog(props.row)"
+              />
 
-      <!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <div>
-              <q-td>
-                <q-btn
-                  round
-                  color="blue"
-                  icon="more_vert"
-                  size="md"
-                  flat
-                  dense
-                  @click="Details = true"
-                />
+              <q-dialog v-model="Details">
+                <q-card style="width: 500px; max-width: 90vw" flat bordered>
+                  <q-card-section>
+                    <div class="text-subtitle2">01</div>
+                    <div class="text-h6">{{ inputBook.Title }}</div>
+                  </q-card-section>
 
+                  <q-separator />
 
-                <q-dialog v-model="Details">
-                  <q-card style="width: 500px; max-width: 90vw"  flat bordered>
-                    <q-card-section>
-                      <div class="text-h9 text-left">
-                        BOOK DETAILS
-                        <q-btn
-                          round
-                          flat
-                          dense
-                          icon="close"
-                          class="float-right"
-                          color="grey-8"
-                          v-close-popup
-                        ></q-btn>
-                      </div>
-                    </q-card-section>
-                    <q-separator />
-                    <q-card-section>
+                  <q-card-section>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      ISBN: {{ inputBook.ISBN }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      CallNo: {{ inputBook.Call_Number }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Author:
+                      {{
+                        inputBook.authors?.A_Last_Name +
+                        ", " +
+                        inputBook.authors?.A_First_Name
+                      }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Edition: {{ inputBook.Edition }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Category: {{ inputBook.categories?.C_Description }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Publisher: {{ inputBook.publishers?.Publisher }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Date 0f Publication:
+                      {{ inputBook.publishers?.DateOfPublication }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">Pages: ii</div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Series: {{ inputBook.Series }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Status: {{ inputBook.Book_Status }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Notes: {{ inputBook.Notes }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Availability: {{ inputBook.Availability }}
+                    </div>
+                  </q-card-section>
 
-                      <q-card-section class="q-pt-xs col">
-                        <div class="text-overline text-orange-9">01</div>
-                        <div class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs "> Data Structures and Algorithms </div>
-                        <q-space/>
-                        <div class = "text-center q-ma-mp q-mb-xs">ISBN: 9865-865</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">CallNo: 906</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Author: Sarah Jay</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs" >Edition: 2nd Ed </div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Category: Reference</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs"> Publisher: 2026-2029 </div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Date 0f Publication: 567890</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Pages: ii</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Series: 2nd Ed</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Status: New</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Notes: From California</div>
-                        <div class = "text-center  q-ma-mp q-mb-xs">Availability: YES</div>
-                      </q-card-section>
-                    </q-card-section>
-
-                    <q-separator />
-
-                    <q-card-section
-                      class="col-8 text-italic flex flex-center"
-                    >
-                      MSU-ISED library management system
-                    </q-card-section>
-                  </q-card>
-                </q-dialog>
-
-               </q-td>
+                  <q-card-section
+                    class="bg-primary text-center text-caption text-white"
+                  >
+                    Mindanao State University - Marawi City
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
             </div>
-
-          <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-            </q-td>
-          </q-tr>
+          </q-td>
         </template>
-
       </q-table>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
+import {
+  AuthorDto,
+  BookDto,
+  CategoryDto,
+  PublisherDto,
+} from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-interface IRow {
-  name: string;
-}
-@Options({})
+import { mapActions, mapState } from "vuex";
+
+@Options({
+  computed: {
+    ...mapState("book", ["allBook"]),
+    ...mapState("author", ["allAuthor"]),
+    ...mapState("category", ["allCategory"]),
+    ...mapState("publisher", ["allPublisher"]),
+  },
+  methods: {
+    ...mapActions("book", ["getAllBook"]),
+  },
+})
 export default class GuestIndex extends Vue {
-  tableRef = '';
-  navigationActive = false;
+  allBook!: BookDto[];
+  allAuthor!: AuthorDto[];
+  allCategory!: CategoryDto[];
+  allPublisher!: PublisherDto[];
+
+  getAllBook!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllBook();
+    console.log(this.allBook);
+  }
+
   pagination = {};
+  cancelEnabled = true;
   filter = "";
   Details = false;
   dialog = false;
-  bookid = "";
-  title = "";
-  isbn = "";
-  callnumber = "";
-  authors = "";
-  edition = "";
-  category = "";
-  publisher = "";
-  datepublication = "";
-  pages = "";
-  series = "";
-  status = "";
-  notes = "";
-  availablity = "";
 
   columns = [
     {
       name: "bookID",
       align: "center",
       label: "Book ID",
-      field: "bookID",
+      field: "Book_ID",
       sortable: true,
     },
     {
-      name: "desc",
+      name: "name",
       required: true,
       label: "Title",
       align: "center",
-      field: (row: IRow) => row.name,
+      field: (row: BookDto) => row.Title,
       format: (val: string) => `${val}`,
       sortable: true,
     },
 
-    { name: "isbn", label: "ISBN", align: "center", field: "isbn" },
+    { name: "isbn", label: "ISBN", align: "center", field: "ISBN" },
     {
       name: "callnumber ",
       label: "Call Number",
       align: "center",
-      field: "callnumber",
+      field: "Call_Number",
     },
     {
       name: "authors",
       label: "Author/s",
       align: "center",
-      field: "authors",
+      field: (row: any) =>
+        row.authors?.A_Last_Name + ", " + row.authors?.A_First_Name || "None",
       sortable: true,
     },
-    { name: "edition", label: "Edition", align: "center", field: "edition" },
+    { name: "edition", label: "Edition", align: "center", field: "Edition" },
 
     {
       name: "category",
       label: "Category",
-      field: "category",
+      field: (row: any) => row.categories?.C_Description || "None",
       align: "center",
       sortable: true,
     },
     {
       name: "publisher",
       label: "Publisher",
-      field: "publisher",
+      field: (row: any) => row.publishers?.Publisher || "None",
       align: "center",
       sortable: true,
     },
@@ -207,7 +212,7 @@ export default class GuestIndex extends Vue {
     {
       name: "dateofpublication",
       label: "Date of Publication",
-      field: "dateofpublication",
+      field: (row: any) => row.publishers?.DateOfPublication || "None",
       align: "center",
       sortable: true,
     },
@@ -215,248 +220,60 @@ export default class GuestIndex extends Vue {
       name: "pages",
       label: "Pages",
       align: "center",
-      field: "pages",
+      field: "Pages",
     },
 
     {
       name: "series",
       label: "Series",
       align: "center",
-      field: "series",
+      field: "Series",
     },
 
     {
       name: "status",
       label: "Status",
       align: "center",
-      field: "status",
+      field: "Book_Status",
     },
 
     {
       name: "notes",
       label: "Notes",
       align: "center",
-      field: "notes",
+      field: "Notes",
     },
 
     {
       name: "availability",
       label: "Availability",
       align: "center",
-      field: "availability",
+      field: "Availability",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
   ];
 
-  rows = [
-    {
-      bookID: "01",
-      name: "Data Structures and Algorithms",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "sarah jay",
-      edition: "2nd ed",
-      category: "reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "mmm",
-      availability: "YES",
-    },
-    {
-      bookID: "02",
-      name: "Algorithms",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "sarah jay",
-      edition: "2nd ed",
-      category: "Capstone",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
+  inputBook: BookDto = {
+    ISBN: "",
+    Call_Number: "",
+    Title: "",
+    Edition: "",
+    DateOfPublication: "",
+    Pages: "",
+    Series: "",
+    Notes: "",
+    Book_Status: "New",
+    Availability: "Yes",
+  };
 
-    {
-      bookID: "03",
-      name: "Integrating",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Jyasa",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "04",
-      name: "Robotics",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady gerry",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "05",
-      name: "Robotics and systematic system",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "06",
-      name: "Oracles",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "Old",
-      notes: "From California",
-      availability: "NO",
-    },
-    {
-      bookID: "07",
-      name: "Programming Language",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "08",
-      name: "Java Language",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "09",
-      name: "Programming Languages",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "10",
-      name: "Robotics",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "11",
-      name: "Cinderella",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-    {
-      bookID: "15",
-      name: "Github",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From Cagayan",
-      availability: "YES",
-    },
-    {
-      bookID: "13",
-      name: "Integrated",
-      isbn: "9865-865",
-      callnumber: "906",
-      authors: "Lady ",
-      edition: "3rd ed",
-      category: "Reference",
-      publisher: "2026-2029",
-      dateofpublication: "567890",
-      pages: "ii",
-      series: "tvhj",
-      status: "New",
-      notes: "From California",
-      availability: "YES",
-    },
-  ];
+  openDialog(val: BookDto) {
+    this.Details = true;
+    this.inputBook = { ...val };
+  }
 }
 </script>

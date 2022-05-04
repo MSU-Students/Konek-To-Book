@@ -26,7 +26,7 @@ const actions: ActionTree<BookStateInterface, StateInterface> = {
     const res = await bookService.getAll();
     context.commit('getAllBook', res);
     await this.dispatch('author/getAllAuthor');
-    await this.dispatch('category/getAllCategory')
+    await this.dispatch('category/getAllCategory');
     await this.dispatch('publisher/getAllPublisher')
   },
 

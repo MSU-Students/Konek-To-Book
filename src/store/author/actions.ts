@@ -17,8 +17,8 @@ const actions: ActionTree<AuthorStateInterface, StateInterface> = {
 
   },
 
-  async deleteAuthor(context, id: number): Promise<any> {
-    const result = await authorService.delete(id);
+  async deleteAuthor(context, Author_ID: number): Promise<any> {
+    const result = await authorService.delete(Author_ID);
     context.commit('deleteAuthor', result);
     await context.dispatch('getAllAuthor');
   },
@@ -28,8 +28,8 @@ const actions: ActionTree<AuthorStateInterface, StateInterface> = {
     context.commit('getAllAuthor', res);
   },
 
-  async getOneAuthor(context, id: number): Promise<any> {
-    const res = await authorService.getOne(id);
+  async getOneAuthor(context, Author_ID: number): Promise<any> {
+    const res = await authorService.getOne(Author_ID);
     context.commit('getOneAuthor', res);
   },
 

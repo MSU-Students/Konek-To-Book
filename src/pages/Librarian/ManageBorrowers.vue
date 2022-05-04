@@ -46,6 +46,8 @@
                       outlined
                       v-model="inputBorrower.Student_ID"
                       label="Student ID"
+                      mask="#### - #####"
+                      hint="Format: 0000 - 00000"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -99,9 +101,10 @@
 
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
-                    <q-input
+                    <q-select
                       dense
                       outlined
+                      :options="options1"
                       v-model="inputBorrower.YearLevel"
                       label="Year/Level"
                       lazy-rules
@@ -124,18 +127,6 @@
                         (val) =>
                           (val && val.length > 0) || 'Input the contact number',
                       ]"
-                    />
-                  </div>
-                  <div class="col">
-                    <q-select
-                      dense
-                      outlined
-                      label="IssuedBook ID"
-                      :options="allIssuedBook"
-                      option-label="IssuedBook_ID"
-                      optine-value="IssuedBook_ID"
-                      map-options
-                      emit-value
                     />
                   </div>
                 </div>
@@ -237,6 +228,7 @@
                             outlined
                             readonly
                             label="Borrower ID"
+                            v-model="inputBorrower.Borrower_ID"
                           />
                         </div>
 
@@ -247,6 +239,8 @@
                             v-model="inputBorrower.Student_ID"
                             label="Student ID"
                             lazy-rules
+                            mask="#### - #####"
+                            hint="Format: 0000 - 00000"
                             :rules="[
                               (val) =>
                                 (val && val.length > 0) ||
@@ -303,9 +297,10 @@
 
                       <div class="q-gutter-md row q-pb-md">
                         <div class="col">
-                          <q-input
+                          <q-select
                             dense
                             outlined
+                            :options="options1"
                             v-model="inputBorrower.YearLevel"
                             label="Year/Level"
                             lazy-rules
@@ -329,24 +324,6 @@
                               (val) =>
                                 (val && val.length > 0) ||
                                 'Input the contact number',
-                            ]"
-                          />
-                        </div>
-
-                        <div class="col">
-                          <q-select
-                            dense
-                            outlined
-                            label="IssuedBook ID"
-                            :options="allIssuedBook"
-                            option-label="IssuedBook_ID"
-                            optine-value="IssuedBook_ID"
-                            map-options
-                            emit-value
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Select the IssuedBook',
                             ]"
                           />
                         </div>
@@ -379,32 +356,8 @@
                 flat
                 round
                 dense
-                @click="dialog = true"
+                @click="deleteSpecificBorrower(props.row)"
               />
-              <q-dialog v-model="dialog" persistent>
-                <q-card style="width: 300px">
-                  <q-card-section class="row items-center">
-                    <q-avatar
-                      size="sm"
-                      icon="warning"
-                      color="red-10"
-                      text-color="white"
-                    />
-                    <span class="q-ml-sm">Confirm Delete?</span>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn
-                      flat
-                      label="Cancel"
-                      color="red-8"
-                      @click="resetModel()"
-                      v-close-popup="cancelEnabled"
-                      :disable="!cancelEnabled"
-                    />
-                    <q-btn flat label="Confirm" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
             </div>
           </q-td>
         </template>
@@ -420,7 +373,6 @@ import { mapActions, mapState } from "vuex";
 @Options({
   computed: {
     ...mapState("borrower", ["allBorrower"]),
-    ...mapState("issued-book", ["allIssuedBook"]),
   },
   methods: {
     ...mapActions("borrower", [
@@ -433,7 +385,6 @@ import { mapActions, mapState } from "vuex";
 })
 export default class ManageBorrowers extends Vue {
   allBorrower!: BorrowerDto[];
-  allIssuedBook!: IssuedBookDto[];
 
   addBorrower!: (payload: BorrowerDto) => Promise<void>;
   editBorrower!: (payload: BorrowerDto) => Promise<void>;
@@ -442,7 +393,6 @@ export default class ManageBorrowers extends Vue {
 
   async mounted() {
     await this.getAllBorrower();
-    console.log(this.allBorrower);
   }
 
   pagination = {};
@@ -453,7 +403,7 @@ export default class ManageBorrowers extends Vue {
   dialog = false;
   BorrowerDetails = "";
 
-  options = ["001", "002", "003", "004", "008", "006"];
+  options1 = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
   columns = [
     {
@@ -506,12 +456,6 @@ export default class ManageBorrowers extends Vue {
       field: "B_Contact_Number",
     },
     {
-      name: "issudebookid",
-      label: "IssuedBook ID",
-      align: "center",
-      field: "IssuedBook_ID",
-    },
-    {
       name: "action",
       align: "center",
       label: "Action",
@@ -526,7 +470,6 @@ export default class ManageBorrowers extends Vue {
     B_Last_Name: "",
     YearLevel: "",
     B_Contact_Number: "",
-    //IssuedBook_ID: "",
   };
 
   async onaddBorrower() {
@@ -557,7 +500,7 @@ export default class ManageBorrowers extends Vue {
         persistent: true,
       })
       .onOk(async () => {
-        await this.deleteBorrower(val);
+        await this.deleteBorrower(val.Borrower_ID as any);
         this.$q.notify({
           type: "warning",
           message: "Successfully removed",
@@ -578,7 +521,6 @@ export default class ManageBorrowers extends Vue {
       B_Last_Name: "",
       YearLevel: "",
       B_Contact_Number: "",
-      //IssuedBook_ID: "",
     };
   }
 }

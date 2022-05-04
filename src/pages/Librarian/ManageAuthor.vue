@@ -173,15 +173,15 @@
                 <q-card-section>
                   <q-form @submit="oneditAuthor()" class="q-px-md">
                     <div class="q-gutter-md row q-pb-md">
-                         <div class="col-md-2">
-                          <q-input
-                            dense
-                            outlined
-                            readonly
-                            label="Author ID"
-                            v-model="inputAuthor.Author_ID"
-                          />
-                        </div>
+                      <div class="col-md-2">
+                        <q-input
+                          dense
+                          outlined
+                          readonly
+                          label="Author ID"
+                          v-model="inputAuthor.Author_ID"
+                        />
+                      </div>
 
                       <div class="col">
                         <q-input
@@ -261,32 +261,8 @@
               flat
               round
               dense
-              @click="dialog = true"
+              @click="deleteSpecificAuthor(props.row)"
             />
-            <q-dialog v-model="dialog" persistent>
-              <q-card style="width: 300px">
-                <q-card-section class="row items-center">
-                  <q-avatar
-                    size="sm"
-                    icon="warning"
-                    color="red-10"
-                    text-color="white"
-                  />
-                  <span class="q-ml-sm">Confirm Delete?</span>
-                </q-card-section>
-                <q-card-actions align="right">
-                  <q-btn
-                    flat
-                    label="Cancel"
-                    color="red-8"
-                    @click="resetModel()"
-                    v-close-popup="cancelEnabled"
-                    :disable="!cancelEnabled"
-                  />
-                  <q-btn flat label="Confirm" color="primary" v-close-popup />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
           </q-td>
         </template>
       </q-table>
@@ -311,7 +287,6 @@ import { mapActions, mapState } from "vuex";
     ]),
   },
 })
-
 export default class ManageAuthor extends Vue {
   allAuthor!: AuthorDto[];
   addAuthor!: (payload: AuthorDto) => Promise<void>;
@@ -415,7 +390,7 @@ export default class ManageAuthor extends Vue {
         persistent: true,
       })
       .onOk(async () => {
-        await this.deleteAuthor(val);
+        await this.deleteAuthor(val.Author_ID as any);
         this.$q.notify({
           type: "warning",
           message: "Successfully removed",

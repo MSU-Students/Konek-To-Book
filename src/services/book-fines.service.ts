@@ -12,18 +12,18 @@ class BookFinesService extends DefaultApi {
     return response.data;
   }
 
-  async getOne(id: number): Promise<BookFinesDto> {
-    const response = await lmsApiService.getBookFine(id);
+  async getOne(BookFines_ID: number): Promise<BookFinesDto> {
+    const response = await lmsApiService.getBookFine(BookFines_ID);
     return response.data;
   }
 
-  async update(id: number, payload: any) {
-    const response = await lmsApiService.updateBookFine(id, payload);
+  async update(BookFines_ID: number, payload: any) {
+    const response = await lmsApiService.updateBookFine(BookFines_ID, payload);
     return response.data;
   }
 
-  async delete(id: number) {
-    const response = await lmsApiService.deleteBookFine(id);
+  async delete(BookFines_ID: number) {
+    const response = await lmsApiService.deleteBookFine(BookFines_ID);
     return response.data;
   }
 }

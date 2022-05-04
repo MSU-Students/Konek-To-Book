@@ -44,9 +44,9 @@
                       autofocus
                       dense
                       outlined
-                      v-model="inputAccount.U_First_Name"
+                      v-model="inputUser.U_First_Name"
                       label="First Name"
-                      color="orange"
+                      color="primary"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -58,7 +58,7 @@
                     <q-input
                       dense
                       outlined
-                      v-model="inputAccount.U_Middle_Name"
+                      v-model="inputUser.U_Middle_Name"
                       label="Middle Name"
                       lazy-rules
                       :rules="[
@@ -71,7 +71,7 @@
                     <q-input
                       dense
                       outlined
-                      v-model="inputAccount.U_Last_Name"
+                      v-model="inputUser.U_Last_Name"
                       label="Last Name"
                       lazy-rules
                       :rules="[
@@ -86,7 +86,7 @@
                     <q-select
                       outlined
                       dense
-                      v-model="inputAccount.Gender"
+                      v-model="inputUser.Gender"
                       :options="options"
                       label="Gender"
                       lazy-rules
@@ -99,7 +99,7 @@
                     <q-input
                       dense
                       outlined
-                      v-model="inputAccount.U_Birth_Date"
+                      v-model="inputUser.U_Birth_Date"
                       type="date"
                       hint="Birth Date"
                       lazy-rules
@@ -113,7 +113,7 @@
                     <q-input
                       dense
                       outlined
-                      v-model="inputAccount.Address"
+                      v-model="inputUser.Address"
                       label="Address"
                       lazy-rules
                       :rules="[
@@ -123,12 +123,12 @@
                     />
                   </div>
                 </div>
-                <div class="q-gutter-md row q-pb-lg">
+                <div class="q-gutter-md row q-pb-md">
                   <div class="col">
                     <q-input
                       dense
                       outlined
-                      v-model="inputAccount.U_Contact_Number"
+                      v-model="inputUser.U_Contact_Number"
                       label="Contact Number"
                       mask="(####) ### - ####"
                       hint="Format: (0963) 135 - 8292"
@@ -143,7 +143,7 @@
                     <q-input
                       dense
                       outlined
-                      v-model="inputAccount.email"
+                      v-model="inputUser.email"
                       label="Email"
                       type="email"
                       lazy-rules
@@ -155,11 +155,11 @@
                   </div>
                 </div>
 
-                <div class="q-gutter-md q-pb-lg">
+                <div class="q-gutter-sm q-pb-sm">
                   <q-input
                     dense
                     outlined
-                    v-model="inputAccount.username"
+                    v-model="inputUser.username"
                     label="Username"
                     lazy-rules
                     :rules="[
@@ -169,7 +169,7 @@
                   <q-input
                     dense
                     outlined
-                    v-model="inputAccount.password"
+                    v-model="inputUser.password"
                     :type="isPwd ? 'password' : 'text'"
                     label="Password"
                     lazy-rules
@@ -185,18 +185,33 @@
                       />
                     </template>
                   </q-input>
-                  <q-select
-                    outlined
-                    dense
-                    v-model="inputAccount.User_Type"
-                    :options="options1"
-                    label="User type"
-                    lazy-rules
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Input the password',
-                    ]"
-                  />
                 </div>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputUser.User_Type"
+                      :options="options1"
+                      label="User type"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the password',
+                      ]"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-select
+                      outlined
+                      dense
+                      v-model="inputUser.User_Status"
+                      :options="options2"
+                      label="Status"
+                    />
+                  </div>
+                </div>
+
                 <div align="right">
                   <q-btn
                     flat
@@ -253,72 +268,53 @@
                 size="md"
                 flat
                 dense
-                @click="showAccountDetails = true"
+                @click="openDialog(props.row)"
               />
-
               <q-dialog v-model="showAccountDetails">
-                <q-card style="width: 500px; max-width: 90vw" flat bordered>
+                <q-card style="width: 500px; max-width: 90vw" my-card>
                   <q-card-section>
-                    <div class="text-h9 text-left">
-                      BOOK DETAILS
-                      <q-btn
-                        round
-                        flat
-                        dense
-                        icon="close"
-                        class="float-right"
-                        color="grey-8"
-                        v-close-popup
-                      ></q-btn>
+                    <div class="text-subtitle2">01</div>
+                    <div class="text-h6">
+                      Name:
+                      {{
+                        inputUser.U_Last_Name + ", " + inputUser.U_First_Name
+                      }}
                     </div>
                   </q-card-section>
+
                   <q-separator />
+
                   <q-card-section>
-                    <q-card-section class="q-pt-xs col">
-                      <div class="text-overline text-orange-9">01</div>
-                      <div
-                        class="text-h6 text-center text-orange-10 q-ma-mp q-mb-xs"
-                      >
-                        Data Structures and Algorithms
-                      </div>
-                      <q-space />
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        ISBN: 9865-865
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">CallNo: 906</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Author: Sarah Jay
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Edition: 2nd Ed
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Category: Reference
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Publisher: 2026-2029
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Date 0f Publication: 567890
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">Pages: ii</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Series: 2nd Ed
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">Status: New</div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Notes: From California
-                      </div>
-                      <div class="text-center q-ma-mp q-mb-xs">
-                        Availability: YES
-                      </div>
-                    </q-card-section>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Gender : {{ inputUser.Gender }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Birth Date : {{ inputUser.U_Birth_Date }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Address : {{ inputUser.Address }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Contact Number : {{ inputUser.U_Contact_Number }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      E-mail : {{ inputUser.email }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Username : {{ inputUser.username }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      UserType : {{ inputUser.User_Type }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      Status : {{ inputUser.User_Status }}
+                    </div>
                   </q-card-section>
 
-                  <q-separator />
-
-                  <q-card-section class="col-8 text-italic flex flex-center">
-                    MSU-ISED library management system
+                  <q-card-section
+                    class="bg-primary text-center text-caption text-white"
+                  >
+                    Mindanao State University - Marawi City
                   </q-card-section>
                 </q-card>
               </q-dialog>
@@ -360,7 +356,7 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.U_First_Name"
+                            v-model="inputUser.U_First_Name"
                             label="First Name"
                             color="green"
                             lazy-rules
@@ -375,7 +371,7 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.U_Middle_Name"
+                            v-model="inputUser.U_Middle_Name"
                             label="Middle Name"
                             lazy-rules
                             :rules="[
@@ -389,7 +385,7 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.U_Last_Name"
+                            v-model="inputUser.U_Last_Name"
                             label="Last Name"
                             lazy-rules
                             :rules="[
@@ -405,7 +401,7 @@
                           <q-select
                             outlined
                             dense
-                            v-model="inputAccount.Gender"
+                            v-model="inputUser.Gender"
                             :options="options"
                             label="Gender"
                             lazy-rules
@@ -419,7 +415,7 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.U_Birth_Date"
+                            v-model="inputUser.U_Birth_Date"
                             type="date"
                             hint="Birth Date"
                             lazy-rules
@@ -434,7 +430,7 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.Address"
+                            v-model="inputUser.Address"
                             label="Address"
                             lazy-rules
                             :rules="[
@@ -445,12 +441,12 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-lg">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.U_Contact_Number"
+                            v-model="inputUser.U_Contact_Number"
                             label="Contact Number"
                             mask="(####) ### - ####"
                             hint="Format: (0963) 135 - 8292"
@@ -466,7 +462,7 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputAccount.email"
+                            v-model="inputUser.email"
                             label="Email"
                             type="email"
                             lazy-rules
@@ -479,11 +475,11 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md q-pb-md">
+                      <div class="q-gutter-sm q-pb-sm">
                         <q-input
                           dense
                           outlined
-                          v-model="inputAccount.username"
+                          v-model="inputUser.username"
                           label="Username"
                           lazy-rules
                           :rules="[
@@ -494,7 +490,7 @@
                         <q-input
                           dense
                           outlined
-                          v-model="inputAccount.password"
+                          v-model="inputUser.password"
                           :type="isPwd ? 'password' : 'text'"
                           label="Password"
                           lazy-rules
@@ -513,12 +509,12 @@
                         </q-input>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-lg">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-select
                             outlined
                             dense
-                            v-model="inputAccount.User_Type"
+                            v-model="inputUser.User_Type"
                             :options="options1"
                             label="User type"
                             lazy-rules
@@ -532,7 +528,7 @@
                           <q-select
                             outlined
                             dense
-                            v-model="inputAccount.User_Status"
+                            v-model="inputUser.User_Status"
                             :options="options2"
                             label="Status"
                           />
@@ -567,32 +563,8 @@
                 flat
                 round
                 dense
-                @click="dialog = true"
+                @click="deleteSpecificAccount(props.row)"
               />
-              <q-dialog v-model="dialog" persistent>
-                <q-card style="width: 300px">
-                  <q-card-section class="row items-center">
-                    <q-avatar
-                      size="sm"
-                      icon="warning"
-                      color="red-10"
-                      text-color="white"
-                    />
-                    <span class="q-ml-sm">Confirm Delete?</span>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn
-                      flat
-                      label="Cancel"
-                      color="red-8"
-                      @click="resetModel()"
-                      v-close-popup="cancelEnabled"
-                      :disable="!cancelEnabled"
-                    />
-                    <q-btn flat label="Confirm" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
             </div>
           </q-td>
         </template>
@@ -608,6 +580,7 @@ import { mapActions, mapState } from "vuex";
 @Options({
   computed: {
     ...mapState("account", ["allAccount"]),
+    ...mapState("account", ["allUser"]),
   },
   methods: {
     ...mapActions("account", [
@@ -620,6 +593,7 @@ import { mapActions, mapState } from "vuex";
 })
 export default class ManageAccount extends Vue {
   allAccount!: UserDto[];
+
   addAccount!: (payload: UserDto) => Promise<void>;
   editAccount!: (payload: UserDto) => Promise<void>;
   deleteAccount!: (payload: UserDto) => Promise<void>;
@@ -627,10 +601,11 @@ export default class ManageAccount extends Vue {
 
   async mounted() {
     await this.getAllUser();
+    console.log(this.allAccount);
   }
 
   filter = "";
-  dialog = false;
+  deleteSpecific = false;
   showAccountDetails = false;
   addNewAccount = false;
   cancelEnabled = true;
@@ -716,7 +691,7 @@ export default class ManageAccount extends Vue {
     },
   ];
 
-  inputAccount: UserDto = {
+  inputUser: UserDto = {
     U_First_Name: "",
     U_Middle_Name: "",
     U_Last_Name: "",
@@ -726,13 +701,13 @@ export default class ManageAccount extends Vue {
     U_Contact_Number: "",
     email: "",
     User_Type: "",
-    User_Status: "active",
+    User_Status: "Active",
     username: "",
     password: "",
   };
 
   async onaddAccount() {
-    await this.addAccount(this.inputAccount);
+    await this.addAccount(this.inputUser);
     this.addNewAccount = false;
     this.resetModel();
     this.$q.notify({
@@ -743,7 +718,7 @@ export default class ManageAccount extends Vue {
   }
 
   async oneditAccount() {
-    await this.editAccount(this.inputAccount);
+    await this.editAccount(this.inputUser);
     this.editRowAccount = false;
     this.resetModel();
     this.$q.notify({
@@ -760,7 +735,7 @@ export default class ManageAccount extends Vue {
         persistent: true,
       })
       .onOk(async () => {
-        await this.deleteAccount(val);
+        await this.deleteAccount(val.id as any);
         this.$q.notify({
           type: "warning",
           message: "Successfully removed",
@@ -770,11 +745,16 @@ export default class ManageAccount extends Vue {
 
   openEditDialog(val: UserDto) {
     this.editRowAccount = true;
-    this.inputAccount = { ...val };
+    this.inputUser = { ...val };
+  }
+
+  openDialog(val: UserDto) {
+    this.showAccountDetails = true;
+    this.inputUser = { ...val };
   }
 
   resetModel() {
-    this.inputAccount = {
+    this.inputUser = {
       U_First_Name: "",
       U_Middle_Name: "",
       U_Last_Name: "",

@@ -13,8 +13,8 @@
               >
                 <div class="row">
                   <div class="col-10">
-                    <div class="text-h5">Librarians</div>
-                    <div class="text-h4 text-bold">04</div>
+                    <div class="text-h5">Borrowers</div>
+                    <div class="text-h4 text-bold"> {{ allBorrower.length }}</div>
                   </div>
                   <div class="col-2">
                     <q-icon size="62px" name="people" />
@@ -37,7 +37,9 @@
                   <div class="row">
                     <div class="col-10">
                       <div class="text-h5">Total of Accounts</div>
-                      <div class="text-h4 text-bold">06</div>
+                      <div class="text-h4 text-bold">
+                        {{ allAccount.length }}
+                      </div>
                     </div>
                     <div class="col-2">
                       <q-icon size="62px" name="trending_up" />
@@ -60,10 +62,10 @@
                 >
                   <div class="row">
                     <div class="col-10">
-                      <div class="text-h6">Admins</div>
+                      <div class="text-h6">Total of Books</div>
                       <div class="text-h5">
-                        <q-icon name="arrow_downward" />
-                        year 2020-2021
+                        <q-icon name="book" />
+                        {{ allBook.length }}
                       </div>
                     </div>
                   </div>
@@ -78,9 +80,32 @@
 </template>
 
 <script lang="ts">
+import { BookDto, BorrowerDto, UserDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-Options({});
+import { mapActions, mapState } from "vuex";
+
+@Options({
+  computed: {
+    ...mapState("account", ["allAccount"]),
+    ...mapState("book", ["allBook"]),
+     ...mapState("borrower", ["allBorrower"]),
+  },
+  methods: {
+    ...mapActions("account", ["getAllUser"]),
+  },
+})
 export default class AdminIndex extends Vue {
+  allAccount!: UserDto[];
+  allBook!: BookDto[];
+  allBorrower!: BorrowerDto[];
+
+  getAllUser!: () => Promise<void>;
+
+  async mounted() {
+    await this.getAllUser();
+    console.log(this.allAccount);
+  }
+
   date = "2021/09/17";
   time = "10:56";
 }
