@@ -57,7 +57,7 @@
         </q-card>
       </div>
     </div>
-    <!-------------------------------- --------------------- TAB_MENU_BOOK------------------------------------------   --------- --->
+    <!-------------------------------- --------------------- TAB_MENU_BOOK------------------------------------------  --------- --------- --->
     <div class="q-ma-md">
       <q-tabs
         inline-label
@@ -66,7 +66,7 @@
         align="right"
         class="bg-primary text-white shadow-2"
       >
-        <!-------------------------------- ------------------- ADD NEW BOOK BUTTON  ------------------------------------------    --->
+        <!-------------------------------- ------------------- ADD NEW BOOK BUTTON  ------------------------------------------   --------------- --->
         <q-tab
           name="book"
           icon="library_add"
@@ -139,6 +139,8 @@
                       map-options
                       emit-value
                       v-model="inputBook.authors"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Author']"
                     />
                   </div>
                   <div class="col">
@@ -181,6 +183,8 @@
                       map-options
                       emit-value
                       v-model="inputBook.categories"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Category']"
                     />
                   </div>
                 </div>
@@ -193,11 +197,13 @@
                       label="Publisher"
                       :options="allPublisher"
                       option-label="Publisher"
-                      optine-value="Publisher"
+                      optine-value="Publisher_ID"
                       map-options
                       emit-value
                       @update:model-value="onSelectPublisher"
                       v-model="inputBook.publishers"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Category']"
                     />
                   </div>
                   <div class="col">
@@ -280,11 +286,11 @@
           </q-card>
         </q-dialog>
 
-        <!--------------------------------  -------------Print BOOK ------------------------------------------    --->
+        <!--------------------------------  ------------- PRINT LIST OF BOOK ------------------------------------------ --------   --->
         <q-tab name="Print" icon="print" label="Print" />
       </q-tabs>
     </div>
-    <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
+    <!--------------------------------  ---------  --- TABLE LISTS OF BOOKS  ------------------------------------------   ------ --->
     <div class="q-ma-md">
       <q-table
         title="List of Books"
@@ -321,8 +327,10 @@
             />
           </q-page-scroller>
         </template>
-        <!------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
-        <template v-slot:body-cell-action="props">
+
+        <!------------------------------------------  ----------    DETAILS BOOK Button ------------------------------------------ ------------------------->
+
+        <template v-slot:body-cell-Details="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
               <q-btn
@@ -338,7 +346,7 @@
               <q-dialog v-model="Details">
                 <q-card style="width: 500px; max-width: 90vw" flat bordered>
                   <q-card-section>
-                    <div class="text-subtitle2">01</div>
+                    <div>{{ inputBook.Book_ID }}</div>
                     <div class="text-h6">{{ inputBook.Title }}</div>
                   </q-card-section>
 
@@ -346,13 +354,15 @@
 
                   <q-card-section>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      ISBN: {{ inputBook.ISBN }}
+                      <strong> ISBN:</strong>
+                      {{ inputBook.ISBN }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      CallNo: {{ inputBook.Call_Number }}
+                      <strong>CallNo: </strong>
+                      {{ inputBook.Call_Number }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Author:
+                      <strong>Author:</strong>
                       {{
                         inputBook.authors?.A_Last_Name +
                         ", " +
@@ -360,30 +370,40 @@
                       }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Edition: {{ inputBook.Edition }}
+                      <strong>Edition:</strong>
+                      {{ inputBook.Edition }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Category: {{ inputBook.categories?.C_Description }}
+                      <strong>Category:</strong>
+                      {{ inputBook.categories?.C_Description }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Publisher: {{ inputBook.publishers?.Publisher }}
+                      <strong>Publisher:</strong>
+                      {{ inputBook.publishers?.Publisher }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Date 0f Publication:
+                      <strong>Date 0f Publication:</strong>
                       {{ inputBook.publishers?.DateOfPublication }}
                     </div>
-                    <div class="text-left q-ma-mp q-mb-xs">Pages: ii</div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Series: {{ inputBook.Series }}
+                      <strong>Pages:</strong>
+                      {{ inputBook.Pages }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Status: {{ inputBook.Book_Status }}
+                      <strong> Series:</strong>
+                      {{ inputBook.Series }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Notes: {{ inputBook.Notes }}
+                      <strong> Status:</strong>
+                      {{ inputBook.Book_Status }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Availability: {{ inputBook.Availability }}
+                      <strong>Notes:</strong>
+                      {{ inputBook.Notes }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Availability:</strong>
+                      {{ inputBook.Availability }}
                     </div>
                   </q-card-section>
 
@@ -394,7 +414,13 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-              <!-------------------------------------------------- EDIT BOOK BUTTON   -------------------------------------------------------------->
+            </div>
+          </q-td>
+        </template>
+        <!-------------------------------------------------- EDIT BOOK BUTTON   -------------------------------------------------------------->
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
               <q-btn
                 round
                 color="teal-8"
@@ -459,7 +485,7 @@
                             label="Author"
                             :options="allAuthor"
                             option-label="A_First_Name"
-                            option-value="A_First_Name"
+                            option-value="Author_ID"
                             map-options
                             emit-value
                             v-model="inputBook.authors"
@@ -667,6 +693,11 @@ export default class LibrarianIndex extends Vue {
   options2 = ["YES", "NO"];
 
   columns = [
+    {
+      name: "Details",
+      align: "center",
+      field: "Details",
+    },
     {
       name: "bookID",
       align: "center",

@@ -1,12 +1,14 @@
 import { lmsApiService } from "./lms-api.service";
 import { DefaultApi, IssuedBookDto } from "./rest-api";
 
-
-
 class IssuedBookService extends DefaultApi {
-  async create(payload: any): Promise<IssuedBookDto> {
+  async create(payload: any) {
     const response = await lmsApiService.addIssuedBook(payload);
-    return response.data;
+    if (response.status === 201) {
+      return response.data;
+    } else {
+      [];
+    }
   }
 
   async getAll(): Promise<IssuedBookDto> {
@@ -20,7 +22,10 @@ class IssuedBookService extends DefaultApi {
   }
 
   async update(IssuedBook_ID: number, payload: any) {
-    const response = await lmsApiService.updateIssuedBook(IssuedBook_ID, payload);
+    const response = await lmsApiService.updateIssuedBook(
+      IssuedBook_ID,
+      payload
+    );
     return response.data;
   }
 

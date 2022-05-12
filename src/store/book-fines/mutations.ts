@@ -1,5 +1,6 @@
-import { MutationTree } from 'vuex';
-import { BookFinestateInterface } from './state';
+import { BookFinesDto } from "src/services/rest-api";
+import { MutationTree } from "vuex";
+import { BookFinestateInterface } from "./state";
 
 const mutation: MutationTree<BookFinestateInterface> = {
   setNewBookFines(state, payload) {
@@ -12,9 +13,14 @@ const mutation: MutationTree<BookFinestateInterface> = {
     state.allBookFines.push(payload);
   },
 
-  getAllBookFines(state, payload) {
+  getAllBookFines(state, payload: BookFinesDto[]) {
     state.allBookFines = [];
-    state.allBookFines.push(...payload);
+    const newPayload = payload.map((book) => ({
+      ...book,
+      Payment_Amount: String(Number(book.Payment_Amount) * 5),
+    }));
+    console.log(newPayload);
+    state.allBookFines.push(...newPayload);
   },
 
   getOneBookFines(state, payload) {

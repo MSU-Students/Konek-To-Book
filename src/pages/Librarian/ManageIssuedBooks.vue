@@ -37,7 +37,7 @@
             </q-card-section>
 
             <q-card-section>
-              <q-form @submit="onaddIssuedBook()" class="q-px-md">
+              <q-form @submit="onaddIssuedBook" class="q-px-md">
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col-md-3">
                     <q-select
@@ -52,6 +52,8 @@
                       emit-value
                       @update:model-value="onSelectBook"
                       v-model="inputIssuedBook.books"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Book ID']"
                     />
                   </div>
                   <div class="col">
@@ -77,6 +79,8 @@
                       emit-value
                       @update:model-value="onSelectBorrower"
                       v-model="inputIssuedBook.borrowerss"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Borrower ID']"
                     />
                   </div>
                   <div class="col">
@@ -90,7 +94,7 @@
                     />
                   </div>
                 </div>
-
+                <!---
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
                     <q-input
@@ -106,6 +110,8 @@
                       ]"
                     />
                   </div>
+
+
                   <div class="col">
                     <q-input
                       dense
@@ -122,7 +128,22 @@
                   </div>
                 </div>
 
+                  -->
+
                 <div class="q-gutter-md row q-pb-md">
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputIssuedBook.Due_Date"
+                      type="date"
+                      hint="Due Date"
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the due date',
+                      ]"
+                    />
+                  </div>
                   <div class="col">
                     <q-input
                       outlined
@@ -157,13 +178,7 @@
                     @click="resetModel()"
                     v-close-popup
                   />
-                  <q-btn
-                    flat
-                    label="Save"
-                    color="primary"
-                    v-close-popup
-                    type="submit"
-                  />
+                  <q-btn flat label="Save" color="primary" type="submit" />
                 </div>
               </q-form>
             </q-card-section>
@@ -196,22 +211,9 @@
               <q-icon name="search" />
             </template>
           </q-input>
-
-          <q-page-scroller
-            position="bottom-right"
-            :scroll-offset="150"
-            :offset="[18, 18]"
-          >
-            <q-btn
-              fab
-              icon="keyboard_arrow_up"
-              color="orange-9"
-              text-color="white"
-            />
-          </q-page-scroller>
         </template>
 
-        <!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
+<!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
@@ -222,7 +224,7 @@
                 size="sm"
                 flat
                 dense
-                @click="editRowIssuedBook = true"
+                @click="openEditDialog(props.row)"
               />
               <q-dialog v-model="editRowIssuedBook" persistent>
                 <q-card style="width: 900px; max-width: 110vw" class="q-pa-lg">
@@ -240,6 +242,15 @@
                   <q-card-section>
                     <q-form @submit="oneditIssuedBook()" class="q-px-md">
                       <div class="q-gutter-md row q-pb-md">
+                        <div class="col-md-2">
+                          <q-input
+                            dense
+                            outlined
+                            readonly
+                            label="IssuedBook ID"
+                            v-model="inputIssuedBook.IssuedBook_ID"
+                          />
+                        </div>
                         <div class="col-md-3">
                           <q-select
                             autofocus
@@ -297,21 +308,6 @@
                           <q-input
                             dense
                             outlined
-                            v-model="inputIssuedBook.Borrow_Date"
-                            type="date"
-                            hint="Borrow Date"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the borrow date',
-                            ]"
-                          />
-                        </div>
-                        <div class="col">
-                          <q-input
-                            dense
-                            outlined
                             v-model="inputIssuedBook.Due_Date"
                             type="date"
                             hint="Due Date"
@@ -322,9 +318,6 @@
                             ]"
                           />
                         </div>
-                      </div>
-
-                      <div class="q-gutter-md row q-pb-md">
                         <div class="col">
                           <q-input
                             outlined
@@ -383,7 +376,7 @@
                 @click="deleteSpecificIssuedBook(props.row)"
               />
 
-              <!--------------------------------------- IssuedBook_Status ISSUEDBOOK BUTTON   ------------------------------------------    --->
+              <!--------------------------------------- IssuedBook_Status BUTTON   ------------------------------------------    --->
               <q-btn
                 round
                 color="green"
@@ -397,7 +390,7 @@
               <q-dialog v-model="issuedStatus">
                 <q-card style="width: 400px" class="q-ma-sm">
                   <q-card-section class="text-h8">
-                    IssuedBook Statusn
+                    IssuedBook Status
                   </q-card-section>
                   <q-separator />
                   <q-card-section class="flex flex-center q-pt-none">
@@ -442,7 +435,7 @@
           </q-td>
         </template>
       </q-table>
- <!--------------------------------------- Return Book Table   ------------------------------------------    --->
+      <!--------------------------------------- Return Book Table   ------------------------------------------    --->
       <div class="q-py-lg row q-gutter-md">
         <div class="col">
           <q-card style="height: 300px">
@@ -473,11 +466,11 @@
 
                   <q-item-section top side>
                     <q-item-label lines="1">
-                      <span class="text-weight-medium">Due Date :</span>
-                      <span class="text-grey-8"> {{ data.Due_Date }}</span>
+                      <span class="text-weight-medium">Return Date :</span>
+                      <span class="text-grey-8"> {{ data.Borrow_Date }}</span>
                     </q-item-label>
                     <q-item-label caption lines="1">
-                      Return Date : {{ data.Borrow_Date }}
+                      Due Date : {{ data.Due_Date }}
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -487,8 +480,7 @@
           </q-card>
         </div>
 
-
-<!--------------------------------------- Lost Book Table   ------------------------------------------    --->
+        <!--------------------------------------- Lost Book Table   ------------------------------------------    --->
         <div class="col">
           <q-card style="height: 300px">
             <q-layout container style="height: 300px">
@@ -512,24 +504,20 @@
                   <q-item-section top>
                     <q-item-label lines="1">
                       <span class="text-weight-medium">Book Title : </span>
-                      <span class="text-grey-8">
-                        {{ data.Title }}</span
-                      >
+                      <span class="text-grey-8"> {{ data.Title }}</span>
                     </q-item-label>
                     <q-item-label caption lines="1">
-                     Book Status : {{ data.Book_Status }}
+                      Book Status: {{ data.Book_Status }}
                     </q-item-label>
                   </q-item-section>
 
                   <q-item-section top side>
                     <q-item-label lines="1">
-                      <span class="text-weight-medium">Due Date : </span>
-                      <span class="text-grey-8">
-                        {{ data.Due_Date  }}</span
-                      >
+                      <span class="text-weight-medium">Return Date :</span>
+                      <span class="text-grey-8"> {{ data.Borrow_Date }}</span>
                     </q-item-label>
                     <q-item-label caption lines="1">
-                      Return Date : {{ data.Borrow_Date }}
+                      Due Date : {{ data.Due_Date }}
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -539,6 +527,18 @@
         </div>
       </div>
     </div>
+    <q-page-scroller
+      position="bottom-right"
+      :scroll-offset="150"
+      :offset="[18, 18]"
+    >
+      <q-btn
+        fab
+        icon="keyboard_arrow_up"
+        color="orange-9"
+        text-color="white"
+      /> </q-page-scroller
+    >
   </q-page>
 </template>
 
@@ -552,13 +552,17 @@ import {
 } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapState, mapActions, mapGetters } from "vuex";
+import { date } from "quasar";
+
+const timeStamp = Date.now();
+const currentDate = date.formatDate(timeStamp, "YYYY-MM-DD");
 
 @Options({
   computed: {
     ...mapState("issuedbook", ["allIssuedBook"]),
     ...mapState("book", ["allBook"]),
     ...mapState("borrower", ["allBorrower"]),
-    ...mapState("book-fines", ["allBookFines"]),
+    ...mapState("bookfines", ["allBookFines"]),
 
     ...mapGetters("issuedbook", ["returnBook", "lostBook", "issuedBook"]),
   },
@@ -620,14 +624,14 @@ export default class ManageIssuedBooks extends Vue {
       sortable: true,
     },
     {
-      name: "borrowname",
+      name: "borrowername",
       label: "Borrower Name",
       align: "center",
       field: "Borrower_Name",
     },
     {
       name: "borrowdate",
-      label: "Borrow Date",
+      label: "Borrow Date / Time",
       align: "center",
       field: "Borrow_Date",
     },
@@ -644,13 +648,6 @@ export default class ManageIssuedBooks extends Vue {
       align: "center",
       field: "IssuedBook_Status",
     },
-
-    {
-      name: "bookfinesid",
-      label: "BookFines ID",
-      align: "center",
-      field: "BookFines_ID",
-    },
     {
       name: "action",
       align: "center",
@@ -662,35 +659,45 @@ export default class ManageIssuedBooks extends Vue {
   inputIssuedBook: IssuedBookDto = {
     Title: "",
     Borrower_Name: "",
-    Borrow_Date: "",
+    Borrow_Date: currentDate,
     Due_Date: "",
     Book_Status: "",
     IssuedBook_Status: "Issued",
   };
 
-  onSelectBook(book: any) {
-    this.inputIssuedBook.Title = book.Title;
-    this.inputIssuedBook.Book_Status = book.Book_Status;
+  onSelectBook(books: any) {
+    this.inputIssuedBook.Title = books.Title;
+    this.inputIssuedBook.Book_Status = books.Book_Status;
   }
 
-  onSelectBorrower(borrower: any) {
+  onSelectBorrower(borrowerss: any) {
     this.inputIssuedBook.Borrower_Name =
-      borrower.B_Last_Name + ", " + borrower.B_First_Name;
+      borrowerss.B_Last_Name + ", " + borrowerss.B_First_Name;
   }
 
   openIssuedStatus(val: IssuedBookDto) {
     this.issuedStatus = true;
     this.inputIssuedBook = { ...val };
   }
-
+  openEditDialog(val: IssuedBookDto) {
+    this.editRowIssuedBook = true;
+    this.inputIssuedBook = { ...val };
+  }
   async onaddIssuedBook() {
-    await this.addIssuedBook(this.inputIssuedBook);
+    try {
+      await this.addIssuedBook(this.inputIssuedBook);
+      this.$q.notify({
+        type: "positive",
+        message: "Successfully Added.",
+      });
+    } catch (error) {
+      this.$q.notify({
+        type: "negative",
+        message: "Something went wrong!",
+      });
+    }
     this.addNewIssuedBook = false;
     this.resetModel();
-    this.$q.notify({
-      type: "positive",
-      message: "Successfully Added.",
-    });
   }
 
   async oneditIssuedBook() {
@@ -719,16 +726,11 @@ export default class ManageIssuedBooks extends Vue {
       });
   }
 
-  openEditDialog(val: IssuedBookDto) {
-    this.editRowIssuedBook = true;
-    this.inputIssuedBook = { ...val };
-  }
-
   resetModel() {
     this.inputIssuedBook = {
       Title: "",
       Borrower_Name: "",
-      Borrow_Date: "",
+      Borrow_Date: currentDate,
       Due_Date: "",
       Book_Status: "",
       IssuedBook_Status: "",

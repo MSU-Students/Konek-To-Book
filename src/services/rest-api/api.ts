@@ -185,6 +185,18 @@ export interface BookFinesDto {
      * @type {string}
      * @memberof BookFinesDto
      */
+    'Title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BookFinesDto
+     */
+    'Borrower_Name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BookFinesDto
+     */
     'Fine_Date': string;
     /**
      * 
@@ -210,6 +222,12 @@ export interface BookFinesDto {
      * @memberof BookFinesDto
      */
     'book'?: BookDto;
+    /**
+     * 
+     * @type {IssuedBookDto}
+     * @memberof BookFinesDto
+     */
+    'issued'?: IssuedBookDto;
 }
 /**
  * 
@@ -335,16 +353,16 @@ export interface IssuedBookDto {
     'borrowerss'?: BorrowerDto;
     /**
      * 
-     * @type {BorrowerDto}
-     * @memberof IssuedBookDto
-     */
-    'fines'?: BorrowerDto;
-    /**
-     * 
      * @type {BookDto}
      * @memberof IssuedBookDto
      */
     'books'?: BookDto;
+    /**
+     * 
+     * @type {BorrowerDto}
+     * @memberof IssuedBookDto
+     */
+    'fines'?: BorrowerDto;
 }
 /**
  * 

@@ -367,7 +367,7 @@
 </template>
 
 <script lang="ts">
-import { BorrowerDto, IssuedBookDto } from "src/services/rest-api";
+import { BorrowerDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 @Options({

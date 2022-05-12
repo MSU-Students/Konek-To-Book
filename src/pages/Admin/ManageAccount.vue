@@ -257,8 +257,9 @@
           </div>
         </template>
 
-        <!--------------------------------  SHOW LIST OF ACCOUNT  ------------------------------------------    --->
-        <template v-slot:body-cell-action="props">
+        <!------------------------------------------ DETAILS ACCOUNT Button ------------------------------------------ ------------------------->
+
+        <template v-slot:body-cell-Details="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
               <q-btn
@@ -273,9 +274,8 @@
               <q-dialog v-model="showAccountDetails">
                 <q-card style="width: 500px; max-width: 90vw" my-card>
                   <q-card-section>
-                    <div class="text-subtitle2">01</div>
+                    <div>{{ inputUser.id }}</div>
                     <div class="text-h6">
-                      Name:
                       {{
                         inputUser.U_Last_Name + ", " + inputUser.U_First_Name
                       }}
@@ -286,28 +286,36 @@
 
                   <q-card-section>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Gender : {{ inputUser.Gender }}
+                      <strong>Gender :</strong>
+                      {{ inputUser.Gender }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Birth Date : {{ inputUser.U_Birth_Date }}
+                      <strong>Birth Date :</strong>
+                      {{ inputUser.U_Birth_Date }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Address : {{ inputUser.Address }}
+                      <strong>Address :</strong>
+                      {{ inputUser.Address }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Contact Number : {{ inputUser.U_Contact_Number }}
+                      <strong>Contact Number :</strong>
+                      {{ inputUser.U_Contact_Number }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      E-mail : {{ inputUser.email }}
+                      <strong>E-mail :</strong>
+                      {{ inputUser.email }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Username : {{ inputUser.username }}
+                      <strong>Username : </strong>
+                      {{ inputUser.username }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      UserType : {{ inputUser.User_Type }}
+                      <strong>UserType : </strong>
+                      {{ inputUser.User_Type }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Status : {{ inputUser.User_Status }}
+                      <strong>Status :</strong>
+                      {{ inputUser.User_Status }}
                     </div>
                   </q-card-section>
 
@@ -318,8 +326,13 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-
-              <!--------------------------------  EDIT OF ACCOUNT  ------------------------------------------    --->
+            </div>
+          </q-td>
+        </template>
+        <!--------------------------------  EDIT OF ACCOUNT  ------------------------------------------    --->
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
               <q-btn
                 round
                 color="blue"
@@ -554,7 +567,7 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-              <!----------------------------- DELETE BUTTON ----------------------------->
+<!----------------------------- - - - - -  DELETE BUTTON  - - - - ----------------------------->
               <q-btn
                 color="red-8"
                 icon="delete"
@@ -618,6 +631,12 @@ export default class ManageAccount extends Vue {
   isPwd = true;
 
   columns = [
+    {
+      name: "Details",
+      align: "center",
+      field: "Details",
+    },
+
     {
       name: "userid",
       required: true,

@@ -39,31 +39,58 @@
             <q-card-section>
               <q-form @submit="onaddBookFines()" class="q-px-md">
                 <div class="q-gutter-md row q-pb-md">
-                  <div class="col-sm-6">
+                  <div class="col-md-3">
                     <q-select
                       autofocus
                       outlined
                       dense
                       label="Book_ID"
                       :options="allBook"
-                      option-label="Title"
-                      option-value="Book_ID"
+                      option-label="Book_ID"
+                      optine-value="Book_ID"
                       map-options
                       emit-value
+                      @update:model-value="onSelectBook"
                       v-model="inputBookFines.book"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Book ID']"
                     />
                   </div>
                   <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      v-model="inputBookFines.Title"
+                      readonly
+                      label="Title"
+                    />
+                  </div>
+                </div>
+                <div class="q-gutter-md row q-pb-md">
+                  <div class="col-md-3">
                     <q-select
                       dense
                       outlined
                       label="Borrower ID"
                       :options="allBorrower"
-                      option-label="B_First_Name"
+                      option-label="Borrower_ID"
                       option-value="Borrower_ID"
                       map-options
                       emit-value
+                      @update:model-value="onSelectBorrower"
                       v-model="inputBookFines.borrower"
+                      lazy-rules
+                      :rules="[(val) => val || 'Select Borrower ID']"
+                    />
+                  </div>
+                  <div class="col">
+                    <q-input
+                      dense
+                      outlined
+                      optine-value="B_First_Name"
+                      v-model="inputBookFines.Borrower_Name"
+                      readonly
+                      label="Borrower Name"
                     />
                   </div>
                 </div>
@@ -135,7 +162,7 @@
     <div class="q-ma-md">
       <q-table
         title="List of Fines"
-        :rows="allBookFines"
+        :rows="finesBook"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
@@ -168,6 +195,7 @@
             />
           </q-page-scroller>
         </template>
+
         <!------------------------------------- EDIT FINES BUTTON   ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
@@ -182,7 +210,7 @@
                 @click="openEditDialog(props.row)"
               />
               <q-dialog v-model="editRowFines" persistent>
-                <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
+                <q-card style="width: 850px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
                     <q-toolbar>
                       <q-avatar size="50px">
@@ -195,7 +223,7 @@
                   </q-card-section>
 
                   <q-card-section>
-                    <q-form @submit="oneditBookFines()" class="q-px-md">
+                    <q-form @submit="oneditBookFines" class="q-px-md">
                       <div class="q-gutter-md row q-pb-md">
                         <div class="col-md-2">
                           <q-input
@@ -206,34 +234,55 @@
                             v-model="inputBookFines.BookFines_ID"
                           />
                         </div>
-                        <div class="col">
+                        <div class="col-md-2">
                           <q-select
                             autofocus
                             outlined
                             dense
                             label="Book_ID"
                             :options="allBook"
-                            option-label="Title"
+                            option-label="Book_ID"
                             option-value="Book_ID"
                             map-options
                             emit-value
+                            @update:model-value="onSelectBook"
                             v-model="inputBookFines.book"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            v-model="inputBookFines.Title"
+                            readonly
+                            label="Title"
                           />
                         </div>
                       </div>
 
-                      <div class="q-gutter-md q-pb-md">
-                        <div class="col">
+                      <div class="q-gutter-md row q-pb-lg">
+                        <div class="col-md-3">
                           <q-select
                             dense
                             outlined
                             label="Borrower ID"
                             :options="allBorrower"
-                            option-label="B_First_Name"
+                            option-label="Borrower_ID"
                             option-value="Borrower_ID"
                             map-options
                             emit-value
+                            @update:model-value="onSelectBorrower"
                             v-model="inputBookFines.borrower"
+                          />
+                        </div>
+                        <div class="col">
+                          <q-input
+                            dense
+                            outlined
+                            optine-value="B_First_Name"
+                            v-model="inputBookFines.Borrower_Name"
+                            readonly
+                            label="Borrower Name"
                           />
                         </div>
                       </div>
@@ -311,12 +360,157 @@
                 flat
                 round
                 dense
-                @click="dialog = true"
+                @click="deleteSpecificBookFines(props.row)"
               />
+
+              <!--------------------------------------- Payment_Status BUTTON   ------------------------------------------    --->
+              <q-btn
+                round
+                color="green"
+                icon="done_all"
+                size="sm"
+                flat
+                dense
+                @click="openPaymentStatus(props.row)"
+              />
+
+              <q-dialog v-model="paymentStatus">
+                <q-card style="width: 400px" class="q-ma-sm">
+                  <q-card-section class="text-h8">
+                    Payment Status
+                  </q-card-section>
+                  <q-separator />
+                  <q-card-section class="flex flex-center q-pt-none">
+                    <q-form @submit="oneditBookFines()">
+                      <div>
+                        <q-radio
+                          v-model="inputBookFines.Payment_Status"
+                          val="Fines"
+                          label="Fines"
+                          color="Primary"
+                          size="lg"
+                        />
+                        <q-radio
+                          v-model="inputBookFines.Payment_Status"
+                          val="Paid"
+                          label="Paid"
+                          color="secondary"
+                          size="lg"
+                        />
+                        <q-radio
+                          v-model="inputBookFines.Payment_Status"
+                          val="Overdue"
+                          label="Overdue"
+                          color="red"
+                          size="lg"
+                        />
+                      </div>
+                      <div class="q-gutter-md q-pt-lg" align="right">
+                        <q-btn
+                          label="Cancel"
+                          color="red"
+                          v-close-popup
+                          @click="resetModel()"
+                        />
+                        <q-btn label="Done" color="primary" type="submit" />
+                      </div>
+                    </q-form>
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
             </div>
           </q-td>
         </template>
       </q-table>
+      <!--------------------------------------- Paid Table   ------------------------------------------    --->
+      <div class="q-py-lg row q-gutter-md">
+        <div class="col">
+          <q-card style="height: 300px">
+            <q-layout container style="height: 300px">
+              <q-list style="max-height: 300px" class="rounded-borders">
+                <q-item-label header>Paid</q-item-label>
+
+                <q-item v-for="data in paidBook" v-bind:key="data.Title">
+                  <q-item-section avatar top>
+                    <q-icon name="pending_actions" color="green" size="34px" />
+                  </q-item-section>
+
+                  <q-item-section top class="col-2 gt-sm">
+                    <q-item-label class="q-mt-sm">
+                      {{ data.Borrower_Name }}
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section top>
+                    <q-item-label lines="1">
+                      <span class="text-weight-medium">Book Title : </span>
+                      <span class="text-grey-8"> {{ data.Title }}</span>
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section top side>
+                    <q-item-label lines="1">
+                      <span class="text-weight-medium">Payment Amount:</span>
+                      <span class="text-grey-8">
+                        {{ data.Payment_Amount }}</span
+                      >
+                    </q-item-label>
+                    <q-item-label caption lines="1">
+                      Fine Date : {{ data.Fine_Date }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-separator spaced />
+              </q-list>
+            </q-layout>
+          </q-card>
+        </div>
+
+        <!--------------------------------------- OVERDUE Book Table   ------------------------------------------    --->
+        <div class="col">
+          <q-card style="height: 300px">
+            <q-layout container style="height: 300px">
+              <q-list bordered class="rounded-borders">
+                <q-item-label header>Overdue</q-item-label>
+
+                <q-item
+                  v-for="data in overdueBook"
+                  v-bind:key="data.Borrower_Name"
+                >
+                  <q-item-section avatar top>
+                    <q-icon name="assignment_return" color="red" size="34px" />
+                  </q-item-section>
+
+                  <q-item-section top class="col-2 gt-sm">
+                    <q-item-label class="q-mt-sm">
+                      {{ data.Borrower_Name }}
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section top>
+                    <q-item-label lines="1">
+                      <span class="text-weight-medium">Book Title : </span>
+                      <span class="text-grey-8"> {{ data.Title }}</span>
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section top side>
+                    <q-item-label lines="1">
+                      <span class="text-weight-medium">Payment Amount :</span>
+                      <span class="text-grey-8">
+                        {{ data.Payment_Amount }}</span
+                      >
+                    </q-item-label>
+                    <q-item-label caption lines="1">
+                      Fine Date : {{ data.Fine_Date }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-layout>
+          </q-card>
+        </div>
+      </div>
     </div>
   </q-page>
 </template>
@@ -325,13 +519,15 @@
 <script lang="ts">
 import { BookDto, BookFinesDto, BorrowerDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 @Options({
   computed: {
     ...mapState("bookfines", ["allBookFines"]),
     ...mapState("book", ["allBook"]),
     ...mapState("borrower", ["allBorrower"]),
+
+    ...mapGetters("bookfines", ["paidBook", "finesBook", "overdueBook"]),
   },
   methods: {
     ...mapActions("bookfines", [
@@ -347,6 +543,10 @@ export default class ManageFines extends Vue {
   allBook!: BookDto[];
   allBorrower!: BorrowerDto[];
 
+  paidBook!: BookFinesDto[];
+  overdueBook!: BookFinesDto[];
+  finesBook!: BookFinesDto[];
+
   addBookFines!: (payload: BookFinesDto) => Promise<void>;
   editBookFines!: (payload: BookFinesDto) => Promise<void>;
   deleteBookFines!: (payload: BookFinesDto) => Promise<void>;
@@ -361,10 +561,11 @@ export default class ManageFines extends Vue {
   cancelEnabled = true;
   addNewFines = false;
   editRowFines = false;
+  paymentStatus = false;
   filter = "";
   dialog = false;
 
-  options1 = [" ", "Fine", "Paid", "Overdue", "Overpaid"];
+  options1 = ["Fines", "Paid", "Overdue", "Overpaid"];
 
   columns = [
     {
@@ -375,27 +576,26 @@ export default class ManageFines extends Vue {
       sortable: true,
     },
     {
-      name: "bookID",
-      align: "center",
-      label: "Book ID",
-      field: (row: any) => row.book?.Book_ID || "None",
-      sortable: true,
-    },
-    {
-      name: "borrowerID",
-      align: "center",
-      label: "Borrower ID",
-      field: (row: any) => row.borrower?.Borrower_ID || "None",
-      sortable: true,
-    },
-    {
       name: "desc",
       required: true,
-      label: "Fine Date",
+      label: "Title",
       align: "center",
-      field: (row: BookFinesDto) => row.Fine_Date,
+      field: (row: BookFinesDto) => row.Title,
       format: (val: string) => `${val}`,
       sortable: true,
+    },
+    {
+      name: "borrowername",
+      label: "Borrower Name",
+      align: "center",
+      field: "Borrower_Name",
+      sortable: true,
+    },
+    {
+      name: "borrowdate",
+      label: "Fine Date",
+      align: "center",
+      field: "Fine_Date",
     },
     {
       name: "paymentamount",
@@ -404,7 +604,7 @@ export default class ManageFines extends Vue {
       field: "Payment_Amount",
     },
     {
-      name: "paymentstatus ",
+      name: "statusPayment ",
       label: "Payment Status",
       align: "center",
       field: "Payment_Status",
@@ -418,11 +618,31 @@ export default class ManageFines extends Vue {
   ];
 
   inputBookFines: BookFinesDto = {
+    Title: "",
+    Borrower_Name: "",
     Fine_Date: "",
     Payment_Amount: "",
-    Payment_Status: "",
+    Payment_Status: "Fines",
   };
 
+  onSelectBook(book: any) {
+    this.inputBookFines.Title = book.Title;
+  }
+
+  onSelectBorrower(borrower: any) {
+    this.inputBookFines.Borrower_Name =
+      borrower.B_Last_Name + ", " + borrower.B_First_Name;
+  }
+
+  openEditDialog(val: BookFinesDto) {
+    this.editRowFines = true;
+    this.inputBookFines = { ...val };
+  }
+
+  openPaymentStatus(val: BookFinesDto) {
+    this.paymentStatus = true;
+    this.inputBookFines = { ...val };
+  }
   async onaddBookFines() {
     await this.addBookFines(this.inputBookFines);
     this.addNewFines = false;
@@ -431,12 +651,11 @@ export default class ManageFines extends Vue {
       type: "positive",
       message: "Successfully Added.",
     });
-    debugger;
   }
 
   async oneditBookFines() {
     await this.editBookFines(this.inputBookFines);
-    this.editRowFines = false;
+    this.paymentStatus = false;
     this.resetModel();
     this.$q.notify({
       type: "positive",
@@ -459,14 +678,25 @@ export default class ManageFines extends Vue {
         });
       });
   }
-
-  openEditDialog(val: BookFinesDto) {
-    this.editRowFines = true;
-    this.inputBookFines = { ...val };
+  /*
+  colorManipulation(Payment_Status: string) {
+    if (
+      Payment_Status == "Fines" ||
+      Payment_Status == "Overdue" ||
+      Payment_Status == "Overpaid"
+    ) {
+      return "red";
+    }
+    if (Payment_Status == "Paid") {
+      return "green";
+    }
   }
+*/
 
   resetModel() {
     this.inputBookFines = {
+      Title: "",
+      Borrower_Name: "",
       Fine_Date: "",
       Payment_Amount: "",
       Payment_Status: "",
