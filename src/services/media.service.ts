@@ -3,8 +3,8 @@ import { DefaultApi } from "./rest-api/api";
 import { MediaDto } from "./rest-api";
 
 class MediaService extends DefaultApi {
-  async getPicture(id: number) {
-    const response = await lmsApiService.getMedia(id);
+  async getPicture(Media_id: number) {
+    const response = await lmsApiService.getMedia(Media_id);
     return response.data;
   }
 

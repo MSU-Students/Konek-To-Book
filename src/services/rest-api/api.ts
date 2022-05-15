@@ -369,7 +369,7 @@ export interface MediaDto {
      * @type {number}
      * @memberof MediaDto
      */
-    'id'?: number;
+    'Media_id'?: number;
     /**
      * 
      * @type {string}
@@ -1019,16 +1019,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Delete Media by id
-         * @param {number} id 
+         * @summary Delete Media by Media_id
+         * @param {number} mediaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMedia: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('deleteMedia', 'id', id)
-            const localVarPath = `/media/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+        deleteMedia: async (mediaId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mediaId' is not null or undefined
+            assertParamExists('deleteMedia', 'mediaId', mediaId)
+            const localVarPath = `/media/{Media_id}`
+                .replace(`{${"Media_id"}}`, encodeURIComponent(String(mediaId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1509,16 +1509,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Get Media by id
-         * @param {number} id 
+         * @summary Get Media by Media_id
+         * @param {number} mediaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMedia: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getMedia', 'id', id)
-            const localVarPath = `/media/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+        getMedia: async (mediaId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mediaId' is not null or undefined
+            assertParamExists('getMedia', 'mediaId', mediaId)
+            const localVarPath = `/media/{Media_id}`
+                .replace(`{${"Media_id"}}`, encodeURIComponent(String(mediaId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2394,13 +2394,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Delete Media by id
-         * @param {number} id 
+         * @summary Delete Media by Media_id
+         * @param {number} mediaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteMedia(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMedia(id, options);
+        async deleteMedia(mediaId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMedia(mediaId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2553,13 +2553,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get Media by id
-         * @param {number} id 
+         * @summary Get Media by Media_id
+         * @param {number} mediaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMedia(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMedia(id, options);
+        async getMedia(mediaId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMedia(mediaId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2917,13 +2917,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Delete Media by id
-         * @param {number} id 
+         * @summary Delete Media by Media_id
+         * @param {number} mediaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteMedia(id: number, options?: any): AxiosPromise<MediaDto> {
-            return localVarFp.deleteMedia(id, options).then((request) => request(axios, basePath));
+        deleteMedia(mediaId: number, options?: any): AxiosPromise<MediaDto> {
+            return localVarFp.deleteMedia(mediaId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3061,13 +3061,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Get Media by id
-         * @param {number} id 
+         * @summary Get Media by Media_id
+         * @param {number} mediaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMedia(id: number, options?: any): AxiosPromise<MediaDto> {
-            return localVarFp.getMedia(id, options).then((request) => request(axios, basePath));
+        getMedia(mediaId: number, options?: any): AxiosPromise<MediaDto> {
+            return localVarFp.getMedia(mediaId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3434,14 +3434,14 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary Delete Media by id
-     * @param {number} id 
+     * @summary Delete Media by Media_id
+     * @param {number} mediaId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public deleteMedia(id: number, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).deleteMedia(id, options).then((request) => request(this.axios, this.basePath));
+    public deleteMedia(mediaId: number, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteMedia(mediaId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3608,14 +3608,14 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get Media by id
-     * @param {number} id 
+     * @summary Get Media by Media_id
+     * @param {number} mediaId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getMedia(id: number, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getMedia(id, options).then((request) => request(this.axios, this.basePath));
+    public getMedia(mediaId: number, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getMedia(mediaId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

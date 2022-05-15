@@ -818,7 +818,7 @@ export default class ManageAccount extends Vue {
         const media = await this.uploadMedia(this.imageAttachement as File);
         await this.addAccount({
           ...this.inputUser,
-          url: media.id,
+          url: media.Media_id,
         });
         this.$q.notify({
           type: "positive",
@@ -845,7 +845,7 @@ export default class ManageAccount extends Vue {
   async oneditAccount() {
     this.loading = true;
     const media = await this.uploadMedia(this.imageAttachement as File);
-    await this.editAccount({ ...this.inputUser, url: media.id });
+    await this.editAccount({ ...this.inputUser, url: media.Media_id });
     this.editRowAccount = false;
     this.resetModel();
     this.$q.notify({
