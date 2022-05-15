@@ -33,6 +33,9 @@ import { BookStateInterface } from "./book/state";
 import bookfines from "./book-fines";
 import { BookFinestateInterface } from "./book-fines/state";
 
+import media from "./media-module";
+import { MediaStateInterface } from "./media-module/state";
+
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -55,6 +58,7 @@ export interface StateInterface {
   issuedbook: IssuedBookStateInterface;
   book: BookStateInterface;
   bookfines: BookFinestateInterface;
+  media: MediaStateInterface;
 
 }
 
@@ -81,6 +85,7 @@ export default store(function (/* { ssrContext } */) {
       issuedbook,
       book,
       bookfines,
+      media,
     },
 
     // enable strict mode (adds overhead!)

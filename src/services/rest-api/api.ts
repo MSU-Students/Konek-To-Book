@@ -357,12 +357,31 @@ export interface IssuedBookDto {
      * @memberof IssuedBookDto
      */
     'books'?: BookDto;
+}
+/**
+ * 
+ * @export
+ * @interface MediaDto
+ */
+export interface MediaDto {
     /**
      * 
-     * @type {BorrowerDto}
-     * @memberof IssuedBookDto
+     * @type {number}
+     * @memberof MediaDto
      */
-    'fines'?: BorrowerDto;
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaDto
+     */
+    'mimeType': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaDto
+     */
+    'filename'?: string;
 }
 /**
  * 
@@ -1000,6 +1019,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Delete Media by id
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMedia: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteMedia', 'id', id)
+            const localVarPath = `/media/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update Publishers by ID
          * @param {number} publisherID 
          * @param {*} [options] Override http request option.
@@ -1432,6 +1485,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          */
         getIssuedBooks: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/issued-book`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Media by id
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMedia: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getMedia', 'id', id)
+            const localVarPath = `/media/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2102,6 +2189,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Add Media
+         * @param {any} [file] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadMedia: async (file?: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/media/uploadFile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2268,6 +2394,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Delete Media by id
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteMedia(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMedia(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update Publishers by ID
          * @param {number} publisherID 
          * @param {*} [options] Override http request option.
@@ -2412,6 +2549,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async getIssuedBooks(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IssuedBookDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getIssuedBooks(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Media by id
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMedia(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMedia(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2606,6 +2754,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateUser(id, userDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Add Media
+         * @param {any} [file] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadMedia(file?: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadMedia(file, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -2758,6 +2917,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Delete Media by id
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMedia(id: number, options?: any): AxiosPromise<MediaDto> {
+            return localVarFp.deleteMedia(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update Publishers by ID
          * @param {number} publisherID 
          * @param {*} [options] Override http request option.
@@ -2889,6 +3058,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         getIssuedBooks(options?: any): AxiosPromise<IssuedBookDto> {
             return localVarFp.getIssuedBooks(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Media by id
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMedia(id: number, options?: any): AxiosPromise<MediaDto> {
+            return localVarFp.getMedia(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3064,6 +3243,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         updateUser(id: number, userDto: UserDto, options?: any): AxiosPromise<UserDto> {
             return localVarFp.updateUser(id, userDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Add Media
+         * @param {any} [file] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadMedia(file?: any, options?: any): AxiosPromise<MediaDto> {
+            return localVarFp.uploadMedia(file, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3245,6 +3434,18 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @summary Delete Media by id
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public deleteMedia(id: number, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteMedia(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Update Publishers by ID
      * @param {number} publisherID 
      * @param {*} [options] Override http request option.
@@ -3403,6 +3604,18 @@ export class DefaultApi extends BaseAPI {
      */
     public getIssuedBooks(options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getIssuedBooks(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Media by id
+     * @param {number} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getMedia(id: number, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getMedia(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3612,6 +3825,18 @@ export class DefaultApi extends BaseAPI {
      */
     public updateUser(id: number, userDto: UserDto, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).updateUser(id, userDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Add Media
+     * @param {any} [file] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public uploadMedia(file?: any, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).uploadMedia(file, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
