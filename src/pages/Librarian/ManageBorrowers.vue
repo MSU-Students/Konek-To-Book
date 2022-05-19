@@ -144,8 +144,8 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print BORROWER ------------------------------------------    --->
-        <q-tab name="Print" icon="print" label="Print" />
+        <!--------------------------------  Export CSV _ BORROWER ------------------------------------------    --->
+        <q-tab name="Export" icon="archive" label="Export to csv" />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE _ LIST OF BORROWERS  ------------------------------------------    --->

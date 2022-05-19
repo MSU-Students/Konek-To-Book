@@ -324,7 +324,7 @@
                     <div>{{ inputUser.id }}</div>
                     <div class="text-h6 text-center">
                       {{
-                        inputUser.U_Last_Name + ", " + inputUser.U_First_Name
+                        inputUser.U_First_Name + " " + inputUser.U_Middle_Name + " " + inputUser.U_Last_Name
                       }}
                     </div>
                   </q-card-section>

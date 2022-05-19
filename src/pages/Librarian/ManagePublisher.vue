@@ -98,8 +98,6 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print Publisher ------------------------------------------    --->
-        <q-tab name="Print" icon="print" label="Print" />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF Publisher  ------------------------------------------    --->

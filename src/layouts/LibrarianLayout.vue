@@ -22,8 +22,11 @@
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
                 <q-avatar size="100px">
-                  <img v-if="currentProfile.url" :src="currentProfile.url" />
-                  <img v-if="!currentProfile.url" src="../assets/Images/Logo_ISED.png" />
+                  <img v-if="currentProfile.url"  :src= "currentProfile.url" />
+                  <img
+                    v-if="!currentProfile.url"
+                    src="../assets/Images/Logo_ISED.png"
+                  />
                 </q-avatar>
                 <div class="text-weight-bold" style="text-align: center">
                   {{ currentProfile.U_First_Name }}

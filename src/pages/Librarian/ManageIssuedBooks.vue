@@ -184,8 +184,8 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print ISSUEDBOOK ------------------------------------------    --->
-        <q-tab name="Print" icon="print" label="Print" />
+        <!--------------------------------  EXPORT CSV _ ISSUEDBOOK ------------------------------------------    --->
+        <q-tab name="Export" icon="archive" label="Export to csv" />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF ISSUEDBOOK  ------------------------------------------    --->
@@ -213,7 +213,7 @@
           </q-input>
         </template>
 
-<!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
+        <!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
@@ -235,7 +235,14 @@
                       </q-avatar>
                       <div class="text-h6">Edit Issued Book</div>
                       <q-space />
-                      <q-btn flat round dense icon="close" v-close-popup />
+                      <q-btn
+                        flat
+                        round
+                        dense
+                        icon="close"
+                        @click="resetModel()"
+                        v-close-popup
+                      />
                     </q-toolbar>
                   </q-card-section>
 
@@ -532,13 +539,8 @@
       :scroll-offset="150"
       :offset="[18, 18]"
     >
-      <q-btn
-        fab
-        icon="keyboard_arrow_up"
-        color="orange-9"
-        text-color="white"
-      /> </q-page-scroller
-    >
+      <q-btn fab icon="keyboard_arrow_up" color="orange-9" text-color="white" />
+    </q-page-scroller>
   </q-page>
 </template>
 
@@ -631,7 +633,7 @@ export default class ManageIssuedBooks extends Vue {
     },
     {
       name: "borrowdate",
-      label: "Borrow Date / Time",
+      label: "Borrow Date",
       align: "center",
       field: "Borrow_Date",
     },
@@ -706,7 +708,7 @@ export default class ManageIssuedBooks extends Vue {
     this.resetModel();
     this.$q.notify({
       type: "positive",
-      message: "Successfully Edit.",
+      message: "Successfully Update.",
     });
   }
 

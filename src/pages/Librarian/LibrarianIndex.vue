@@ -203,7 +203,7 @@
                       @update:model-value="onSelectPublisher"
                       v-model="inputBook.publishers"
                       lazy-rules
-                      :rules="[(val) => val || 'Select Category']"
+                      :rules="[(val) => val || 'Select Publisher']"
                     />
                   </div>
                   <div class="col">
@@ -286,8 +286,8 @@
           </q-card>
         </q-dialog>
 
-        <!--------------------------------  ------------- PRINT LIST OF BOOK ------------------------------------------ --------   --->
-        <q-tab name="Print" icon="print" label="Print" />
+        <!--------------------------------  ------------- EXPORT CSV _ LIST OF BOOK ------------------------------------------ --------   --->
+        <q-tab name="Export" icon="archive" label="Export to csv" />
       </q-tabs>
     </div>
     <!--------------------------------  ---------  --- TABLE LISTS OF BOOKS  ------------------------------------------   ------ --->

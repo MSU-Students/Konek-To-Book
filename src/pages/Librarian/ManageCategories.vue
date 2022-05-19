@@ -66,8 +66,8 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print CATEGORIES ------------------------------------------    --->
-        <q-tab name="Print" icon="print" label="Print" />
+        <!--------------------------------  Export CSV _ CATEGORIES ------------------------------------------    --->
+        <q-tab name="Export" icon="archive" label="Export to csv" />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE LIST OF CATEGORIES  ------------------------------------------    --->

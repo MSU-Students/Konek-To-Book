@@ -74,7 +74,6 @@
                       label="Borrower ID"
                       :options="allBorrower"
                       option-label="Borrower_ID"
-
                       map-options
                       emit-value
                       @update:model-value="onSelectBorrower"
@@ -101,8 +100,13 @@
                       dense
                       outlined
                       v-model="inputBookFines.Fine_Date"
-                      readonly
+                      type="date"
                       hint="Fine Date"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the fine date',
+                      ]"
                     />
                   </div>
                   <div class="col">
@@ -154,8 +158,8 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print FINES ------------------------------------------    --->
-        <q-tab name="Print" icon="print" label="Print" />
+        <!--------------------------------  Export CSV _ FINES ------------------------------------------    --->
+        <q-tab name="Export" icon="archive" label="Export to csv" />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF FINES  ------------------------------------------    --->
@@ -218,23 +222,30 @@
                       </q-avatar>
                       <div class="text-h6">Edit Fines</div>
                       <q-space />
-                      <q-btn flat round dense icon="close" v-close-popup />
+                      <q-btn
+                        flat
+                        round
+                        dense
+                        icon="close"
+                        @click="resetModel()"
+                        v-close-popup
+                      />
                     </q-toolbar>
                   </q-card-section>
 
                   <q-card-section>
-                    <q-form @submit="oneditBookFines" class="q-px-md">
+                    <q-form @submit="oneditBookFines()" class="q-px-md">
                       <div class="q-gutter-md row q-pb-md">
                         <div class="col-md-2">
                           <q-input
                             dense
                             outlined
                             readonly
-                            label="BookFines ID"
+                            label="IssuedBook ID"
                             v-model="inputBookFines.BookFines_ID"
                           />
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                           <q-select
                             autofocus
                             outlined
@@ -242,7 +253,7 @@
                             label="Book_ID"
                             :options="allBook"
                             option-label="Book_ID"
-                            option-value="Book_ID"
+                            optine-value="Book_ID"
                             map-options
                             emit-value
                             @update:model-value="onSelectBook"
@@ -259,8 +270,7 @@
                           />
                         </div>
                       </div>
-
-                      <div class="q-gutter-md row q-pb-lg">
+                      <div class="q-gutter-md row q-pb-md">
                         <div class="col-md-3">
                           <q-select
                             dense
@@ -268,7 +278,6 @@
                             label="Borrower ID"
                             :options="allBorrower"
                             option-label="Borrower_ID"
-                            option-value="Borrower_ID"
                             map-options
                             emit-value
                             @update:model-value="onSelectBorrower"
@@ -293,7 +302,6 @@
                             dense
                             outlined
                             v-model="inputBookFines.Fine_Date"
-                            readonly
                             hint="Fine Date"
                           />
                         </div>
@@ -301,6 +309,7 @@
                           <q-input
                             dense
                             outlined
+                            readonly
                             v-model="inputBookFines.Payment_Amount"
                             label="Payment Amount"
                             prefix="₱"
@@ -337,8 +346,8 @@
                           flat
                           label="Cancel"
                           color="red-10"
-                          v-close-popup
                           @click="resetModel()"
+                          v-close-popup
                         />
                         <q-btn
                           flat
@@ -678,20 +687,6 @@ export default class ManageFines extends Vue {
         });
       });
   }
-  /*
-  colorManipulation(Payment_Status: string) {
-    if (
-      Payment_Status == "Fines" ||
-      Payment_Status == "Overdue" ||
-      Payment_Status == "Overpaid"
-    ) {
-      return "red";
-    }
-    if (Payment_Status == "Paid") {
-      return "green";
-    }
-  }
-*/
 
   resetModel() {
     this.inputBookFines = {
