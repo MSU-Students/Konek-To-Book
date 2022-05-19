@@ -452,7 +452,7 @@
 
                 <q-item v-for="data in returnBook" v-bind:key="data.Title">
                   <q-item-section avatar top>
-                    <q-icon name="pending_actions" color="green" size="34px" />
+                    <q-icon name="beenhere" color="green" size="34px" />
                   </q-item-section>
 
                   <q-item-section top class="col-2 gt-sm">
@@ -499,7 +499,7 @@
                   v-bind:key="data.Borrower_Name"
                 >
                   <q-item-section avatar top>
-                    <q-icon name="assignment_return" color="red" size="34px" />
+                    <q-icon name="assignment_late" color="red" size="34px" />
                   </q-item-section>
 
                   <q-item-section top class="col-2 gt-sm">
