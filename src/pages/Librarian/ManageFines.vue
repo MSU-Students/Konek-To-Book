@@ -352,6 +352,7 @@
                         <q-btn
                           flat
                           label="Save"
+                          v-close-popup
                           color="primary"
                           type="submit"
                         />
@@ -441,7 +442,7 @@
 
                 <q-item v-for="data in paidBook" v-bind:key="data.Title">
                   <q-item-section avatar top>
-                    <q-icon name="pending_actions" color="green" size="34px" />
+                    <q-icon name="credit_score" color="green" size="34px" />
                   </q-item-section>
 
                   <q-item-section top class="col-2 gt-sm">
@@ -452,9 +453,10 @@
 
                   <q-item-section top>
                     <q-item-label lines="1">
-                      <span class="text-weight-medium">Book Title : </span>
-                      <span class="text-grey-8"> {{ data.Title }}</span>
+                      <span class="text-weight-medium"> {{ data.Title }} </span>
                     </q-item-label>
+
+                    <q-item-label caption lines="1"> Book Title </q-item-label>
                   </q-item-section>
 
                   <q-item-section top side>
@@ -487,7 +489,7 @@
                   v-bind:key="data.Borrower_Name"
                 >
                   <q-item-section avatar top>
-                    <q-icon name="assignment_return" color="red" size="34px" />
+                    <q-icon name="price_change" color="red" size="34px" />
                   </q-item-section>
 
                   <q-item-section top class="col-2 gt-sm">
@@ -498,9 +500,10 @@
 
                   <q-item-section top>
                     <q-item-label lines="1">
-                      <span class="text-weight-medium">Book Title : </span>
-                      <span class="text-grey-8"> {{ data.Title }}</span>
+                      <span class="text-weight-medium"> {{ data.Title }} </span>
                     </q-item-label>
+
+                    <q-item-label caption lines="1"> Book Title </q-item-label>
                   </q-item-section>
 
                   <q-item-section top side>

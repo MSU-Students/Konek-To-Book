@@ -22,13 +22,20 @@
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
                 <q-avatar size="100px">
-                  <img v-if="currentProfile.url"  :src= "currentProfile.url" />
+                  <img
+                    v-if="currentProfile.url"
+                    class="avatar"
+                    :src="`http://localhost:3000/media/${currentProfile.url}`"
+                  />
                   <img
                     v-if="!currentProfile.url"
                     src="../assets/Images/Logo_ISED.png"
                   />
                 </q-avatar>
-                <div class="text-weight-bold" style="text-align: center">
+                <div
+                  class="text-weight-bold q-mt-md"
+                  style="text-align: center"
+                >
                   {{ currentProfile.U_First_Name }}
                   {{ currentProfile.U_Middle_Name }}
                   {{ currentProfile.U_Last_Name }}
@@ -208,3 +215,10 @@ export default class LoginForm extends Vue {
   }
 }
 </script>
+
+<style>
+.avatar {
+  width: 100%;
+  height: 100%;
+}
+</style>

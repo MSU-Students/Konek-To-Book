@@ -1,6 +1,6 @@
 <template>
- <q-layout class="bg-image q-pa-md flex flex-center">
-      <q-header  class="bg-image bg-primary text-white">
+  <q-layout class="bg-image q-pa-md flex flex-center">
+    <q-header class="bg-image bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-btn
@@ -53,25 +53,18 @@
         </q-card>
 
         <br />
-        <q-input
+        <q-btn
           rounded
-          dense
-          outlined
-          bg-color="white"
-          model="search"
-          placeholder="Search"
-        >
-          <template v-slot:append>
-            <q-btn
-              flat
-              icon="search"
-              @click="() => $router.replace('/GuestIndex')"
-            />
-          </template>
-        </q-input>
+          color="white"
+          icon="search"
+          outline
+          label="start to search"
+          style="width: 50rem"
+          @click="() => $router.replace('/GuestIndex')"
+        />
       </div>
     </div>
-   </q-layout>
+  </q-layout>
 </template>
 
 <script lang="ts">
