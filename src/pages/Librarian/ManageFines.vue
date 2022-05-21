@@ -300,6 +300,7 @@
                         <div class="col">
                           <q-input
                             dense
+                            readonly
                             outlined
                             v-model="inputBookFines.Fine_Date"
                             hint="Fine Date"
@@ -577,7 +578,7 @@ export default class ManageFines extends Vue {
   filter = "";
   dialog = false;
 
-  options1 = ["Fines", "Paid", "Overdue", "Overpaid"];
+  options1 = ["Fines", "Paid", "Overdue"];
 
   columns = [
     {

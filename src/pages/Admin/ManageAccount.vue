@@ -324,7 +324,11 @@
                     <div>{{ inputUser.id }}</div>
                     <div class="text-h6 text-center">
                       {{
-                        inputUser.U_First_Name + " " + inputUser.U_Middle_Name + " " + inputUser.U_Last_Name
+                        inputUser.U_First_Name +
+                        " " +
+                        inputUser.U_Middle_Name +
+                        " " +
+                        inputUser.U_Last_Name
                       }}
                     </div>
                   </q-card-section>
@@ -592,6 +596,7 @@
                               />
                               <q-input
                                 dense
+                                readonly
                                 outlined
                                 v-model="inputUser.password"
                                 :type="isPwd ? 'password' : 'text'"
@@ -603,15 +608,6 @@
                                     'Input the password',
                                 ]"
                               >
-                                <template v-slot:append>
-                                  <q-icon
-                                    :name="
-                                      isPwd ? 'visibility_off' : 'visibility'
-                                    "
-                                    class="cursor-pointer"
-                                    @click="isPwd = !isPwd"
-                                  />
-                                </template>
                               </q-input>
                             </div>
 
@@ -727,13 +723,15 @@ export default class ManageAccount extends Vue {
   imageAttachement: File = new File([], "Pick a Profile Pic (Max: 2MB)");
   loading = false;
   filter = "";
+
+  accountDetails = "";
   deleteSpecific = false;
   showAccountDetails = false;
   addNewAccount = false;
   cancelEnabled = true;
   editRowAccount = false;
+
   fitModes = ["scale-down"];
-  accountDetails = "";
   options = ["Male", "Female"];
   options1 = ["Librarian", "Admin"];
   options2 = ["Active", "Inactive"];
@@ -863,8 +861,8 @@ export default class ManageAccount extends Vue {
     }
 
     this.addNewAccount = false;
-    this.resetModel();
     this.loading = false;
+    this.resetModel();
   }
   async oneditAccount() {
     try {
@@ -872,11 +870,13 @@ export default class ManageAccount extends Vue {
         this.loading = true;
         const media = await this.uploadMedia(this.imageAttachement as File);
         await this.editAccount({ ...this.inputUser, url: media.Media_id });
-        this.$q.notify({
-          type: "positive",
-          message: "Successfully Update",
-        });
+      } else if (this.imageAttachement.size < 0) {
+        await this.editAccount({ ...this.inputUser });
       }
+      this.$q.notify({
+        type: "positive",
+        message: "Successfully Update",
+      });
     } catch (error) {
       this.$q.notify({
         type: "negative",
@@ -930,7 +930,7 @@ export default class ManageAccount extends Vue {
       password: "",
       url: "",
     };
-    this.imageAttachement = new File([], "Select File");
+    this.imageAttachement = new File([], "Pick a Profile Pic (Max: 2MB)");
   }
 }
 </script>
