@@ -67,7 +67,12 @@
           </q-card>
         </q-dialog>
         <!--------------------------------  Export CSV _ CATEGORIES ------------------------------------------    --->
-        <q-tab name="Export" icon="archive" label="Export to csv" />
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE LIST OF CATEGORIES  ------------------------------------------    --->
@@ -197,9 +202,31 @@
 </template>
 
 <script lang="ts">
+import { exportFile } from "quasar";
 import { CategoryDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
+
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`;
+}
 
 @Options({
   computed: {
@@ -263,6 +290,33 @@ export default class ManageCategories extends Vue {
     C_Description: "",
   };
 
+  exportTable() {
+    // naive encoding to csv format
+    const header = [wrapCsvValue("ID"), wrapCsvValue("Category")];
+    const rows = [header.join(",")].concat(
+      this.allCategory.map((c) =>
+        [
+          wrapCsvValue(String(c.Category_ID)),
+          wrapCsvValue(c.C_Description),
+        ].join(",")
+      )
+    );
+
+
+    const status = exportFile(
+      "category-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
   async onaddCategory() {
     await this.addCategory(this.inputCategory);
     this.addNewCategory = false;
