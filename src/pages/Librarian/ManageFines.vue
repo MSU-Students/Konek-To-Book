@@ -731,15 +731,15 @@ export default class ManageFines extends Vue {
     });
   }
 
-  // async oneditBookFines() {
-  //   await this.editBookFines(this.inputBookFines);
-  //   this.paymentStatus = false;
-  //   this.resetModel();
-  //   this.$q.notify({
-  //     type: "positive",
-  //     message: "Successfully Update",
-  //   });
-  // }
+  async oneditBookFines() {
+    await this.editBookFines(this.inputBookFines);
+    this.paymentStatus = false;
+    this.resetModel();
+    this.$q.notify({
+      type: "positive",
+      message: "Successfully Update",
+    });
+  }
 
   deleteSpecificBookFines(val: BookFinesDto) {
     this.$q

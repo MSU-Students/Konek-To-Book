@@ -26,6 +26,7 @@ const actions: ActionTree<IAuthState, StateInterface> = {
   },
   async changePassword(context, changePassword: ChangePasswordDto) {
     await lmsApiService.changeMyPass(changePassword);
+    context.commit('')
   },
 };
 

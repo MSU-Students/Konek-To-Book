@@ -58,7 +58,7 @@
           color="white"
           icon="search"
           outline
-          label="start to search"
+          label="Get Start"
           style="width: 50rem"
           @click="() => $router.replace('/GuestIndex')"
         />

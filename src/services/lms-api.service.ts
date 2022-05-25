@@ -69,10 +69,9 @@ class LMSApiService extends DefaultApi {
   }
 
   async changeMyPass(password: ChangePasswordDto) {
-    try {
-      await lmsApiService.changePassword(password);
-    } catch (error) {
-      console.log('change pass error', error);
+    const res  = await lmsApiService.changePassword(password);
+    if (res.status === 201){
+      []
     }
   }
 

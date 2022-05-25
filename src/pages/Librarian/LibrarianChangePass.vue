@@ -8,7 +8,7 @@
               <div class="q-pt-lg">
                 <div class="col text-h6 ellipsis flex justify-center">
                   <div class="text-h4 text-primary q-my-none text-weight-bold">
-                    Password
+                    Change Password
                   </div>
                 </div>
               </div>
@@ -136,25 +136,43 @@ export default class LibrarianChangePass extends Vue {
   user = "librarian";
 
   async onSubmit() {
-    try {
-      if (this.password.newPassword != this.confirmpassword) {
-        this.$q.notify({
-          type: "negative",
-          message: "Passwords not match!",
-        });
-        return;
-      }
-      await lmsApiService.changePassword(this.password);
-      this.$q.notify({
-        type: "positive",
-        message: "Change password successfully",
+    this.$q
+      .dialog({
+        message: "Are you sure to change your password?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        try {
+          if (this.password.newPassword != this.confirmpassword) {
+            this.$q.notify({
+              type: "negative",
+              message: "Passwords not match!",
+            });
+            return;
+          } else {
+            await lmsApiService.changeMyPass(this.password);
+            this.$q.notify({
+              type: "positive",
+              message: "Change password successfully",
+            });
+
+            const result = await lmsApiService.logoutUser();
+            if (result.status == 201) {
+              await this.$router.replace("/");
+            }
+            this.$q.notify({
+              type: "warning",
+              message: "You have been logged out!",
+            });
+          }
+        } catch (error: any) {
+          this.$q.notify({
+            type: "negative",
+            message: error.message,
+          });
+        }
       });
-    } catch (error: any) {
-      this.$q.notify({
-        type: "negative",
-        message: error.message,
-      });
-    }
   }
 
   onClear() {

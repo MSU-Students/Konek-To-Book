@@ -913,28 +913,36 @@ export default class ManageAccount extends Vue {
     this.resetModel();
   }
   async oneditAccount() {
-    console.log;
-    try {
-      if (this.imageAttachement.size > 0) {
-        this.loading = true;
-        const media = await this.uploadMedia(this.imageAttachement as File);
-        await this.editAccount({ ...this.inputUser, url: media.Media_id });
-      } else if (this.imageAttachement.size < 0) {
-        await this.editAccount({ ...this.inputUser });
-      }
-      this.$q.notify({
-        type: "positive",
-        message: "Successfully Update",
-      });
-    } catch (error) {
-      this.$q.notify({
-        type: "negative",
-        message: "Unsuccessfully Update",
-      });
-    }
-    this.loading = false;
+     this.loading = true;
+    const media = await this.uploadMedia(this.imageAttachement as File);
+    await this.editAccount({ ...this.inputUser, url: media.Media_id });
     this.editRowAccount = false;
     this.resetModel();
+    this.$q.notify({
+      type: 'positive',
+      message: 'Successfully Updated',
+    });
+    // try {
+    //   if (this.imageAttachement.size > 0) {
+    //     this.loading = true;
+    //     const media = await this.uploadMedia(this.imageAttachement as File);
+    //     await this.editAccount({ ...this.inputUser, url: media.Media_id });
+    //   } else if (this.imageAttachement.size < 0) {
+    //     await this.editAccount({ ...this.inputUser });
+    //   }
+    //   this.$q.notify({
+    //     type: "positive",
+    //     message: "Successfully Update",
+    //   });
+    // } catch (error) {
+    //   this.$q.notify({
+    //     type: "negative",
+    //     message: "Unsuccessfully Update",
+    //   });
+    // }
+    // this.loading = false;
+    // this.editRowAccount = false;
+    // this.resetModel();
   }
 
   deleteSpecificAccount(val: UserDto) {

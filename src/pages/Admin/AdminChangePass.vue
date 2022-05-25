@@ -6,7 +6,7 @@
       <section id="login" class="column">
         <div class="q-pa-md" style="max-width: 400px" align="center">
           <br />
-          <div class="text-h5 text-grey-10 text-bold">Password</div>
+          <div class="text-h5 text-grey-10 text-bold">Change Password</div>
           <br />
 
           <q-form @submit="onSubmit" class="q-gutter-md">
@@ -123,25 +123,43 @@ export default class LibrarianChangePass extends Vue {
   user = "librarian";
 
   async onSubmit() {
-    try {
-      if (this.password.newPassword != this.confirmpassword) {
-        this.$q.notify({
-          type: "negative",
-          message: "Passwords not match!",
-        });
-        return;
-      }
-      await lmsApiService.changePassword(this.password);
-      this.$q.notify({
-        type: "positive",
-        message: "Change password successfully",
+    this.$q
+      .dialog({
+        message: "Are you sure to change your password?",
+        cancel: true,
+        persistent: true,
+      })
+      .onOk(async () => {
+        try {
+          if (this.password.newPassword != this.confirmpassword) {
+            this.$q.notify({
+              type: "negative",
+              message: "Passwords not match!",
+            });
+            return;
+          } else {
+            await lmsApiService.changeMyPass(this.password);
+            this.$q.notify({
+              type: "positive",
+              message: "Change password successfully",
+            });
+
+            const result = await lmsApiService.logoutUser();
+            if (result.status == 201) {
+              await this.$router.replace("/");
+            }
+            this.$q.notify({
+              type: "warning",
+              message: "You have been logged out!",
+            });
+          }
+        } catch (error: any) {
+          this.$q.notify({
+            type: "negative",
+            message: error.message,
+          });
+        }
       });
-    } catch (error: any) {
-      this.$q.notify({
-        type: "negative",
-        message: error.message,
-      });
-    }
   }
 
   onClear() {
