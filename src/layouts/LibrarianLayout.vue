@@ -21,11 +21,19 @@
           <q-btn-dropdown round flat dropdown-icon="account_circle">
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
-                <q-avatar size="70px">
-                  <img src="../assets/Images/msu-main.png" />
+                <q-avatar size="100px">
+                  <img v-if="currentProfile.url" :src="currentProfile.url" />
+                  <img v-if="!currentProfile.url" src="../assets/Images/Logo_ISED.png" />
                 </q-avatar>
-                <div class="q-mt-md q-mb-xs">201812488</div>
-                <div class="text-weight-bold">Alango, Norjehan</div>
+                <div class="text-weight-bold" style="text-align: center">
+                  {{ currentProfile.U_First_Name }}
+                  {{ currentProfile.U_Middle_Name }}
+                  {{ currentProfile.U_Last_Name }}
+                </div>
+                <div class="text-caption" style="text-align: center">
+                  {{ currentProfile.email }}
+                </div>
+
                 <q-list>
                   <q-item
                     clickable
@@ -159,9 +167,41 @@
 </template>
 
 <script lang="ts">
+import { UserDto } from "src/services/rest-api";
+import { AUser } from "src/store/auth/state";
 import { Vue, Options } from "vue-class-component";
-Options({});
+import { mapActions, mapState } from "vuex";
+import { lmsApiService } from "src/services/lms-api.service";
+Options({
+  computed: {
+    ...mapState("auth", ["currentUser"]),
+  },
+  methods: {
+    ...mapActions("auth", ["getProfile"]),
+  },
+});
 export default class LoginForm extends Vue {
   drawer = false;
+  getProfile!: () => Promise<AUser>;
+  currentUser!: AUser;
+  currentProfile: UserDto = {
+    U_First_Name: "",
+    username: "",
+    password: "",
+    U_Last_Name: "",
+    Gender: "",
+    U_Birth_Date: "",
+    Address: "",
+    User_Type: "",
+    User_Status: "",
+    U_Middle_Name: "",
+    U_Contact_Number: "",
+    url: "",
+  };
+
+  async mounted() {
+    const res = await lmsApiService.getProfile();
+    this.currentProfile = res.data;
+  }
 }
 </script>

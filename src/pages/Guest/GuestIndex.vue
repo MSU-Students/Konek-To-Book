@@ -53,23 +53,25 @@
               />
 
               <q-dialog v-model="Details">
-                <q-card style="width: 500px; max-width: 90vw" flat bordered>
+                <q-card style="width: 500px; max-width: 90vw" my-card>
                   <q-card-section>
-                    <div class="text-subtitle2">01</div>
-                    <div class="text-h6">{{ inputBook.Title }}</div>
+                    <div class="text-subtitle2">{{ inputBook.Book_ID }}</div>
+                    <div class="text-h6 text-center">{{ inputBook.Title }}</div>
                   </q-card-section>
 
                   <q-separator />
 
                   <q-card-section>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      ISBN: {{ inputBook.ISBN }}
+                      <strong> ISBN:</strong>
+                      {{ inputBook.ISBN }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      CallNo: {{ inputBook.Call_Number }}
+                      <strong>CallNo: </strong>
+                      {{ inputBook.Call_Number }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Author:
+                      <strong>Author:</strong>
                       {{
                         inputBook.authors?.A_Last_Name +
                         ", " +
@@ -77,30 +79,40 @@
                       }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Edition: {{ inputBook.Edition }}
+                      <strong>Edition:</strong>
+                      {{ inputBook.Edition }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Category: {{ inputBook.categories?.C_Description }}
+                      <strong>Category:</strong>
+                      {{ inputBook.categories?.C_Description }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Publisher: {{ inputBook.publishers?.Publisher }}
+                      <strong>Publisher:</strong>
+                      {{ inputBook.publishers?.Publisher }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Date 0f Publication:
+                      <strong>Date 0f Publication:</strong>
                       {{ inputBook.publishers?.DateOfPublication }}
                     </div>
-                    <div class="text-left q-ma-mp q-mb-xs">Pages: ii</div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Series: {{ inputBook.Series }}
+                      <strong>Pages:</strong>
+                      {{ inputBook.Pages }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Status: {{ inputBook.Book_Status }}
+                      <strong> Series:</strong>
+                      {{ inputBook.Series }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Notes: {{ inputBook.Notes }}
+                      <strong> Status:</strong>
+                      {{ inputBook.Book_Status }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      Availability: {{ inputBook.Availability }}
+                      <strong>Notes:</strong>
+                      {{ inputBook.Notes }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Availability:</strong>
+                      {{ inputBook.Availability }}
                     </div>
                   </q-card-section>
 
@@ -160,6 +172,11 @@ export default class GuestIndex extends Vue {
   dialog = false;
 
   columns = [
+     {
+      name: "action",
+      align: "center",
+      field: "action",
+    },
     {
       name: "bookID",
       align: "center",
@@ -250,12 +267,7 @@ export default class GuestIndex extends Vue {
       align: "center",
       field: "Availability",
     },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
-    },
+
   ];
 
   inputBook: BookDto = {

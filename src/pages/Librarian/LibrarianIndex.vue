@@ -344,10 +344,10 @@
               />
 
               <q-dialog v-model="Details">
-                <q-card style="width: 500px; max-width: 90vw" flat bordered>
+                <q-card style="width: 500px; max-width: 90vw" my-card>
                   <q-card-section>
                     <div>{{ inputBook.Book_ID }}</div>
-                    <div class="text-h6">{{ inputBook.Title }}</div>
+                    <div class="text-h6 text-center">{{ inputBook.Title }}</div>
                   </q-card-section>
 
                   <q-separator />
@@ -643,7 +643,7 @@ import {
   BorrowerDto,
   CategoryDto,
   IssuedBookDto,
-  PublisherDto,
+  PublisherDto
 } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
@@ -657,9 +657,11 @@ import { mapActions, mapState } from "vuex";
 
     ...mapState("issuedbook", ["allIssuedBook"]),
     ...mapState("borrower", ["allBorrower"]),
+    ...mapState("auth", ["currentUser"]),
   },
   methods: {
     ...mapActions("book", ["addBook", "editBook", "deleteBook", "getAllBook"]),
+    ...mapActions("auth", ["authUser"]),
   },
 })
 export default class LibrarianIndex extends Vue {
@@ -678,7 +680,6 @@ export default class LibrarianIndex extends Vue {
 
   async mounted() {
     await this.getAllBook();
-    console.log(this.allBook);
   }
 
   pagination = {};

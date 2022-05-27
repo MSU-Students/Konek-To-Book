@@ -74,7 +74,7 @@
                       label="Borrower ID"
                       :options="allBorrower"
                       option-label="Borrower_ID"
-                      option-value="Borrower_ID"
+
                       map-options
                       emit-value
                       @update:model-value="onSelectBorrower"

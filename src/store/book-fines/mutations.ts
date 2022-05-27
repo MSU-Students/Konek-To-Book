@@ -15,11 +15,24 @@ const mutation: MutationTree<BookFinestateInterface> = {
 
   getAllBookFines(state, payload: BookFinesDto[]) {
     state.allBookFines = [];
-    const newPayload = payload.map((book) => ({
-      ...book,
-      Payment_Amount: String(Number(book.Payment_Amount) * 5),
-    }));
-    console.log(newPayload);
+    const dateNow = new Date();
+    const newPayload = payload.map((book) => {
+      const parseDate = /^(?<Year>\d{4})-(?<Month>\d{2})-(?<Date>\d{2})$/.exec(
+        book.Fine_Date
+      );
+      const dueDate: Date = new Date(
+        Number(parseDate?.groups?.Year),
+        Number(parseDate?.groups?.Month) - 1,
+        Number(parseDate?.groups?.Date)
+      );
+
+      const diffTime = Math.abs(Number(dueDate) - Number(dateNow));
+      const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return {
+        ...book,
+        Payment_Amount: String(Number(book.Payment_Amount) * days),
+      };
+    });
     state.allBookFines.push(...newPayload);
   },
 

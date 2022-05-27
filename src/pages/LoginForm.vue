@@ -131,7 +131,7 @@ import { AUser } from "src/store/auth/state";
 import { mapActions, mapState } from "vuex";
 @Options({
   methods: {
-    ...mapActions("auth", ["login", "authUser"]),
+    ...mapActions("auth", ["login"]),
   },
   computed: {
     ...mapState("auth", ["currentUser"]),
@@ -152,10 +152,7 @@ export default class LoginForm extends Vue {
         userName: this.username,
         password: this.password,
       });
-      if (
-        this.currentUser.User_Type == "admin" ||
-        this.currentUser.User_Type == "Admin"
-      ) {
+      if (this.currentUser.User_Type == "Admin") {
         await this.$router.replace("/AdminIndex");
         this.$q.notify({
           position: "top",
@@ -163,10 +160,7 @@ export default class LoginForm extends Vue {
           message: "You are logged in",
         });
       }
-      if (
-        this.currentUser.User_Type == "librarian" ||
-        this.currentUser.User_Type == "Librarian"
-      ) {
+      if (this.currentUser.User_Type == "Librarian") {
         await this.$router.replace("/LibrarianIndex");
         this.$q.notify({
           position: "top",
@@ -178,31 +172,6 @@ export default class LoginForm extends Vue {
       this.$q.notify({
         type: "negative",
         message: "Wrong Username or Password!",
-      });
-    }
-  }
-
-  admin_user = "";
-  admin_pass = "";
-
-  async adminUser() {
-    if (this.admin_user == "admin" && this.admin_pass == "admin") {
-      await this.$router.replace("/AdminIndex");
-      this.$q.notify({
-        color: "positive",
-        icon: "cloud_done",
-        textColor: "white",
-        position: "top",
-        message: "You are Logged In!.",
-      });
-    } else {
-      this.admin_user = "";
-      this.admin_pass = "";
-      this.$q.notify({
-        color: "secondary",
-        textColor: "primary",
-        position: "top",
-        message: "Incorrect username or password.",
       });
     }
   }

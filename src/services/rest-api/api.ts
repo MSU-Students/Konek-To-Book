@@ -516,6 +516,12 @@ export interface UserDto {
      * @type {string}
      * @memberof UserDto
      */
+    'url': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
     'refreshToken'?: string;
 }
 
