@@ -94,41 +94,6 @@
                     />
                   </div>
                 </div>
-                <!---
-                <div class="q-gutter-md row q-pb-md">
-                  <div class="col">
-                    <q-input
-                      dense
-                      outlined
-                      v-model="inputIssuedBook.Borrow_Date"
-                      type="date"
-                      hint="Borrow Date"
-                      lazy-rules
-                      :rules="[
-                        (val) =>
-                          (val && val.length > 0) || 'Input the borrow date',
-                      ]"
-                    />
-                  </div>
-
-
-                  <div class="col">
-                    <q-input
-                      dense
-                      outlined
-                      v-model="inputIssuedBook.Due_Date"
-                      type="date"
-                      hint="Due Date"
-                      lazy-rules
-                      :rules="[
-                        (val) =>
-                          (val && val.length > 0) || 'Input the due date',
-                      ]"
-                    />
-                  </div>
-                </div>
-
-                  -->
 
                 <div class="q-gutter-md row q-pb-md">
                   <div class="col">
@@ -185,7 +150,12 @@
           </q-card>
         </q-dialog>
         <!--------------------------------  EXPORT CSV _ ISSUEDBOOK ------------------------------------------    --->
-        <q-tab name="Export" icon="archive" label="Export to csv" />
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF ISSUEDBOOK  ------------------------------------------    --->
@@ -544,8 +514,8 @@
   </q-page>
 </template>
 
-<!--------------------------------------- Information OF ISSUEDBOOK    ------------------------------------------    --->
 <script lang="ts">
+import { exportFile } from "quasar";
 import {
   BookDto,
   BookFinesDto,
@@ -559,6 +529,23 @@ import { date } from "quasar";
 const timeStamp = Date.now();
 const currentDate = date.formatDate(timeStamp, "YYYY-MM-DD");
 
+//---------------------------------------- FUNCTION FOR EXPORT CSV----------
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+
+  return `"${formatted}"`;
+}
+
+//-------------------------------------------------------------------------
 @Options({
   computed: {
     ...mapState("issuedbook", ["allIssuedBook"]),
@@ -657,6 +644,49 @@ export default class ManageIssuedBooks extends Vue {
       field: "action",
     },
   ];
+
+  // ----------------------------- E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("IssuedBook ID"),
+      wrapCsvValue("Title"),
+      wrapCsvValue("Borrower Name"),
+      wrapCsvValue("Borrow Date"),
+      wrapCsvValue("Due Date"),
+      wrapCsvValue("Book Status"),
+      wrapCsvValue("IssuedBook Status"),
+    ];
+    const rows = [header.join(",")].concat(
+      this.allIssuedBook.map((c) =>
+        [
+          wrapCsvValue(String(c.IssuedBook_ID)),
+          wrapCsvValue(c.Title),
+          wrapCsvValue(c.Borrower_Name),
+          wrapCsvValue(c.Borrow_Date),
+          wrapCsvValue(c.Due_Date),
+          wrapCsvValue(c.Book_Status),
+          wrapCsvValue(c.IssuedBook_Status),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of IssuedBooks_ MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+  // --------------------------------------------------------------------------
 
   inputIssuedBook: IssuedBookDto = {
     Title: "",

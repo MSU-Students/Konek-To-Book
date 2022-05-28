@@ -144,8 +144,13 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Export CSV _ BORROWER ------------------------------------------    --->
-        <q-tab name="Export" icon="archive" label="Export to csv" />
+        <!--------------------------------  Export CSV _ BORROWERS ------------------------------------------    --->
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE _ LIST OF BORROWERS  ------------------------------------------    --->
@@ -367,9 +372,32 @@
 </template>
 
 <script lang="ts">
+import { exportFile } from "quasar";
 import { BorrowerDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
+
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`;
+}
+
 @Options({
   computed: {
     ...mapState("borrower", ["allBorrower"]),
@@ -462,6 +490,49 @@ export default class ManageBorrowers extends Vue {
       field: "action",
     },
   ];
+
+  //----------------------------- E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("Borrower ID"),
+      wrapCsvValue("Student ID"),
+      wrapCsvValue("First Name"),
+      wrapCsvValue("Middle Name"),
+      wrapCsvValue("Last Name"),
+      wrapCsvValue("Year/Level"),
+      wrapCsvValue("Contact number"),
+    ];
+    const rows = [header.join(",")].concat(
+      this.allBorrower.map((c) =>
+        [
+          wrapCsvValue(String(c.Borrower_ID)),
+          wrapCsvValue(c.Student_ID),
+          wrapCsvValue(c.B_First_Name),
+          wrapCsvValue(String(c.B_Middle_Name)),
+          wrapCsvValue(c.B_Last_Name),
+          wrapCsvValue(c.YearLevel),
+          wrapCsvValue(c.B_Contact_Number),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of Borrowers_MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+  // -----------------------------------------------------------------------
 
   inputBorrower: BorrowerDto = {
     Student_ID: "",

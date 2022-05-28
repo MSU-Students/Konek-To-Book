@@ -103,6 +103,7 @@
 import { Vue, Options } from "vue-class-component";
 import { mapActions } from "vuex";
 import { ChangePasswordDto } from "src/services/rest-api";
+import { lmsApiService } from "src/services/lms-api.service";
 
 Options({
   methods: {
@@ -130,7 +131,7 @@ export default class LibrarianChangePass extends Vue {
         });
         return;
       }
-      await this.changePassword(this.password);
+      await lmsApiService.changePassword(this.password);
       this.$q.notify({
         type: "positive",
         message: "Change password successfully",

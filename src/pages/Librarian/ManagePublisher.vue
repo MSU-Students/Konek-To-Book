@@ -98,8 +98,16 @@
             </q-card-section>
           </q-card>
         </q-dialog>
+        <!--------------------------------  Export CSV _ Publisher ------------------------------------------    --->
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
+
     <!--------------------------------  TABLE_ LISTS OF Publisher  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
@@ -260,9 +268,32 @@
 </template>
 
 <script lang="ts">
+import { exportFile } from "quasar";
 import { PublisherDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
+
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`;
+}
+
 @Options({
   computed: {
     ...mapState("publisher", ["allPublisher"]),
@@ -333,6 +364,44 @@ export default class ManagePublisher extends Vue {
       field: "action",
     },
   ];
+
+  // ------------------E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("Publisher ID"),
+      wrapCsvValue("Publisher"),
+      wrapCsvValue("Date Of Publication"),
+      wrapCsvValue("Place of Publication"),
+
+    ];
+    const rows = [header.join(",")].concat(
+      this.allPublisher.map((c) =>
+        [
+          wrapCsvValue(String(c.Publisher_ID)),
+          wrapCsvValue(String(c.Publisher)),
+          wrapCsvValue(String(c.DateOfPublication)),
+         wrapCsvValue(String(c.PlaceOfPublication)),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of Publishers_MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+  // -------------------------------------------------------------------
 
   inputPublisher: PublisherDto = {
     Publisher: "",

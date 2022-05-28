@@ -159,7 +159,12 @@
           </q-card>
         </q-dialog>
         <!--------------------------------  Export CSV _ FINES ------------------------------------------    --->
-        <q-tab name="Export" icon="archive" label="Export to csv" />
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF FINES  ------------------------------------------    --->
@@ -204,7 +209,7 @@
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
-              <q-btn
+              <!-- <q-btn
                 round
                 color="teal-8"
                 icon="edit"
@@ -361,7 +366,7 @@
                     </q-form>
                   </q-card-section>
                 </q-card>
-              </q-dialog>
+              </q-dialog> -->
               <!--------------------------------------- DELETE FINES BUTTON   ------------------------------------------    --->
               <q-btn
                 color="red-8"
@@ -530,9 +535,28 @@
 
 <!--------------------------------------- DETAILS OF ISSUEDBOOK    ------------------------------------------    --->
 <script lang="ts">
+import { exportFile } from "quasar";
 import { BookDto, BookFinesDto, BorrowerDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapGetters, mapState } from "vuex";
+
+//---------------------------------------- FUNCTION FOR EXPORT CSV----------
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+
+  return `"${formatted}"`;
+}
+
+//-------------------------------------------------------------------------
 
 @Options({
   computed: {
@@ -630,6 +654,47 @@ export default class ManageFines extends Vue {
     },
   ];
 
+  // ----------------------------- E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("BookFines ID"),
+      wrapCsvValue("Title"),
+      wrapCsvValue("Borrower Name"),
+      wrapCsvValue("Fine Date"),
+      wrapCsvValue("Paymount Amount"),
+      wrapCsvValue("Paymount Status"),
+    ];
+    const rows = [header.join(",")].concat(
+      this.allBookFines.map((c) =>
+        [
+          wrapCsvValue(String(c.BookFines_ID)),
+          wrapCsvValue(c.Title),
+          wrapCsvValue(c.Borrower_Name),
+          wrapCsvValue(c.Fine_Date),
+          wrapCsvValue(c.Payment_Amount),
+          wrapCsvValue(c.Payment_Status),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of Book Fines_ MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+  // --------------------------------------------------------------------------
+
   inputBookFines: BookFinesDto = {
     Title: "",
     Borrower_Name: "",
@@ -647,10 +712,10 @@ export default class ManageFines extends Vue {
       borrower.B_Last_Name + ", " + borrower.B_First_Name;
   }
 
-  openEditDialog(val: BookFinesDto) {
-    this.editRowFines = true;
-    this.inputBookFines = { ...val };
-  }
+  // openEditDialog(val: BookFinesDto) {
+  //   this.editRowFines = true;
+  //   this.inputBookFines = { ...val };
+  // }
 
   openPaymentStatus(val: BookFinesDto) {
     this.paymentStatus = true;
@@ -666,15 +731,15 @@ export default class ManageFines extends Vue {
     });
   }
 
-  async oneditBookFines() {
-    await this.editBookFines(this.inputBookFines);
-    this.paymentStatus = false;
-    this.resetModel();
-    this.$q.notify({
-      type: "positive",
-      message: "Successfully Update",
-    });
-  }
+  // async oneditBookFines() {
+  //   await this.editBookFines(this.inputBookFines);
+  //   this.paymentStatus = false;
+  //   this.resetModel();
+  //   this.$q.notify({
+  //     type: "positive",
+  //     message: "Successfully Update",
+  //   });
+  // }
 
   deleteSpecificBookFines(val: BookFinesDto) {
     this.$q

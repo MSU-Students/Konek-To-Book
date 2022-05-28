@@ -286,13 +286,10 @@ export default class ManageCategories extends Vue {
     },
   ];
 
-  inputCategory: CategoryDto = {
-    C_Description: "",
-  };
-
+  // ------------------E X P O R T TABLE-------------------------------------
   exportTable() {
     // naive encoding to csv format
-    const header = [wrapCsvValue("ID"), wrapCsvValue("Category")];
+    const header = [wrapCsvValue("Category ID"), wrapCsvValue("Name")];
     const rows = [header.join(",")].concat(
       this.allCategory.map((c) =>
         [
@@ -302,9 +299,8 @@ export default class ManageCategories extends Vue {
       )
     );
 
-
     const status = exportFile(
-      "category-export.csv",
+      "List of Categories_MSU ISED LIBRARY-export.csv",
       rows.join("\r\n"),
       "text/csv"
     );
@@ -317,6 +313,13 @@ export default class ManageCategories extends Vue {
       });
     }
   }
+
+// -------------------------------------------------------------------------
+
+  inputCategory: CategoryDto = {
+    C_Description: "",
+  };
+
   async onaddCategory() {
     await this.addCategory(this.inputCategory);
     this.addNewCategory = false;
@@ -333,7 +336,7 @@ export default class ManageCategories extends Vue {
     this.resetModel();
     this.$q.notify({
       type: "positive",
-      message: "Successfully Edit.",
+      message: "Successfully Update.",
     });
   }
 

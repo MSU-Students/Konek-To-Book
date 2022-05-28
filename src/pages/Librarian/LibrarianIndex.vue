@@ -287,7 +287,12 @@
         </q-dialog>
 
         <!--------------------------------  ------------- EXPORT CSV _ LIST OF BOOK ------------------------------------------ --------   --->
-        <q-tab name="Export" icon="archive" label="Export to csv" />
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  ---------  --- TABLE LISTS OF BOOKS  ------------------------------------------   ------ --->
@@ -637,16 +642,38 @@
 </template>
 
 <script lang="ts">
+import { exportFile } from "quasar";
 import {
   AuthorDto,
   BookDto,
   BorrowerDto,
   CategoryDto,
   IssuedBookDto,
-  PublisherDto
+  PublisherDto,
 } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
+
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`;
+}
 
 @Options({
   computed: {
@@ -698,6 +725,12 @@ export default class LibrarianIndex extends Vue {
       name: "Details",
       align: "center",
       field: "Details",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
     {
       name: "bookID",
@@ -789,13 +822,66 @@ export default class LibrarianIndex extends Vue {
       align: "center",
       field: "Availability",
     },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
-    },
   ];
+
+  // ----------------------------- E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("Book ID"),
+      wrapCsvValue("Title"),
+      wrapCsvValue("ISBN"),
+      wrapCsvValue("Call Number"),
+      wrapCsvValue("Author/s"),
+      wrapCsvValue("Edition"),
+      wrapCsvValue("Category"),
+      wrapCsvValue("Publisher"),
+      wrapCsvValue("Date Of Publication"),
+      wrapCsvValue("Pages"),
+      wrapCsvValue("Series"),
+      wrapCsvValue("Status"),
+      wrapCsvValue("Notes"),
+      wrapCsvValue("Availability"),
+    ];
+    const rows = [header.join(",")].concat(
+      this.allBook.map((c) =>
+        [
+          wrapCsvValue(String(c.Book_ID)),
+          wrapCsvValue(c.Title),
+          wrapCsvValue(c.ISBN),
+          wrapCsvValue(String(c.Call_Number)),
+          wrapCsvValue(
+            String(c.authors?.A_Last_Name + ", " + c.authors?.A_First_Name)
+          ),
+          wrapCsvValue(String(c.Edition)),
+          wrapCsvValue(String(c.categories?.C_Description)),
+          wrapCsvValue(String(c.publishers?.Publisher)),
+          wrapCsvValue(String(c.DateOfPublication)),
+          wrapCsvValue(String(c.Pages)),
+          wrapCsvValue(String(c.Series)),
+          wrapCsvValue(c.Book_Status),
+          wrapCsvValue(String(c.Notes)),
+          wrapCsvValue(c.Availability),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of Books_ MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+  // -----------------------------------------------------------------------
 
   inputBook: BookDto = {
     ISBN: "",

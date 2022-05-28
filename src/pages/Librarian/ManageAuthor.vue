@@ -107,6 +107,13 @@
             </q-card-section>
           </q-card>
         </q-dialog>
+        <!--------------------------------  Export CSV _ AUTHOR ------------------------------------------    --->
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF Author  ------------------------------------------    --->
@@ -269,9 +276,32 @@
 </template>
 
 <script lang="ts">
+import { exportFile } from "quasar";
 import { AuthorDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
+
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`;
+}
+
 @Options({
   computed: {
     ...mapState("author", ["allAuthor"]),
@@ -353,6 +383,44 @@ export default class ManageAuthor extends Vue {
     },
   ];
 
+  // ----------------------------  E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("Author ID"),
+      wrapCsvValue("First Name"),
+      wrapCsvValue("Middle Name"),
+      wrapCsvValue("Last Name"),
+      wrapCsvValue("Location"),
+    ];
+    const rows = [header.join(",")].concat(
+      this.allAuthor.map((c) =>
+        [
+          wrapCsvValue(String(c.Author_ID)),
+          wrapCsvValue(c.A_First_Name),
+          wrapCsvValue(String(c.A_Middle_Name)),
+          wrapCsvValue(c.A_Last_Name),
+          wrapCsvValue(c.Location),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of Authors_MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+  // -----------------------------------------------------------------------
   inputAuthor: AuthorDto = {
     A_First_Name: "",
     A_Middle_Name: "",

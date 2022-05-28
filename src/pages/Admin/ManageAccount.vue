@@ -68,11 +68,7 @@
                             outlined
                             label="First Name"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'input your first name',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || '']"
                           />
                         </div>
                         <div class="col-12 col-md">
@@ -82,11 +78,7 @@
                             outlined
                             label="Middle Initial"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'input your middle initial',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || ' ']"
                           />
                         </div>
                         <div class="col-12 col-md">
@@ -96,11 +88,7 @@
                             outlined
                             label="Last Name"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'input your last name',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || '']"
                           />
                         </div>
                       </div>
@@ -114,10 +102,7 @@
                             :options="options"
                             label="Gender"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) || 'Select the gender',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || '  ']"
                           />
                         </div>
                         <div class="col-12 col-md">
@@ -128,11 +113,7 @@
                             type="date"
                             hint="Birth Date"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the birth date',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || ' ']"
                           />
                         </div>
                         <div class="col-12 col-md">
@@ -142,10 +123,7 @@
                             v-model="inputUser.Address"
                             label="Address"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) || 'Input the location',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || ' ']"
                           />
                         </div>
                       </div>
@@ -160,11 +138,7 @@
                             mask="(####) ### - ####"
                             hint="Format: (0963) 135 - 8292"
                             lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the contact number',
-                            ]"
+                            :rules="[(val) => (val && val.length > 0) || ' ']"
                           />
                         </div>
                         <div class="col-12 col-md">
@@ -178,7 +152,7 @@
                             :rules="[
                               (val) =>
                                 (val && val.length > 0) ||
-                                'Input the email account',
+                                'Input the email address',
                             ]"
                           />
                         </div>
@@ -191,10 +165,7 @@
                           v-model="inputUser.username"
                           label="Username"
                           lazy-rules
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Input the username',
-                          ]"
+                          :rules="[(val) => (val && val.length > 0) || ' ']"
                         />
                         <q-input
                           dense
@@ -203,10 +174,7 @@
                           :type="isPwd ? 'password' : 'text'"
                           label="Password"
                           lazy-rules
-                          :rules="[
-                            (val) =>
-                              (val && val.length > 0) || 'Input the password',
-                          ]"
+                          :rules="[(val) => (val && val.length > 0) || ' ']"
                         >
                           <template v-slot:append>
                             <q-icon
@@ -273,8 +241,13 @@
             </q-card-section>
           </q-card>
         </q-dialog>
-        <!--------------------------------  Print ACCOUNT ------------------------------------------    --->
-        <q-tab name="Print" icon="print" label="Print" />
+        <!--------------------------------  Export CSV _ ACCOUNT ------------------------------------------    --->
+        <q-tab
+          name="Export"
+          icon="archive"
+          label="Export to csv"
+          @click="exportTable"
+        />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF ACCOUNT  ------------------------------------------    --->
@@ -686,9 +659,31 @@
 </template>
 
 <script lang="ts">
+import { exportFile } from "quasar";
 import { MediaDto, UserDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
+
+function wrapCsvValue(
+  val: string,
+  formatFn?: (v: string, r: any) => string,
+  row?: any
+) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
+
+  formatted =
+    formatted === void 0 || formatted === null ? "" : String(formatted);
+
+  formatted = formatted.split('"').join('""');
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`;
+}
 
 @Options({
   computed: {
@@ -742,6 +737,12 @@ export default class ManageAccount extends Vue {
       name: "Details",
       align: "center",
       field: "Details",
+    },
+      {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
 
     {
@@ -809,14 +810,61 @@ export default class ManageAccount extends Vue {
       field: "User_Status",
     },
 
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
-    },
+
   ];
 
+// ----------------------------- E X P O R T TABLE-------------------------------------
+  exportTable() {
+    // naive encoding to csv format
+    const header = [
+      wrapCsvValue("User ID"),
+      wrapCsvValue("First Name"),
+      wrapCsvValue("Middle Name"),
+      wrapCsvValue("Last Name"),
+      wrapCsvValue("Gender"),
+      wrapCsvValue("Birth Date"),
+      wrapCsvValue("Address"),
+      wrapCsvValue("Contact number"),
+      wrapCsvValue("Email"),
+      wrapCsvValue("Username"),
+      wrapCsvValue("User Type"),
+      wrapCsvValue("Status"),
+    ];
+    const rows = [header.join(",")].concat(
+      this.allAccount.map((c) =>
+        [
+          wrapCsvValue(String(c.id)),
+          wrapCsvValue(c.U_First_Name),
+          wrapCsvValue(String(c.U_Middle_Name)),
+          wrapCsvValue(c.U_Last_Name),
+          wrapCsvValue(c.Gender),
+          wrapCsvValue(c.U_Birth_Date),
+          wrapCsvValue(c.Address),
+          wrapCsvValue(String(c.U_Contact_Number)),
+          wrapCsvValue(String(c.email)),
+          wrapCsvValue(c.username),
+          wrapCsvValue(c.User_Type),
+          wrapCsvValue(c.User_Status),
+        ].join(",")
+      )
+    );
+
+    const status = exportFile(
+      "List of Accounts_MSU ISED LIBRARY-export.csv",
+      rows.join("\r\n"),
+      "text/csv"
+    );
+
+    if (status !== true) {
+      this.$q.notify({
+        message: "Browser denied file download...",
+        color: "negative",
+        icon: "warning",
+      });
+    }
+  }
+
+// -----------------------------------------------------------------------
   inputUser: any = {
     U_First_Name: "",
     U_Middle_Name: "",
@@ -865,6 +913,7 @@ export default class ManageAccount extends Vue {
     this.resetModel();
   }
   async oneditAccount() {
+    console.log;
     try {
       if (this.imageAttachement.size > 0) {
         this.loading = true;
