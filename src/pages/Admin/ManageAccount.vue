@@ -1,5 +1,5 @@
 <template>
-  <q-page class="bg-image1">
+  <q-page class="bg-image3">
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_ACCOUNT ------------------------------------------    --->
       <q-tabs
@@ -148,17 +148,18 @@
                             v-model="inputUser.email"
                             label="Email"
                             type="email"
+                            hint="Example@gmail.com"
                             lazy-rules
                             :rules="[
                               (val) =>
                                 (val && val.length > 0) ||
-                                'Input the email address',
+                                'Input a valid email address',
                             ]"
                           />
                         </div>
                       </div>
 
-                      <div class="q-gutter-x-xs q-pb-sm">
+                      <div class="q-gutter-xs q-pb-sm">
                         <q-input
                           dense
                           outlined
@@ -253,7 +254,7 @@
     <!--------------------------------  TABLE_ LISTS OF ACCOUNT  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="Manage Accounts"
+        title="Account List"
         :rows="allAccount"
         :columns="columns"
         row-key="name"
@@ -738,7 +739,7 @@ export default class ManageAccount extends Vue {
       align: "center",
       field: "Details",
     },
-      {
+    {
       name: "action",
       align: "center",
       label: "Action",
@@ -775,20 +776,7 @@ export default class ManageAccount extends Vue {
       field: "U_Last_Name",
       sortable: true,
     },
-    {
-      name: "gender",
-      label: "Gender",
-      align: "center",
-      field: "Gender",
-      sortable: true,
-    },
-    {
-      name: "bdate",
-      label: "Birth Date",
-      align: "center",
-      field: "U_Birth_Date",
-    },
-    { name: "address", label: "Address", align: "center", field: "Address" },
+
     {
       name: "contact",
       label: "Contact Number",
@@ -809,11 +797,9 @@ export default class ManageAccount extends Vue {
       align: "center",
       field: "User_Status",
     },
-
-
   ];
 
-// ----------------------------- E X P O R T TABLE-------------------------------------
+  // ----------------------------- E X P O R T TABLE-------------------------------------
   exportTable() {
     // naive encoding to csv format
     const header = [
@@ -864,7 +850,7 @@ export default class ManageAccount extends Vue {
     }
   }
 
-// -----------------------------------------------------------------------
+  // -----------------------------------------------------------------------
   inputUser: any = {
     U_First_Name: "",
     U_Middle_Name: "",
@@ -913,14 +899,14 @@ export default class ManageAccount extends Vue {
     this.resetModel();
   }
   async oneditAccount() {
-     this.loading = true;
+    this.loading = true;
     const media = await this.uploadMedia(this.imageAttachement as File);
     await this.editAccount({ ...this.inputUser, url: media.Media_id });
     this.editRowAccount = false;
     this.resetModel();
     this.$q.notify({
-      type: 'positive',
-      message: 'Successfully Updated',
+      type: "positive",
+      message: "Successfully Updated",
     });
     // try {
     //   if (this.imageAttachement.size > 0) {

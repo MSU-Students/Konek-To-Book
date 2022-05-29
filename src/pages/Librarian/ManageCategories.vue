@@ -78,7 +78,7 @@
     <!--------------------------------  TABLE LIST OF CATEGORIES  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of Categories"
+        title="Categories List"
         :rows="allCategory"
         :columns="columns"
         row-key="name"

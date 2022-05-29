@@ -9,7 +9,7 @@
           icon="menu"
           aria-label="Menu"
           class="q-mx-md"
-          @click="toggleLeftDrawer"
+          @click="drawer = !drawer"
         />
 
         <q-toolbar-title class="row items-center no-wrap">
@@ -22,17 +22,22 @@
           <q-btn-dropdown round flat dropdown-icon="account_circle">
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
-                <q-avatar size="100px">
-                  <img v-if="currentProfile.url" class="avatar"
-                   :src="`http://localhost:3000/media/${currentProfile.url}`" />
+                <q-avatar size="110px">
+                  <img
+                    v-if="currentProfile.url"
+                    class="avatar"
+                    :src="`http://localhost:3000/media/${currentProfile.url}`"
+                  />
                   <img
                     v-if="!currentProfile.url"
                     src="../assets/Images/Logo_ISED.png"
                   />
                 </q-avatar>
 
-                <div class="text-weight-bold q-mt-md"
-                style="text-align: center">
+                <div
+                  class="text-weight-bold q-mt-md"
+                  style="text-align: center"
+                >
                   {{ currentProfile.U_First_Name }}
                   {{ currentProfile.U_Middle_Name }}
                   {{ currentProfile.U_Last_Name }}
@@ -76,11 +81,13 @@
     </q-header>
     <!-------- ---------------------------------- drawer ------------------------------------------------>
     <q-drawer
+      v-model="drawer"
       show-if-above
-      v-model="leftDrawerOpen"
-      side="left"
-      @click="leftDrawerOpen = false"
-      :breakpoint="300"
+      :mini="miniState"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+      :width="250"
+      :breakpoint="500"
       bordered
       class="bg-grey-2"
     >
@@ -109,6 +116,7 @@
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
+
             <q-item-section> Logout </q-item-section>
           </q-item>
         </q-list>
@@ -119,7 +127,7 @@
       <router-view />
     </q-page-container>
     <q-footer bordered class="bg-primary text-center text-caption text-white">
-      Mindanao State University - Marawi City
+      ISED LIBRARY MANAGEMENT SYSTEM IN MINDANAO STATE UNIVERSITY-MARAWI
     </q-footer>
   </q-layout>
 </template>
@@ -141,8 +149,8 @@ Options({
 });
 
 export default class AdminLayout extends Vue {
-  leftDrawerOpen = false;
   drawer = false;
+  miniState = true;
 
   getProfile!: () => Promise<AUser>;
   currentUser!: AUser;
@@ -161,10 +169,6 @@ export default class AdminLayout extends Vue {
     url: "",
   };
 
-  toggleLeftDrawer() {
-    this.leftDrawerOpen = !this.leftDrawerOpen;
-  }
-
   async mounted() {
     const res = await lmsApiService.getProfile();
     this.currentProfile = res.data;
@@ -180,4 +184,3 @@ export default class AdminLayout extends Vue {
   border: 2px solid rgb(0, 0, 0) !important; */
 }
 </style>
-

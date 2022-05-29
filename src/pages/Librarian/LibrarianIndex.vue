@@ -298,7 +298,7 @@
     <!--------------------------------  ---------  --- TABLE LISTS OF BOOKS  ------------------------------------------   ------ --->
     <div class="q-ma-md">
       <q-table
-        title="List of Books"
+        title="Book List"
         :rows="allBook"
         :columns="columns"
         row-key="name"
@@ -350,14 +350,14 @@
 
               <q-dialog v-model="Details">
                 <q-card style="width: 500px; max-width: 90vw" my-card>
-                  <q-card-section>
+                  <q-card-section class="bg-grey-1">
                     <div>{{ inputBook.Book_ID }}</div>
                     <div class="text-h6 text-center">{{ inputBook.Title }}</div>
                   </q-card-section>
 
                   <q-separator />
 
-                  <q-card-section>
+                  <q-card-section class="bg-grey-1">
                     <div class="text-left q-ma-mp q-mb-xs">
                       <strong> ISBN:</strong>
                       {{ inputBook.ISBN }}
@@ -717,7 +717,7 @@ export default class LibrarianIndex extends Vue {
   dialog = false;
   Details = false;
 
-  options1 = ["New", "Damage", "Lost", "Outdated", "Obsolete"];
+  options1 = ["New Arrival", "Damaged", "Lost", "Outdated"];
   options2 = ["YES", "NO"];
 
   columns = [
@@ -743,19 +743,12 @@ export default class LibrarianIndex extends Vue {
       name: "name",
       required: true,
       label: "Title",
-      align: "center",
+      align: "left",
       field: (row: BookDto) => row.Title,
       format: (val: string) => `${val}`,
       sortable: true,
     },
 
-    { name: "isbn", label: "ISBN", align: "center", field: "ISBN" },
-    {
-      name: "callnumber ",
-      label: "Call Number",
-      align: "center",
-      field: "Call_Number",
-    },
     {
       name: "authors",
       label: "Author/s",
@@ -772,48 +765,6 @@ export default class LibrarianIndex extends Vue {
       field: (row: any) => row.categories?.C_Description || "None",
       align: "center",
       sortable: true,
-    },
-    {
-      name: "publisher",
-      label: "Publisher",
-      field: (row: any) => row.publishers?.Publisher || "None",
-      align: "center",
-      sortable: true,
-    },
-
-    {
-      name: "dateofpublication",
-      label: "Date of Publication",
-      field: (row: any) => row.publishers?.DateOfPublication || "None",
-      align: "center",
-      sortable: true,
-    },
-    {
-      name: "pages",
-      label: "Pages",
-      align: "center",
-      field: "Pages",
-    },
-
-    {
-      name: "series",
-      label: "Series",
-      align: "center",
-      field: "Series",
-    },
-
-    {
-      name: "status",
-      label: "Status",
-      align: "center",
-      field: "Book_Status",
-    },
-
-    {
-      name: "notes",
-      label: "Notes",
-      align: "center",
-      field: "Notes",
     },
 
     {
@@ -960,3 +911,42 @@ export default class LibrarianIndex extends Vue {
   }
 }
 </script>
+<style lang="sass">
+.my-sticky-header-column-table
+  /* height or max-height is important */
+
+  max-height: 800px
+  width: 1000%
+  max-width: 1500px
+
+  td:first-child
+    /* bg color is important for td; just specify one */
+    background-color: #fff !important
+
+  tr th
+    position: sticky
+    /* higher than z-index for td below */
+    z-index: 4
+    /* bg color is important; just specify one */
+    background: #fff
+
+  /* this will be the loading indicator */
+  thead tr:last-child th
+    /* height of all previous header rows */
+    top: 500px
+    /* highest z-index */
+    z-index: 3
+  thead tr:first-child th
+    top: 0
+    z-index: 1
+  tr:first-child th:first-child
+    /* highest z-index */
+    z-index: 3
+
+  td:first-child
+    z-index: 1
+
+  td:first-child, th:first-child
+    position: sticky
+    left: 0
+</style>

@@ -1,12 +1,12 @@
 <template>
   <q-page class="bg-image3 q-pa-md flex flex-center">
-    <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
-      <q-card-section style="width: 360px"></q-card-section>
+    <q-card class="bg-blue-grey-1 q-dark q-pb-xl float-left">
+      <q-card-section style="width: 340px"></q-card-section>
 
       <section id="login" class="column">
         <div class="q-pa-md" style="max-width: 400px" align="center">
           <br />
-          <div class="text-h5 text-grey-10 text-bold">Change Password</div>
+          <div class="text-h5 text-primary q-my-none text-weight-bold">Change Password</div>
           <br />
 
           <q-form @submit="onSubmit" class="q-gutter-md">
@@ -19,7 +19,7 @@
                 lazy-rules
                 :rules="[
                   (val) =>
-                    (val && val.length > 0) || 'Input your  current password',
+                    (val && val.length > 0) || '',
                 ]"
               >
                 <template v-slot:prepend>
@@ -34,7 +34,7 @@
                 :type="isPwd1 ? 'password' : 'text'"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Input your new password',
+                  (val) => (val && val.length > 0) || '',
                 ]"
               >
                 <template v-slot:append>
@@ -57,7 +57,7 @@
                 lazy-rules
                 :rules="[
                   (val) =>
-                    (val && val.length > 0) || 'Input your confirm password',
+                    (val && val.length > 0) || '',
                 ]"
               >
                 <template v-slot:append>

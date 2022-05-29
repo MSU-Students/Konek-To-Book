@@ -156,7 +156,7 @@
     <!--------------------------------  TABLE _ LIST OF BORROWERS  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of Borrowers"
+        title="Borrower List"
         :rows="allBorrower"
         :columns="columns"
         row-key="name"

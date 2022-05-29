@@ -2,12 +2,13 @@
   <q-page class="bg-image1 q-pa-md flex flex-center">
     <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
       <div class="fixed-center">
-        <q-card class="bg-grey-13 q-dark q-pb-xl float-left">
+        <q-card class="bg-blue-grey-1 q-dark q-pb-xl float-left">
           <div class="q-pt-lg" style="max-width: 380px">
+
             <q-card-section>
               <div class="q-pt-lg">
                 <div class="col text-h6 ellipsis flex justify-center">
-                  <div class="text-h4 text-primary q-my-none text-weight-bold">
+                  <div class="text-h5 text-primary q-my-none text-weight-bold">
                     Change Password
                   </div>
                 </div>

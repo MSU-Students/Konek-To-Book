@@ -111,7 +111,7 @@
     <!--------------------------------  TABLE_ LISTS OF Publisher  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of Publishers"
+        title="Publisher List"
         :rows="allPublisher"
         :columns="columns"
         row-key="name"

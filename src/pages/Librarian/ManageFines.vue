@@ -170,7 +170,7 @@
     <!--------------------------------  TABLE_ LISTS OF FINES  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of Fines"
+        title="Fine List"
         :rows="finesBook"
         :columns="columns"
         row-key="name"

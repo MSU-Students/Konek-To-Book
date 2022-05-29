@@ -119,7 +119,7 @@
     <!--------------------------------  TABLE_ LISTS OF Author  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of Authors"
+        title="Author List"
         :rows="allAuthor"
         :columns="columns"
         row-key="name"

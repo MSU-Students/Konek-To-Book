@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
       {
         path: '/',
-        component: () => import('src/pages/MainSearch.vue'),
+        component: () => import('src/pages/MainPage.vue'),
       },
 
       { path: '/LoginForm',
@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
    //!---->For GuestUser
   {
     path: '/Guest',
-    component: () => import('src/layouts/GuestLayout.vue'),
+    component: () => import('src/layouts/GuestsLayout.vue'),
     children: [
       { path: '/GuestIndex',
       component: () => import('src/pages/Guest/GuestIndex.vue') },

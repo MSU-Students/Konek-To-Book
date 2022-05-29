@@ -161,7 +161,7 @@
     <!--------------------------------  TABLE_ LISTS OF ISSUEDBOOK  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="List of IssuedBooks"
+        title="IssuedBook List"
         :rows="issuedBook"
         :columns="columns"
         row-key="name"

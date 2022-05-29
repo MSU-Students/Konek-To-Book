@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-image text-white" height-hint="64">
       <q-toolbar class="GPL__toolbar" style="height: 64px">
         <q-btn
@@ -15,13 +15,13 @@
           <img src="../assets/Images/Logo_ISED.png" style="height: 40px" />
           <span class="q-ml-sm">ISED Library</span>
         </q-toolbar-title>
-
+        <!-------------------------------------- Account Profile ---------------------------- ------------------------>
         <div class="q-gutter-sm row items-center no-wrap">
           <q-tooltip>Account</q-tooltip>
           <q-btn-dropdown round flat dropdown-icon="account_circle">
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
-                <q-avatar size="100px">
+                <q-avatar size="110px">
                   <img
                     v-if="currentProfile.url"
                     class="avatar"
@@ -81,9 +81,18 @@
         </div>
       </q-toolbar>
     </q-header>
-
-    <q-drawer show-if-above v-model="drawer" bordered class="bg-grey-2">
-      <!-- drawer content -->
+    <!--------------- DRAWER -------------------------->
+    <q-drawer
+      v-model="drawer"
+      show-if-above
+      :mini="miniState"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+      :width="250"
+      :breakpoint="500"
+      bordered
+      class="bg-grey-2"
+    >
       <q-scroll-area class="fit">
         <q-list padding>
           <q-item clickable v-ripple to="pages/Librarian/LibrarianIndex">
@@ -93,8 +102,8 @@
 
             <q-item-section> Dashboard </q-item-section>
           </q-item>
-
           <q-separator />
+
           <q-expansion-item>
             <template v-slot:header>
               <q-item-section avatar>
@@ -156,7 +165,6 @@
               </q-card-section>
             </q-card>
           </q-expansion-item>
-
           <q-separator />
 
           <q-item clickable v-ripple to="pages/Guest/LoginForm">
@@ -192,6 +200,8 @@ Options({
 });
 export default class LoginForm extends Vue {
   drawer = false;
+  miniState = true;
+
   getProfile!: () => Promise<AUser>;
   currentUser!: AUser;
   currentProfile: UserDto = {

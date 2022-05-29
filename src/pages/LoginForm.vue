@@ -20,7 +20,7 @@
             flat
             class="bg-primary text-overline text-white"
             label="Home"
-            icon="home"
+
             size="14px"
             to="/"
           />
