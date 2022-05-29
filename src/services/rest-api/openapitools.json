@@ -1456,9 +1456,6 @@
             "type": "string",
             "example": "YES"
           },
-          "authors": {
-            "$ref": "#/components/schemas/AuthorDto"
-          },
           "categories": {
             "$ref": "#/components/schemas/CategoryDto"
           },

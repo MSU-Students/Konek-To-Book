@@ -113,13 +113,6 @@
             </template>
             <q-card>
               <q-card-section>
-                <q-item clickable v-ripple to="pages/Librarian/ManageAuthor">
-                  <q-item-section avatar>
-                    <q-icon name="person" />
-                  </q-item-section>
-                  <q-item-section> Authors </q-item-section>
-                </q-item>
-
                 <q-item
                   clickable
                   v-ripple

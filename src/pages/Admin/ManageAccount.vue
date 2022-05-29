@@ -412,7 +412,7 @@
                         <div class="col-12 col-md-4">
                           <div class="text-overline text-bold">
                             Account Type
-                            <div class="q-gutter-y-md">
+                            <div class="q-gutter-y-md-4">
                               <q-file
                                 outlined
                                 accept=".jpg, image/*"
@@ -671,10 +671,8 @@ function wrapCsvValue(
   row?: any
 ) {
   let formatted = formatFn !== void 0 ? formatFn(val, row) : val;
-
   formatted =
     formatted === void 0 || formatted === null ? "" : String(formatted);
-
   formatted = formatted.split('"').join('""');
   /**
    * Excel accepts \n and \r in strings, but some other CSV parsers do not
@@ -899,15 +897,46 @@ export default class ManageAccount extends Vue {
     this.resetModel();
   }
   async oneditAccount() {
-    this.loading = true;
-    const media = await this.uploadMedia(this.imageAttachement as File);
-    await this.editAccount({ ...this.inputUser, url: media.Media_id });
+    try {
+      if (this.imageAttachement.size > 0) {
+        this.loading = true;
+        const media = await this.uploadMedia(this.imageAttachement as File);
+        await this.editAccount({
+          ...this.inputUser,
+          url: media.Media_id,
+        });
+        this.$q.notify({
+          type: "positive",
+          message: "Successfully Updated",
+        });
+      } else {
+        await this.editAccount(this.inputUser);
+        this.$q.notify({
+          type: "positive",
+          message: "Successfully Updated",
+        });
+      }
+    } catch (error) {
+      this.$q.notify({
+        type: "negative",
+        message: "Error!.",
+      });
+    }
+
     this.editRowAccount = false;
+    this.loading = false;
     this.resetModel();
-    this.$q.notify({
-      type: "positive",
-      message: "Successfully Updated",
-    });
+
+    // this.loading = true;
+    // const media = await this.uploadMedia(this.imageAttachement as File);
+    // await this.editAccount({ ...this.inputUser, url: media.Media_id });
+    // this.editRowAccount = false;
+    // this.resetModel();
+    // this.$q.notify({
+    //   type: "positive",
+    //   message: "Successfully Updated",
+    // });
+
     // try {
     //   if (this.imageAttachement.size > 0) {
     //     this.loading = true;

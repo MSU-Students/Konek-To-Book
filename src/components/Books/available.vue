@@ -1,152 +1,142 @@
 <template>
   <div>
     <!--  ------------------------------------------ TABLE OF ALL AVAILABLE BOOKS------------------------------------------ ------------------------->
-    <q-table
-      class="my-sticky-header-column-table"
-      :grid="$q.screen.xs"
-      :columns="columns"
-      :rows="allBook"
-      row-key="name"
-      :rows-per-page-options="[0]"
-      :filter="filter"
-    >
-      <template v-slot:top-right>
-        <q-input
-          outlined
-          rounded
-          dense
-          debounce="300"
-          v-model="filter"
-          placeholder="Search"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+    <div class="q-gutter-lg">
+      <q-table
+        :columns="columns"
+        :rows="allBook"
+        row-key="name"
+        :rows-per-page-options="[0]"
+        :filter="filter"
+      >
+        <template v-slot:top-right>
+          <q-input
+            outlined
+            rounded
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Search"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
 
-        <q-page-scroller
-          position="bottom-right"
-          :scroll-offset="150"
-          :offset="[18, 18]"
-        >
-          <q-btn
-            fab
-            icon="keyboard_arrow_up"
-            color="orange-9"
-            text-color="white"
-          />
-        </q-page-scroller>
-      </template>
-      <!--  ------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
-      <template v-slot:body-cell-action="props">
-        <q-td :props="props">
-          <div class="q-gutter-sm">
+          <q-page-scroller
+            position="bottom-right"
+            :scroll-offset="150"
+            :offset="[18, 18]"
+          >
             <q-btn
-              round
-              color="blue"
-              icon="more_vert"
-              size="md"
-              flat
-              dense
-              @click="openDialog(props.row)"
+              fab
+              icon="keyboard_arrow_up"
+              color="orange-9"
+              text-color="white"
             />
+          </q-page-scroller>
+        </template>
+        <!--  ------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
+              <q-btn
+                round
+                color="blue"
+                icon="more_vert"
+                size="md"
+                flat
+                dense
+                @click="openDialog(props.row)"
+              />
 
-            <q-dialog v-model="Details">
-              <q-card style="width: 500px; max-width: 90vw" my-card>
-                <q-card-section>
-                  <div class="text-subtitle2">
-                    {{ inputBook.Book_ID }}
-                  </div>
-                  <div class="text-h6 text-center">
-                    {{ inputBook.Title }}
-                  </div>
-                </q-card-section>
+              <q-dialog v-model="Details">
+                <q-card style="width: 500px; max-width: 90vw" my-card>
+                  <q-card-section>
+                    <div class="text-subtitle2">
+                      {{ inputBook.Book_ID }}
+                    </div>
+                    <div class="text-h6 text-center">
+                      {{ inputBook.Title }}
+                    </div>
+                  </q-card-section>
 
-                <q-separator />
+                  <q-separator />
 
-                <q-card-section>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong> ISBN:</strong>
-                    {{ inputBook.ISBN }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>CallNo: </strong>
-                    {{ inputBook.Call_Number }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Author:</strong>
-                    {{
-                      inputBook.authors?.A_Last_Name +
-                      ", " +
-                      inputBook.authors?.A_First_Name
-                    }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Edition:</strong>
-                    {{ inputBook.Edition }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Category:</strong>
-                    {{ inputBook.categories?.C_Description }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Publisher:</strong>
-                    {{ inputBook.publishers?.Publisher }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Date 0f Publication:</strong>
-                    {{ inputBook.publishers?.DateOfPublication }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Pages:</strong>
-                    {{ inputBook.Pages }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong> Series:</strong>
-                    {{ inputBook.Series }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong> Status:</strong>
-                    {{ inputBook.Book_Status }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Notes:</strong>
-                    {{ inputBook.Notes }}
-                  </div>
-                  <div class="text-left q-ma-mp q-mb-xs">
-                    <strong>Availability:</strong>
-                    {{ inputBook.Availability }}
-                  </div>
-                </q-card-section>
+                  <q-card-section>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong> ISBN:</strong>
+                      {{ inputBook.ISBN }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>CallNo: </strong>
+                      {{ inputBook.Call_Number }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Author:</strong>
+                      {{ inputBook.Author }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Edition:</strong>
+                      {{ inputBook.Edition }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Category:</strong>
+                      {{ inputBook.categories?.C_Description }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Publisher:</strong>
+                      {{ inputBook.publishers?.Publisher }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Date 0f Publication:</strong>
+                      {{ inputBook.publishers?.DateOfPublication }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Pages:</strong>
+                      {{ inputBook.Pages }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong> Series:</strong>
+                      {{ inputBook.Series }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong> Status:</strong>
+                      {{ inputBook.Book_Status }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Notes:</strong>
+                      {{ inputBook.Notes }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Availability:</strong>
+                      {{ inputBook.Availability }}
+                    </div>
+                  </q-card-section>
 
-                <q-card-section
-                  class="bg-primary text-center text-caption text-white"
-                >
-                  Mindanao State University - Marawi City
-                </q-card-section>
-              </q-card>
-            </q-dialog>
-          </div>
-        </q-td>
-      </template>
-    </q-table>
+                  <q-card-section
+                    class="bg-primary text-center text-caption text-white"
+                  >
+                    Mindanao State University - Marawi City
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
+            </div>
+          </q-td>
+        </template>
+      </q-table>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  AuthorDto,
-  BookDto,
-  CategoryDto,
-  PublisherDto,
-} from "src/services/rest-api";
+import { BookDto, CategoryDto, PublisherDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 
 @Options({
   computed: {
     ...mapState("book", ["allBook"]),
-    ...mapState("author", ["allAuthor"]),
     ...mapState("category", ["allCategory"]),
     ...mapState("publisher", ["allPublisher"]),
   },
@@ -156,7 +146,6 @@ import { mapActions, mapState } from "vuex";
 })
 export default class GuestIndex extends Vue {
   allBook!: BookDto[];
-  allAuthor!: AuthorDto[];
   allCategory!: CategoryDto[];
   allPublisher!: PublisherDto[];
 
@@ -198,11 +187,10 @@ export default class GuestIndex extends Vue {
     },
 
     {
-      name: "authors",
+      name: "author",
       label: "Author/s",
-      align: "center",
-      field: (row: any) =>
-        row.authors?.A_Last_Name + ", " + row.authors?.A_First_Name || "None",
+      align: "left",
+      field: (row: any) => row.Author || "None",
       sortable: true,
     },
     { name: "edition", label: "Edition", align: "center", field: "Edition" },
@@ -221,12 +209,19 @@ export default class GuestIndex extends Vue {
       align: "center",
       field: "Book_Status",
     },
+    {
+      name: "availability",
+      label: "Availability",
+      align: "center",
+      field: "Availability",
+    },
   ];
 
   inputBook: BookDto = {
     ISBN: "",
     Call_Number: "",
     Title: "",
+    Author: "",
     Edition: "",
     DateOfPublication: "",
     Pages: "",

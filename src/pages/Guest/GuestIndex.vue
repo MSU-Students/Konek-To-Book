@@ -75,16 +75,15 @@
         <q-tab-panels v-model="tab" animated class="bg-white text-center">
           <q-tab-panel name="ListBooks">
             <!--  ------------------------------------------ TABLE OF ALL BOOKS------------------------------------------ ------------------------->
-            <q-table
-              class="my-sticky-header-column-table"
-              :grid="$q.screen.xs"
-              :columns="columns"
-              :rows="allBook"
-              row-key="name"
-              :rows-per-page-options="[0]"
-              :filter="filter"
-            >
-              <!-- <template v-slot:body-cell-name="props">
+            <div class="q-gutter-lg">
+              <q-table
+                :rows="allBook"
+                :columns="columns"
+                row-key="name"
+                :rows-per-page-options="[0]"
+                :filter="filter"
+              >
+                <!-- <template v-slot:body-cell-name="props">
                   <q-td :props="props">
                     <div>
                       <q-badge color="orange-5" :label="props.value" />
@@ -95,115 +94,112 @@
                   </q-td>
                 </template> -->
 
-              <template v-slot:top-right>
-                <div class="q-pa-md q-gutter-sm row">
-                  <q-page-scroller
-                    position="bottom-right"
-                    :scroll-offset="150"
-                    :offset="[18, 18]"
-                  >
-                    <q-btn
-                      fab
-                      icon="keyboard_arrow_up"
-                      color="orange-9"
-                      text-color="white"
-                    />
-                  </q-page-scroller>
-                </div>
-              </template>
-              <!--  ------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
-              <template v-slot:body-cell-action="props">
-                <q-td :props="props">
-                  <div class="q-gutter-sm">
-                    <q-btn
-                      round
-                      color="blue"
-                      icon="more_vert"
-                      size="md"
-                      flat
-                      dense
-                      @click="openDialog(props.row)"
-                    />
-
-                    <q-dialog v-model="Details">
-                      <q-card style="width: 500px; max-width: 100vw" my-card>
-                        <q-card-section class="bg-grey-1">
-                          <div class="text-subtitle2">
-                            {{ inputBook.Book_ID }}
-                          </div>
-                          <div class="text-h6 text-center">
-                            {{ inputBook.Title }}
-                          </div>
-                        </q-card-section>
-
-                        <q-separator />
-
-                        <q-card-section class="bg-grey-1">
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong> ISBN:</strong>
-                            {{ inputBook.ISBN }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>CallNo: </strong>
-                            {{ inputBook.Call_Number }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Author:</strong>
-                            {{
-                              inputBook.authors?.A_Last_Name +
-                              ", " +
-                              inputBook.authors?.A_First_Name
-                            }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Edition:</strong>
-                            {{ inputBook.Edition }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Category:</strong>
-                            {{ inputBook.categories?.C_Description }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Publisher:</strong>
-                            {{ inputBook.publishers?.Publisher }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Date 0f Publication:</strong>
-                            {{ inputBook.publishers?.DateOfPublication }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Pages:</strong>
-                            {{ inputBook.Pages }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong> Series:</strong>
-                            {{ inputBook.Series }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong> Status:</strong>
-                            {{ inputBook.Book_Status }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Notes:</strong>
-                            {{ inputBook.Notes }}
-                          </div>
-                          <div class="text-left q-ma-mp q-mb-xs">
-                            <strong>Availability:</strong>
-                            {{ inputBook.Availability }}
-                          </div>
-                        </q-card-section>
-
-                        <q-card-section
-                          class="bg-primary text-center text-caption text-white"
-                        >
-                          Mindanao State University - Marawi City
-                        </q-card-section>
-                      </q-card>
-                    </q-dialog>
+                <template v-slot:top-right>
+                  <div class="q-pa-md q-gutter-sm row">
+                    <q-page-scroller
+                      position="bottom-right"
+                      :scroll-offset="150"
+                      :offset="[18, 18]"
+                    >
+                      <q-btn
+                        fab
+                        icon="keyboard_arrow_up"
+                        color="orange-9"
+                        text-color="white"
+                      />
+                    </q-page-scroller>
                   </div>
-                </q-td>
-              </template>
-            </q-table>
+                </template>
+                <!--  ------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
+                <template v-slot:body-cell-action="props">
+                  <q-td :props="props">
+                    <div class="q-gutter-sm">
+                      <q-btn
+                        round
+                        color="blue"
+                        icon="more_vert"
+                        size="md"
+                        flat
+                        dense
+                        @click="openDialog(props.row)"
+                      />
+
+                      <q-dialog v-model="Details">
+                        <q-card style="width: 500px; max-width: 100vw" my-card>
+                          <q-card-section class="bg-grey-1">
+                            <div class="text-subtitle2">
+                              {{ inputBook.Book_ID }}
+                            </div>
+                            <div class="text-h6 text-center">
+                              {{ inputBook.Title }}
+                            </div>
+                          </q-card-section>
+
+                          <q-separator />
+
+                          <q-card-section class="bg-grey-1">
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong> ISBN:</strong>
+                              {{ inputBook.ISBN }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>CallNo: </strong>
+                              {{ inputBook.Call_Number }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Author:</strong>
+                              {{ inputBook.Author }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Edition:</strong>
+                              {{ inputBook.Edition }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Category:</strong>
+                              {{ inputBook.categories?.C_Description }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Publisher:</strong>
+                              {{ inputBook.publishers?.Publisher }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Date 0f Publication:</strong>
+                              {{ inputBook.publishers?.DateOfPublication }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Pages:</strong>
+                              {{ inputBook.Pages }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong> Series:</strong>
+                              {{ inputBook.Series }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong> Status:</strong>
+                              {{ inputBook.Book_Status }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Notes:</strong>
+                              {{ inputBook.Notes }}
+                            </div>
+                            <div class="text-left q-ma-mp q-mb-xs">
+                              <strong>Availability:</strong>
+                              {{ inputBook.Availability }}
+                            </div>
+                          </q-card-section>
+
+                          <q-card-section
+                            class="bg-primary text-center text-caption text-white"
+                          >
+                            Mindanao State University - Marawi City
+                          </q-card-section>
+                        </q-card>
+                      </q-dialog>
+                    </div>
+                  </q-td>
+                </template>
+              </q-table>
+            </div>
           </q-tab-panel>
 
           <!------------------------------------------AVAILABLE BOOKS Panel--------------------------------------------------->
@@ -223,12 +219,7 @@
 </template>
 
 <script lang="ts">
-import {
-  AuthorDto,
-  BookDto,
-  CategoryDto,
-  PublisherDto,
-} from "src/services/rest-api";
+import { BookDto, CategoryDto, PublisherDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 import available from "src/components/Books/available.vue";
@@ -242,7 +233,6 @@ import notavail from "src/components/Books/notavail.vue";
 
   computed: {
     ...mapState("book", ["allBook"]),
-    ...mapState("author", ["allAuthor"]),
     ...mapState("category", ["allCategory"]),
     ...mapState("publisher", ["allPublisher"]),
   },
@@ -252,7 +242,6 @@ import notavail from "src/components/Books/notavail.vue";
 })
 export default class GuestIndex extends Vue {
   allBook!: BookDto[];
-  allAuthor!: AuthorDto[];
   allCategory!: CategoryDto[];
   allPublisher!: PublisherDto[];
 
@@ -295,11 +284,10 @@ export default class GuestIndex extends Vue {
     },
 
     {
-      name: "authors",
+      name: "author",
       label: "Author/s",
-      align: "center",
-      field: (row: any) =>
-        row.authors?.A_Last_Name + ", " + row.authors?.A_First_Name || "None",
+      align: "left",
+      field: (row: any) => row.Author || "None",
       sortable: true,
     },
     { name: "edition", label: "Edition", align: "center", field: "Edition" },
@@ -324,6 +312,7 @@ export default class GuestIndex extends Vue {
     ISBN: "",
     Call_Number: "",
     Title: "",
+    Author: "",
     Edition: "",
     DateOfPublication: "",
     Pages: "",
@@ -340,45 +329,6 @@ export default class GuestIndex extends Vue {
 }
 </script>
 
-<style lang="sass">
-.my-sticky-header-column-table
-  /* height or max-height is important */
-
-  max-height: 800px
-  width: 1000%
-  max-width: 1500px
-
-  td:first-child
-    /* bg color is important for td; just specify one */
-    background-color: #fff !important
-
-  tr th
-    position: sticky
-    /* higher than z-index for td below */
-    z-index: 4
-    /* bg color is important; just specify one */
-    background: #fff
-
-  /* this will be the loading indicator */
-  thead tr:last-child th
-    /* height of all previous header rows */
-    top: 500px
-    /* highest z-index */
-    z-index: 3
-  thead tr:first-child th
-    top: 0
-    z-index: 1
-  tr:first-child th:first-child
-    /* highest z-index */
-    z-index: 3
-
-  td:first-child
-    z-index: 1
-
-  td:first-child, th:first-child
-    position: sticky
-    left: 0
-</style>
 <style>
 .my-table-details {
   font-size: 0.95em;

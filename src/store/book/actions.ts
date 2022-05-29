@@ -25,7 +25,6 @@ const actions: ActionTree<BookStateInterface, StateInterface> = {
   async getAllBook(context): Promise<any> {
     const res = await bookService.getAll();
     context.commit('getAllBook', res);
-    await this.dispatch('author/getAllAuthor');
     await this.dispatch('category/getAllCategory');
     await this.dispatch('publisher/getAllPublisher')
   },

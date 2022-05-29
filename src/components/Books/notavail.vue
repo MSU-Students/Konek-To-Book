@@ -3,7 +3,6 @@
     <!--  ------------------------------------------ TABLE OF ALL AVAILABLE BOOKS------------------------------------------ ------------------------->
     <q-table
       class="my-sticky-header-column-table"
-      Title="Not Avai"
       :grid="$q.screen.xs"
       :columns="columns"
       :rows="allBook"
@@ -76,11 +75,7 @@
                   </div>
                   <div class="text-left q-ma-mp q-mb-xs">
                     <strong>Author:</strong>
-                    {{
-                      inputBook.authors?.A_Last_Name +
-                      ", " +
-                      inputBook.authors?.A_First_Name
-                    }}
+                    {{ inputBook.Author }}
                   </div>
                   <div class="text-left q-ma-mp q-mb-xs">
                     <strong>Edition:</strong>
@@ -135,19 +130,13 @@
 </template>
 
 <script lang="ts">
-import {
-  AuthorDto,
-  BookDto,
-  CategoryDto,
-  PublisherDto,
-} from "src/services/rest-api";
+import { BookDto, CategoryDto, PublisherDto } from "src/services/rest-api";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapState } from "vuex";
 
 @Options({
   computed: {
     ...mapState("book", ["allBook"]),
-    ...mapState("author", ["allAuthor"]),
     ...mapState("category", ["allCategory"]),
     ...mapState("publisher", ["allPublisher"]),
   },
@@ -157,7 +146,6 @@ import { mapActions, mapState } from "vuex";
 })
 export default class GuestIndex extends Vue {
   allBook!: BookDto[];
-  allAuthor!: AuthorDto[];
   allCategory!: CategoryDto[];
   allPublisher!: PublisherDto[];
 
@@ -199,11 +187,10 @@ export default class GuestIndex extends Vue {
     },
 
     {
-      name: "authors",
+      name: "author",
       label: "Author/s",
       align: "center",
-      field: (row: any) =>
-        row.authors?.A_Last_Name + ", " + row.authors?.A_First_Name || "None",
+      field: (row: any) => row.Author || "None",
       sortable: true,
     },
     { name: "edition", label: "Edition", align: "center", field: "Edition" },
@@ -228,6 +215,7 @@ export default class GuestIndex extends Vue {
     ISBN: "",
     Call_Number: "",
     Title: "",
+    Author: "",
     Edition: "",
     DateOfPublication: "",
     Pages: "",

@@ -95,7 +95,7 @@
 
             <q-card-section>
               <q-form @submit="onaddBook()" class="q-px-sm">
-                <div class="q-gutter-md q-pb-sm">
+                <div class="q-gutter-xs row">
                   <div class="col">
                     <q-input
                       autofocus
@@ -114,8 +114,8 @@
                   </div>
                 </div>
 
-                <div class="q-gutter-md row q-pb-sm">
-                  <div class="col">
+                <div class="q-gutter-xs row">
+                  <div class="col-12 col-md">
                     <q-input
                       dense
                       outlined
@@ -129,21 +129,22 @@
                     />
                   </div>
                   <div class="col">
-                    <q-select
+                    <q-input
                       dense
                       outlined
-                      label="Author"
-                      :options="allAuthor"
-                      option-label="A_First_Name"
-                      optine-value="Author_ID"
-                      map-options
-                      emit-value
-                      v-model="inputBook.authors"
+                      v-model="inputBook.Author"
+                      label="Author/s Name"
                       lazy-rules
-                      :rules="[(val) => val || 'Select Author']"
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) || 'Input the Author/s Name',
+                      ]"
                     />
                   </div>
-                  <div class="col">
+                </div>
+
+                <div class="q-gutter-x-xs row">
+                  <div class="col-12 col-md">
                     <q-input
                       dense
                       outlined
@@ -157,10 +158,7 @@
                       ]"
                     />
                   </div>
-                </div>
-
-                <div class="q-gutter-md row q-pb-sm">
-                  <div class="col">
+                  <div class="col-12 col-md">
                     <q-input
                       dense
                       outlined
@@ -172,7 +170,7 @@
                       ]"
                     />
                   </div>
-                  <div class="col">
+                  <div class="col-12 col-md">
                     <q-select
                       dense
                       outlined
@@ -189,8 +187,8 @@
                   </div>
                 </div>
 
-                <div class="q-gutter-md row q-pb-lg">
-                  <div class="col">
+                <div class="q-gutter-sm row">
+                  <div class="col-12 col-md">
                     <q-select
                       dense
                       outlined
@@ -206,7 +204,7 @@
                       :rules="[(val) => val || 'Select Publisher']"
                     />
                   </div>
-                  <div class="col">
+                  <div class="col-12 col-md">
                     <q-input
                       dense
                       outlined
@@ -217,8 +215,8 @@
                   </div>
                 </div>
 
-                <div class="q-gutter-md row q-pb-lg">
-                  <div class="col">
+                <div class="q-gutter-sm row">
+                  <div class="col-12 col-md">
                     <q-input
                       dense
                       outlined
@@ -226,7 +224,7 @@
                       label="Pages"
                     />
                   </div>
-                  <div class="col">
+                  <div class="col-12 col-md">
                     <q-input
                       dense
                       outlined
@@ -234,18 +232,24 @@
                       label="Series"
                     />
                   </div>
-                </div>
-
-                <div class="q-gutter-md row q-pb-lg">
-                  <div class="col">
+                  <div class="col-12 col-md">
                     <q-select
                       outlined
                       dense
                       v-model="inputBook.Book_Status"
                       :options="options1"
                       label="Status"
+                      lazy-rules
+                      :rules="[
+                        (val) =>
+                          (val && val.length > 0) ||
+                          'Select the status of the book',
+                      ]"
                     />
                   </div>
+                </div>
+
+                <div class="q-gutter-sm row">
                   <div class="col">
                     <q-input
                       dense
@@ -368,11 +372,7 @@
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
                       <strong>Author:</strong>
-                      {{
-                        inputBook.authors?.A_Last_Name +
-                        ", " +
-                        inputBook.authors?.A_First_Name
-                      }}
+                      {{ inputBook.Author }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
                       <strong>Edition:</strong>
@@ -488,12 +488,7 @@
                             dense
                             outlined
                             label="Author"
-                            :options="allAuthor"
-                            option-label="A_First_Name"
-                            option-value="Author_ID"
-                            map-options
-                            emit-value
-                            v-model="inputBook.authors"
+                            v-model="inputBook.Author"
                           />
                         </div>
                         <div class="col">
@@ -644,7 +639,6 @@
 <script lang="ts">
 import { exportFile } from "quasar";
 import {
-  AuthorDto,
   BookDto,
   BorrowerDto,
   CategoryDto,
@@ -678,7 +672,6 @@ function wrapCsvValue(
 @Options({
   computed: {
     ...mapState("book", ["allBook"]),
-    ...mapState("author", ["allAuthor"]),
     ...mapState("category", ["allCategory"]),
     ...mapState("publisher", ["allPublisher"]),
 
@@ -693,7 +686,6 @@ function wrapCsvValue(
 })
 export default class LibrarianIndex extends Vue {
   allBook!: BookDto[];
-  allAuthor!: AuthorDto[];
   allCategory!: CategoryDto[];
   allPublisher!: PublisherDto[];
 
@@ -750,12 +742,10 @@ export default class LibrarianIndex extends Vue {
     },
 
     {
-      name: "authors",
+      name: "author",
       label: "Author/s",
-      align: "center",
-      field: (row: any) =>
-        row.authors?.A_Last_Name + ", " + row.authors?.A_First_Name || "None",
-      sortable: true,
+      align: "left",
+      field: (row: any) => row.Author,
     },
     { name: "edition", label: "Edition", align: "center", field: "Edition" },
 
@@ -801,9 +791,7 @@ export default class LibrarianIndex extends Vue {
           wrapCsvValue(c.Title),
           wrapCsvValue(c.ISBN),
           wrapCsvValue(String(c.Call_Number)),
-          wrapCsvValue(
-            String(c.authors?.A_Last_Name + ", " + c.authors?.A_First_Name)
-          ),
+          wrapCsvValue(c.Author),
           wrapCsvValue(String(c.Edition)),
           wrapCsvValue(String(c.categories?.C_Description)),
           wrapCsvValue(String(c.publishers?.Publisher)),
@@ -838,13 +826,14 @@ export default class LibrarianIndex extends Vue {
     ISBN: "",
     Call_Number: "",
     Title: "",
+    Author: "",
     Edition: "",
     DateOfPublication: "",
     Pages: "",
     Series: "",
     Notes: "",
-    Book_Status: "New",
-    Availability: "Yes",
+    Book_Status: "New Arrival",
+    Availability: "YES",
   };
   onSelectPublisher(publisher: any) {
     this.inputBook.DateOfPublication = publisher.DateOfPublication;
@@ -900,13 +889,14 @@ export default class LibrarianIndex extends Vue {
       ISBN: "",
       Call_Number: "",
       Title: "",
+      Author: "",
       Edition: "",
       DateOfPublication: "",
       Pages: "",
       Series: "",
       Notes: "",
-      Book_Status: "New",
-      Availability: "Yes",
+      Book_Status: "New Arrival",
+      Availability: "YES",
     };
   }
 }

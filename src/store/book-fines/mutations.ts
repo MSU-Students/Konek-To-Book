@@ -30,7 +30,7 @@ const mutation: MutationTree<BookFinestateInterface> = {
       const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return {
         ...book,
-        Payment_Amount: String(Number(book.Payment_Amount) * days),
+        Payment_Amount: String(Number(book.Payment_Amount) * (days - 1) ),
       };
     });
     state.allBookFines.push(...newPayload);
