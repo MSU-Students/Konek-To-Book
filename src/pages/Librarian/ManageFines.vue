@@ -219,6 +219,18 @@
           </div>
         </template>
 
+         <template #body-cell-paymentstatus="props">
+          <q-td :props="props">
+            <q-chip
+              flat
+              color="white"
+              :text-color="colorManipulation(props.row.Payment_Status)"
+              :label="labelManipulation(props.row.Payment_Status)"
+            >
+            </q-chip>
+          </q-td>
+        </template>
+
         <!------------------------------------- EDIT FINES BUTTON   ------------------------------------------    --->
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
@@ -666,7 +678,7 @@ export default class ManageFines extends Vue {
       field: "Payment_Amount",
     },
     {
-      name: "statusPayment ",
+      name: "paymentstatus",
       label: "Payment Status",
       align: "center",
       field: "Payment_Status",
@@ -687,8 +699,8 @@ export default class ManageFines extends Vue {
       wrapCsvValue("Title"),
       wrapCsvValue("Borrower Name"),
       wrapCsvValue("Fine Date"),
-      wrapCsvValue("Paymount Amount"),
-      wrapCsvValue("Paymount Status"),
+      wrapCsvValue("Payment Amount"),
+      wrapCsvValue("Payment Status"),
     ];
     const rows = [header.join(",")].concat(
       this.allBookFines.map((c) =>
@@ -790,6 +802,29 @@ export default class ManageFines extends Vue {
       Payment_Amount: "",
       Payment_Status: "",
     };
+  }
+
+  colorManipulation(Payment_Status: string) {
+    if (Payment_Status === "Fines") {
+      return "warning";
+    }
+    if (Payment_Status === "Paid") {
+      return "positive";
+    }
+    if (Payment_Status === "Overdue") {
+      return "negative";
+    }
+  }
+  labelManipulation(Payment_Status: string) {
+    if (Payment_Status === "Fines") {
+      return "Fines";
+    }
+    if (Payment_Status === "Paid") {
+      return "Paid";
+    }
+    if (Payment_Status === "Overdue") {
+      return "Overdue";
+    }
   }
 }
 </script>
