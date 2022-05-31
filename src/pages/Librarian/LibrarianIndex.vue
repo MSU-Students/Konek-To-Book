@@ -867,12 +867,7 @@ export default class LibrarianIndex extends Vue {
       align: "center",
       field: "Details",
     },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
-    },
+
     {
       name: "bookID",
       align: "center",
@@ -911,6 +906,12 @@ export default class LibrarianIndex extends Vue {
       label: "Availability",
       align: "center",
       field: "Availability",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
   ];
 

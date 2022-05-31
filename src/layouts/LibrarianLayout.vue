@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="hHh lpR fFf" >
+  <q-layout view="hHh LpR lFf">
     <q-header elevated class="bg-image text-white" height-hint="64">
-      <q-toolbar class="GPL__toolbar" style="height: 64px">
+      <q-toolbar class="GPL__toolbar">
         <q-btn
           dense
           flat
@@ -88,7 +88,7 @@
       :mini="miniState"
       @mouseover="miniState = false"
       @mouseout="miniState = true"
-      :width="250"
+      :width="260"
       :breakpoint="500"
       bordered
       class="bg-grey-2"
