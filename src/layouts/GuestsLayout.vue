@@ -25,14 +25,14 @@
           </div>
         </q-toolbar-title>
 
-        <!------------------------LOGIN button----------------------------->
+        <!------------------------BACK button----------------------------->
         <div class="q-gutter-sm row items-center no-wrap gt-sm">
           <q-btn
             :ripple="false"
             class="push text-overline text-white no-wrap"
             flat
-            icon="login"
-            label="Logout"
+            icon="exit_to_app"
+            label="back"
             @click="logout"
             to="/"
           />

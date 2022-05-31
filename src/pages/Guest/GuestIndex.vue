@@ -24,6 +24,7 @@
         <div class="q-pa-md q-gutter-sm row">
           <q-input
             outlined
+            autofocus
             rounded
             dense
             bg-color="white"
@@ -83,18 +84,17 @@
                 :rows-per-page-options="[0]"
                 :filter="filter"
               >
-                <!-- <template v-slot:body-cell-name="props">
-                  <q-td :props="props">
-                    <div>
-                      <q-badge color="orange-5" :label="props.value" />
-                    </div>
-                    <div class="my-table-details">
-                      {{ props.row.details }}
-                    </div>
-                  </q-td>
-                </template> -->
-
-                <template v-slot:top-right>
+                <template v-slot:top-right="props">
+                  <q-btn
+                    flat
+                    round
+                    dense
+                    :icon="
+                      props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'
+                    "
+                    @click="props.toggleFullscreen"
+                    class="q-ml-md"
+                  />
                   <div class="q-pa-md q-gutter-sm row">
                     <q-page-scroller
                       position="bottom-right"
@@ -104,7 +104,7 @@
                       <q-btn
                         fab
                         icon="keyboard_arrow_up"
-                        color="orange-9"
+                        color="orange-6"
                         text-color="white"
                       />
                     </q-page-scroller>

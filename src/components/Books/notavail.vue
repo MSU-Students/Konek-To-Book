@@ -9,7 +9,7 @@
         :rows-per-page-options="[0]"
         :filter="filter"
       >
-        <template v-slot:top-right>
+        <template v-slot:top-right="props">
           <q-input
             outlined
             rounded
@@ -23,18 +23,29 @@
             </template>
           </q-input>
 
-          <q-page-scroller
-            position="bottom-right"
-            :scroll-offset="150"
-            :offset="[18, 18]"
-          >
-            <q-btn
-              fab
-              icon="keyboard_arrow_up"
-              color="orange-9"
-              text-color="white"
-            />
-          </q-page-scroller>
+          <q-btn
+            flat
+            round
+            dense
+            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="props.toggleFullscreen"
+            class="q-ml-md"
+          />
+
+          <div class="q-pa-md q-gutter-sm row">
+            <q-page-scroller
+              position="bottom-right"
+              :scroll-offset="150"
+              :offset="[18, 18]"
+            >
+              <q-btn
+                fab
+                icon="keyboard_arrow_up"
+                color="orange-6"
+                text-color="white"
+              />
+            </q-page-scroller>
+          </div>
         </template>
         <!--  ------------------------------------------ DETAILS BOOK Button ------------------------------------------ ------------------------->
         <template v-slot:body-cell-action="props">

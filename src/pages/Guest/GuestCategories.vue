@@ -2,12 +2,12 @@
   <q-page class="bg-image2">
     <div class="q-pl-lg">
       <div class="text-h5 q-pa-lg text-bold">
-        <q-icon name="ballot" color="orange-6" style="font-size: 3rem" />
+        <q-icon name="ballot" color="orange-6" style="font-size: 5rem" />
         Categories List
       </div>
     </div>
     <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
-    <div class="q-pa-md">
+    <div class="q-pl-lg">
       <q-table
         grid
         card-class="bg-teal-7 text-white"
@@ -20,6 +20,7 @@
         <template v-slot:top-right>
           <div class="search">
             <q-input
+              autofocus
               rounded
               dense
               bg-color="white"

@@ -309,20 +309,61 @@
         :rows-per-page-options="[0]"
         :filter="filter"
       >
-        <template v-slot:top-right>
-          <q-input
-            outlined
-            rounded
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+        <template v-slot:top-right="props">
+          <div>
+            <q-fab
+              color="primary"
+              icon="sort"
+              direction="left"
+              label="Filter by:"
+              label-position="top"
+              external-label
+              padding="xs"
+            >
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'NO'"
+                label="Not Available"
+              />
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'YES'"
+                label="Available"
+              />
 
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = ''"
+                icon="clear"
+              />
+            </q-fab>
+          </div>
+
+          <div class="q-pa-md">
+            <q-input
+              outlined
+              rounded
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
+          <q-btn
+            flat
+            round
+            dense
+            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="props.toggleFullscreen"
+            class="q-ml-md"
+          />
           <q-page-scroller
             position="bottom-right"
             :scroll-offset="150"
@@ -331,7 +372,7 @@
             <q-btn
               fab
               icon="keyboard_arrow_up"
-              color="orange-9"
+              color="primary"
               text-color="white"
             />
           </q-page-scroller>
@@ -469,77 +510,110 @@
                             color="primary"
                             v-model="inputBook.Title"
                             label="Title"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the title of the book',
+                            ]"
                           />
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-md">
-                        <div class="col">
+                      <div class="q-gutter-xs row">
+                        <div class="col-12 col-md">
                           <q-input
                             dense
                             outlined
                             v-model="inputBook.ISBN"
                             label="ISBN"
                             type="number"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Input the ISBN',
+                            ]"
                           />
                         </div>
                         <div class="col">
-                          <q-select
+                          <q-input
                             dense
                             outlined
-                            label="Author"
                             v-model="inputBook.Author"
+                            label="Author/s Name"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the Author/s Name',
+                            ]"
                           />
                         </div>
-                        <div class="col">
+                      </div>
+
+                      <div class="q-gutter-x-xs row">
+                        <div class="col-12 col-md">
                           <q-input
                             dense
                             outlined
                             v-model="inputBook.Call_Number"
                             label="Call Number"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Input the call number of the book',
+                            ]"
                           />
                         </div>
-                      </div>
-
-                      <div class="q-gutter-md row q-pb-md">
-                        <div class="col">
+                        <div class="col-12 col-md">
                           <q-input
                             dense
                             outlined
                             v-model="inputBook.Edition"
                             label="Edition"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) || 'Input the edition',
+                            ]"
                           />
                         </div>
-                        <div class="col">
+                        <div class="col-12 col-md">
                           <q-select
                             dense
                             outlined
                             label="Category"
                             :options="allCategory"
                             option-label="C_Description"
-                            option-value="Category_ID"
+                            optine-value="Category_ID"
                             map-options
                             emit-value
                             v-model="inputBook.categories"
+                            lazy-rules
+                            :rules="[(val) => val || 'Select Category']"
                           />
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-md">
-                        <div class="col">
+                      <div class="q-gutter-sm row">
+                        <div class="col-12 col-md">
                           <q-select
                             dense
                             outlined
                             label="Publisher"
                             :options="allPublisher"
                             option-label="Publisher"
-                            option-value="Publisher_ID"
+                            optine-value="Publisher_ID"
                             map-options
+                            emit-value
                             @update:model-value="onSelectPublisher"
                             v-model="inputBook.publishers"
+                            lazy-rules
+                            :rules="[(val) => val || 'Select Publisher']"
                           />
                         </div>
-                        <div class="col">
+                        <div class="col-12 col-md">
                           <q-input
                             dense
                             outlined
@@ -550,8 +624,8 @@
                         </div>
                       </div>
 
-                      <div class="q-gutter-md row q-pb-lg">
-                        <div class="col">
+                      <div class="q-gutter-sm row">
+                        <div class="col-12 col-md">
                           <q-input
                             dense
                             outlined
@@ -559,7 +633,7 @@
                             label="Pages"
                           />
                         </div>
-                        <div class="col">
+                        <div class="col-12 col-md">
                           <q-input
                             dense
                             outlined
@@ -567,18 +641,24 @@
                             label="Series"
                           />
                         </div>
-                      </div>
-
-                      <div class="q-gutter-md row q-pb-sm">
-                        <div class="col">
+                        <div class="col-12 col-md">
                           <q-select
                             outlined
                             dense
                             v-model="inputBook.Book_Status"
                             :options="options1"
                             label="Status"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the status of the book',
+                            ]"
                           />
                         </div>
+                      </div>
+
+                      <div class="q-gutter-sm row">
                         <div class="col">
                           <q-input
                             dense
@@ -594,6 +674,12 @@
                             v-model="inputBook.Availability"
                             :options="options2"
                             label="Availability"
+                            lazy-rules
+                            :rules="[
+                              (val) =>
+                                (val && val.length > 0) ||
+                                'Select the availability of the book',
+                            ]"
                           />
                         </div>
                       </div>
@@ -628,6 +714,54 @@
                 dense
                 @click="deleteSpecificBook(props.row)"
               />
+              <!--------------------------------------- BOOK AVAILABILITY BUTTON   ------------------------------------------    --->
+              <q-btn
+                round
+                color="green"
+                icon="done_all"
+                size="sm"
+                flat
+                dense
+                @click="openBookAvailability(props.row)"
+              />
+
+              <q-dialog v-model="availability">
+                <q-card style="width: 400px" class="q-ma-sm">
+                  <q-card-section class="text-h8">
+                    Book Availability
+                  </q-card-section>
+                  <q-separator />
+                  <q-card-section class="flex flex-center q-pt-none">
+                    <q-form @submit="oneditBook()">
+                      <div>
+                        <q-radio
+                          v-model="inputBook.Availability"
+                          val="YES"
+                          label="YES"
+                          color="green"
+                          size="lg"
+                        />
+                        <q-radio
+                          v-model="inputBook.Availability"
+                          val="NO"
+                          label="NO"
+                          color="red-5"
+                          size="lg"
+                        />
+                      </div>
+                      <div class="q-gutter-md q-pt-lg" align="right">
+                        <q-btn
+                          label="Cancel"
+                          color="red"
+                          v-close-popup
+                          @click="resetModel()"
+                        />
+                        <q-btn label="Done" color="primary" type="submit" />
+                      </div>
+                    </q-form>
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
             </div>
           </q-td>
         </template>
@@ -703,6 +837,9 @@ export default class LibrarianIndex extends Vue {
   allBorrower!: BorrowerDto[];
   allIssuedBook!: IssuedBookDto[];
 
+  available!: BookDto[];
+  notavail!: BookDto[];
+
   addBook!: (payload: BookDto) => Promise<void>;
   editBook!: (payload: BookDto) => Promise<void>;
   deleteBook!: (payload: BookDto) => Promise<void>;
@@ -719,6 +856,7 @@ export default class LibrarianIndex extends Vue {
   filter = "";
   dialog = false;
   Details = false;
+  availability = false;
 
   options1 = ["New Arrival", "Damaged", "Lost", "Outdated"];
   options2 = ["YES", "NO"];
@@ -878,6 +1016,7 @@ export default class LibrarianIndex extends Vue {
 
   async oneditBook() {
     await this.editBook(this.inputBook);
+    this.availability = false;
     this.editRowBook = false;
     this.resetModel();
     this.$q.notify({
@@ -900,6 +1039,11 @@ export default class LibrarianIndex extends Vue {
           message: "Successfully removed",
         });
       });
+  }
+
+  openBookAvailability(val: BookDto) {
+    this.availability = true;
+    this.inputBook = { ...val };
   }
 
   openEditDialog(val: BookDto) {

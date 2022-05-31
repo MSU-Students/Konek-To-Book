@@ -171,38 +171,52 @@
     <div class="q-ma-md">
       <q-table
         title="Fine List"
-        :rows="finesBook"
+        :rows="allBookFines"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
-          <q-input
-            outlined
-            rounded
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+          <div>
+            <q-fab
+              color="light-green-8"
+              icon="sort"
+              direction="left"
+              label="Filter by:"
+              label-position="top"
+              external-label
+              padding="xs"
+            >
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Fines'"
+                label="Fines"
+              />
 
-          <q-page-scroller
-            position="bottom-right"
-            :scroll-offset="150"
-            :offset="[18, 18]"
-          >
-            <q-btn
-              fab
-              icon="keyboard_arrow_up"
-              color="orange-9"
-              text-color="white"
-            />
-          </q-page-scroller>
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = ''"
+                icon="clear"
+              />
+            </q-fab>
+          </div>
+          <div class="q-pa-md">
+            <q-input
+              outlined
+              rounded
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
         </template>
 
         <!------------------------------------- EDIT FINES BUTTON   ------------------------------------------    --->
@@ -530,6 +544,18 @@
         </div>
       </div>
     </div>
+    <q-page-scroller
+      position="bottom-right"
+      :scroll-offset="150"
+      :offset="[18, 18]"
+    >
+      <q-btn
+        fab
+        icon="keyboard_arrow_up"
+        color="light-green-8"
+        text-color="white"
+      />
+    </q-page-scroller>
   </q-page>
 </template>
 

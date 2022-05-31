@@ -42,7 +42,7 @@
                   <!--C O L U M N-->
                   <div class="col-12 col-md-4">
                     <div class="text-overline text-bold">
-                      Account Type
+                      Profile Picture
                       <div class="q-gutter-y-md">
                         <q-file
                           outlined
@@ -262,19 +262,31 @@
         :filter="filter"
       >
         <template v-slot:top-right>
+          <q-input
+            outlined
+            rounded
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Search"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
           <div class="q-pa-md q-gutter-sm row">
-            <q-input
-              outlined
-              rounded
-              dense
-              debounce="300"
-              v-model="filter"
-              placeholder="Search"
+            <q-page-scroller
+              position="bottom-right"
+              :scroll-offset="150"
+              :offset="[15, 15]"
             >
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
+              <q-btn
+                fab
+                icon="keyboard_arrow_up"
+                color="red-8 "
+                text-color="white"
+              />
+            </q-page-scroller>
           </div>
         </template>
 
@@ -411,7 +423,7 @@
                         <!--C O L U M N-->
                         <div class="col-12 col-md-4">
                           <div class="text-overline text-bold">
-                            Account Type
+                            Profile Picture
                             <div class="q-gutter-y-md-4">
                               <q-file
                                 outlined
@@ -651,7 +663,68 @@
                 dense
                 @click="deleteSpecificAccount(props.row)"
               />
+
+              <!--------------------------------------- USER STATUS BUTTON   ------------------------------------------    --->
+              <q-btn
+                round
+                color="green"
+                icon="done_all"
+                size="sm"
+                flat
+                dense
+                @click="openUserStatus(props.row)"
+              />
+
+              <q-dialog v-model="status">
+                <q-card style="width: 400px" class="q-ma-sm">
+                  <q-card-section class="text-h8">
+                    Account Status
+                  </q-card-section>
+                  <q-separator />
+                  <q-card-section class="flex flex-center q-pt-none">
+                    <q-form @submit="oneditAccount()">
+                      <div>
+                        <q-radio
+                          v-model="inputUser.User_Status"
+                          val="Active"
+                          label="Active"
+                          color="green"
+                          size="lg"
+                        />
+                        <q-radio
+                          v-model="inputUser.User_Status"
+                          val="Inactive"
+                          label="Inactive"
+                          color="red-5"
+                          size="lg"
+                        />
+                      </div>
+                      <div class="q-gutter-md q-pt-lg" align="right">
+                        <q-btn
+                          label="Cancel"
+                          color="red"
+                          v-close-popup
+                          @click="resetModel()"
+                        />
+                        <q-btn label="Done" color="primary" type="submit" />
+                      </div>
+                    </q-form>
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
             </div>
+          </q-td>
+        </template>
+        <!----------------------------- - - - - -  Color Manipulation - - - - ----------------------------->
+        <template #body-cell-userstatus="props">
+          <q-td :props="props">
+            <q-chip
+              flat
+              color="white"
+              :text-color="colorManipulation(props.row.User_Status)"
+              :label="labelManipulation(props.row.User_Status)"
+            >
+            </q-chip>
           </q-td>
         </template>
       </q-table>
@@ -702,6 +775,9 @@ function wrapCsvValue(
 export default class ManageAccount extends Vue {
   allAccount!: UserDto[];
 
+  active!: UserDto[];
+  inactive!: UserDto[];
+
   addAccount!: (payload: UserDto) => Promise<void>;
   editAccount!: (payload: UserDto) => Promise<void>;
   deleteAccount!: (payload: UserDto) => Promise<void>;
@@ -723,6 +799,7 @@ export default class ManageAccount extends Vue {
   addNewAccount = false;
   cancelEnabled = true;
   editRowAccount = false;
+  status = false;
 
   fitModes = ["scale-down"];
   options = ["Male", "Female"];
@@ -795,6 +872,23 @@ export default class ManageAccount extends Vue {
       field: "User_Status",
     },
   ];
+
+  colorManipulation(User_Status: string) {
+    if (User_Status === "Inactive") {
+      return "red-5";
+    }
+    if (User_Status === "Active") {
+      return "green";
+    }
+  }
+  labelManipulation(User_Status: string) {
+    if (User_Status === "Active") {
+      return "Active";
+    }
+    if (User_Status === "Inactive") {
+      return "Inactive";
+    }
+  }
 
   // ----------------------------- E X P O R T TABLE-------------------------------------
   exportTable() {
@@ -921,7 +1015,7 @@ export default class ManageAccount extends Vue {
         message: "Error!.",
       });
     }
-
+    this.status = false;
     this.editRowAccount = false;
     this.loading = false;
     this.resetModel();
@@ -973,6 +1067,11 @@ export default class ManageAccount extends Vue {
           message: "Successfully removed",
         });
       });
+  }
+
+  openUserStatus(val: UserDto) {
+    this.status = true;
+    this.inputUser = { ...val };
   }
 
   openEditDialog(val: UserDto) {

@@ -162,25 +162,64 @@
     <div class="q-ma-md">
       <q-table
         title="IssuedBook List"
-        :rows="issuedBook"
+        :rows="allIssuedBook"
         :columns="columns"
         row-key="name"
         :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
-          <q-input
-            outlined
-            rounded
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+          <div>
+            <q-fab
+              color="red-8"
+              icon="sort"
+              direction="left"
+              label="Filter by:"
+              label-position="top"
+              external-label
+              padding="xs"
+            >
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Issued'"
+                label="Issued"
+              />
+
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = ''"
+                icon="clear"
+              />
+            </q-fab>
+          </div>
+          <div class="q-pa-md">
+            <q-input
+              outlined
+              rounded
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
+        </template>
+
+        <template #body-cell-issuedbookstatus="props">
+          <q-td :props="props">
+            <q-chip
+              flat
+              color="white"
+              :text-color="colorManipulation(props.row.IssuedBook_Status)"
+              :label="labelManipulation(props.row.IssuedBook_Status)"
+            >
+            </q-chip>
+          </q-td>
         </template>
 
         <!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
@@ -509,7 +548,7 @@
       :scroll-offset="150"
       :offset="[18, 18]"
     >
-      <q-btn fab icon="keyboard_arrow_up" color="orange-9" text-color="white" />
+      <q-btn fab icon="keyboard_arrow_up" color="red-8" text-color="white" />
     </q-page-scroller>
   </q-page>
 </template>
@@ -636,6 +675,7 @@ export default class ManageIssuedBooks extends Vue {
       align: "center",
       field: "IssuedBook_Status",
     },
+
     {
       name: "action",
       align: "center",
@@ -766,6 +806,29 @@ export default class ManageIssuedBooks extends Vue {
       Book_Status: "",
       IssuedBook_Status: "",
     };
+  }
+
+  colorManipulation(IssuedBook_Status: string) {
+    if (IssuedBook_Status === "Issued") {
+      return "warning";
+    }
+    if (IssuedBook_Status === "Return") {
+      return "positive";
+    }
+    if (IssuedBook_Status === "Lost") {
+      return "negative";
+    }
+  }
+  labelManipulation(IssuedBook_Status: string) {
+    if (IssuedBook_Status === "Issued") {
+      return "Issued";
+    }
+    if (IssuedBook_Status === "Return") {
+      return "Return";
+    }
+    if (IssuedBook_Status === "Lost") {
+      return "Lost";
+    }
   }
 }
 </script>

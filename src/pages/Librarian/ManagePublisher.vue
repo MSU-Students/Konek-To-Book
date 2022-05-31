@@ -7,7 +7,7 @@
         dense
         width="50px"
         align="right"
-        class="bg-brown-9 text-white shadow-2"
+        class="bg-deep-purple-10 text-white shadow-2"
       >
         <!--------------------------------  ADD NEW PUBLISHER BUTTON  ------------------------------------------    --->
         <q-tab
@@ -119,19 +119,31 @@
         :filter="filter"
       >
         <template v-slot:top-right>
+          <q-input
+            outlined
+            rounded
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Search"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
           <div class="q-pa-md q-gutter-sm row">
-            <q-input
-              outlined
-              rounded
-              dense
-              debounce="300"
-              v-model="filter"
-              placeholder="Search"
+            <q-page-scroller
+              position="bottom-right"
+              :scroll-offset="150"
+              :offset="[15, 15]"
             >
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
+              <q-btn
+                fab
+                icon="keyboard_arrow_up"
+                color="deep-purple-10"
+                text-color="white"
+              />
+            </q-page-scroller>
           </div>
         </template>
 
@@ -373,7 +385,6 @@ export default class ManagePublisher extends Vue {
       wrapCsvValue("Publisher"),
       wrapCsvValue("Date Of Publication"),
       wrapCsvValue("Place of Publication"),
-
     ];
     const rows = [header.join(",")].concat(
       this.allPublisher.map((c) =>
@@ -381,7 +392,7 @@ export default class ManagePublisher extends Vue {
           wrapCsvValue(String(c.Publisher_ID)),
           wrapCsvValue(String(c.Publisher)),
           wrapCsvValue(String(c.DateOfPublication)),
-         wrapCsvValue(String(c.PlaceOfPublication)),
+          wrapCsvValue(String(c.PlaceOfPublication)),
         ].join(",")
       )
     );

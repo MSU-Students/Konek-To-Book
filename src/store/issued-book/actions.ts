@@ -44,7 +44,7 @@ const actions: ActionTree<IssuedBookStateInterface, StateInterface> = {
       );
 
       if (dueDate < dateNow) {
-        if (!book.fines && !/^(Return)$/gi.test(book.IssuedBook_Status)) {
+        if (!book.fines && !/^(Return)$/gi.test(book.IssuedBook_Status) && !/^(Lost)$/gi.test(book.IssuedBook_Status)) {
           // add book into fines
           this.dispatch("bookfines/addBookFines", {
             Title: book.Title,

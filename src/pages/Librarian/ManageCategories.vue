@@ -86,19 +86,31 @@
         :filter="filter"
       >
         <template v-slot:top-right>
+          <q-input
+            outlined
+            rounded
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="Search"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
           <div class="q-pa-md q-gutter-sm row">
-            <q-input
-              outlined
-              rounded
-              dense
-              debounce="300"
-              v-model="filter"
-              placeholder="Search"
+            <q-page-scroller
+              position="bottom-right"
+              :scroll-offset="150"
+              :offset="[15, 15]"
             >
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
+              <q-btn
+                fab
+                icon="keyboard_arrow_up"
+                color="teal-8"
+                text-color="white"
+              />
+            </q-page-scroller>
           </div>
         </template>
 
@@ -314,7 +326,7 @@ export default class ManageCategories extends Vue {
     }
   }
 
-// -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   inputCategory: CategoryDto = {
     C_Description: "",

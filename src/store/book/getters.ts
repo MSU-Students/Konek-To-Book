@@ -3,9 +3,18 @@ import { StateInterface } from '../index';
 import { BookStateInterface } from './state';
 
 const getters: GetterTree<BookStateInterface, StateInterface> = {
-  someGetter (/* context */) {
-    // your code
-  }
+  available(state) {
+    return state.allBook.filter((i) =>
+      /^yes$/i.test(i.Availability || '')
+    );
+  },
+
+  notavail(state) {
+    return state.allBook.filter((i) =>
+      /^no$/i.test(i.Availability || '')
+    );
+  },
+
 };
 
 export default getters;
