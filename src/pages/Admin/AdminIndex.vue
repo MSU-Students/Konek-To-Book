@@ -103,7 +103,6 @@ export default class AdminIndex extends Vue {
 
   async mounted() {
     await this.getAllUser();
-    console.log(this.allAccount);
   }
 
   date = "2021/09/17";

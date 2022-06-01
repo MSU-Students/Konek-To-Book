@@ -581,7 +581,6 @@ export default class ManageIssuedBooks extends Vue {
 
   async mounted() {
     await this.getAllIssuedBook();
-    console.log(this.allIssuedBook);
   }
 
   pagination = {};

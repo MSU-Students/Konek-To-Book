@@ -14,6 +14,7 @@ const mutation: MutationTree<BookFinestateInterface> = {
   },
 
   getAllBookFines(state, payload: BookFinesDto[]) {
+
     state.allBookFines = [];
     const dateNow = new Date();
     const newPayload = payload.map((book) => {
@@ -30,7 +31,7 @@ const mutation: MutationTree<BookFinestateInterface> = {
       const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return {
         ...book,
-        Payment_Amount: String(Number(book.Payment_Amount) * (days - 1) ),
+        Payment_Amount: String(Number(book.Payment_Amount) * (days) ),
       };
     });
     state.allBookFines.push(...newPayload);

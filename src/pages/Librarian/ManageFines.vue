@@ -591,7 +591,6 @@ export default class ManageFines extends Vue {
 
   async mounted() {
     await this.getAllBookFines();
-    console.log(this.allBookFines);
   }
 
   pagination = {};

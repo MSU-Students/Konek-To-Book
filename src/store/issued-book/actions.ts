@@ -34,22 +34,27 @@ const actions: ActionTree<IssuedBookStateInterface, StateInterface> = {
     await this.dispatch("borrower/getAllBorrower");
     const dateNow = new Date();
     context.state.allIssuedBook.forEach((book) => {
-      const parseDate = /^(?<Year>\d{4})-(?<Month>\d{2})-(?<Date>\d{2})$/.exec(book.Due_Date);
-      const dueDate:Date = new Date(Number(parseDate?.groups?.Year),
-        Number(parseDate?.groups?.Month) - 1, Number(parseDate?.groups?.Date))
+      const parseDate = /^(?<Year>\d{4})-(?<Month>\d{2})-(?<Date>\d{2})$/.exec(
+        book.Due_Date
+      );
+      const dueDate: Date = new Date(
+        Number(parseDate?.groups?.Year),
+        Number(parseDate?.groups?.Month) - 1,
+        Number(parseDate?.groups?.Date)
+      );
 
       if (dueDate < dateNow) {
-        if (!book.fines) {
+        if (!book.fines && !/^(Return)$/gi.test(book.IssuedBook_Status)) {
           // add book into fines
           this.dispatch("bookfines/addBookFines", {
             Title: book.Title,
             Borrower_Name: book.Borrower_Name,
             Fine_Date: book.Due_Date,
-            Payment_Amount: '5',
+            Payment_Amount: "5",
             Payment_Status: "Fines",
           } as BookFinesDto);
           // delete issued books
-          this.dispatch('issuedbook/deleteIssuedBook', book.IssuedBook_ID)
+          this.dispatch("issuedbook/deleteIssuedBook", book.IssuedBook_ID);
         } else {
           const bookFines = book.fines;
           const diff = new Date(dueDate.getTime() - dateNow.getTime());
@@ -58,10 +63,10 @@ const actions: ActionTree<IssuedBookStateInterface, StateInterface> = {
           const HOUR = 60 * MINUTES;
           const DAY = 24 * HOUR;
           const days = Math.fround(diff.getTime() / DAY);
-          this.dispatch('bookfines/editBookFines', {
+          this.dispatch("bookfines/editBookFines", {
             ...bookFines,
-            Payment_Amount: String(5 * days)
-          })
+            Payment_Amount: String(5 * days),
+          });
         }
       }
     });

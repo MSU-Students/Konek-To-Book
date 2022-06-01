@@ -711,7 +711,6 @@ export default class ManageAccount extends Vue {
 
   async mounted() {
     await this.getAllUser();
-    console.log(this.allAccount);
   }
 
   imageAttachement: File = new File([], "Pick a Profile Pic (Max: 2MB)");

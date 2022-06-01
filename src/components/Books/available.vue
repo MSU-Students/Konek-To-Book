@@ -4,7 +4,7 @@
     <div class="q-gutter-lg">
       <q-table
         :columns="columns"
-        :rows="allBook"
+        :rows="allBook.filter(i => /^(Yes)$/gi.test(i.Availability ))"
         row-key="name"
         :rows-per-page-options="[0]"
         :filter="filter"
@@ -153,7 +153,6 @@ export default class GuestIndex extends Vue {
 
   async mounted() {
     await this.getAllBook();
-    console.log(this.allBook);
   }
 
   pagination = {};

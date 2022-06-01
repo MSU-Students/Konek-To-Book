@@ -69,7 +69,6 @@ export default class GuestCategories extends Vue {
 
   async mounted() {
     await this.getAllCategory();
-    console.log(this.allCategory);
   }
 
   filter = "";

@@ -64,7 +64,7 @@
           />
           <q-tab
             class="text-caption text-primary"
-            name="representative"
+            name="notavail"
             label="Not Available Books"
             icon="not_interested"
           />
@@ -249,7 +249,6 @@ export default class GuestIndex extends Vue {
 
   async mounted() {
     await this.getAllBook();
-    console.log(this.allBook);
   }
 
   pagination = {};
