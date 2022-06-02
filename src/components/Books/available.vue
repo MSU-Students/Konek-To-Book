@@ -4,7 +4,7 @@
     <div class="q-gutter-lg">
       <q-table
         :columns="columns"
-        :rows="allBook.filter(i => /^(Yes)$/gi.test(i.Availability ))"
+        :rows="allBook.filter((i) => /^(Yes)$/gi.test(i.Availability))"
         row-key="name"
         :rows-per-page-options="[0]"
         :filter="filter"
@@ -124,6 +124,17 @@
             </div>
           </q-td>
         </template>
+        <template #body-cell-availability="props">
+          <q-td :props="props">
+            <q-chip
+              flat
+              color="white"
+              :text-color="colorManipulation(props.row.Availability)"
+              :label="labelManipulation(props.row.Availability)"
+            >
+            </q-chip>
+          </q-td>
+        </template>
       </q-table>
     </div>
   </div>
@@ -215,6 +226,23 @@ export default class GuestIndex extends Vue {
       field: "Availability",
     },
   ];
+
+  colorManipulation(Availability: string) {
+    if (Availability === "NO") {
+      return "red-5";
+    }
+    if (Availability === "YES") {
+      return "green";
+    }
+  }
+  labelManipulation(Availability: string) {
+    if (Availability === "YES") {
+      return "YES";
+    }
+    if (Availability === "NO") {
+      return "NO";
+    }
+  }
 
   inputBook: BookDto = {
     ISBN: "",

@@ -631,6 +631,17 @@
             </div>
           </q-td>
         </template>
+        <template #body-cell-availability="props">
+          <q-td :props="props">
+            <q-chip
+              flat
+              color="white"
+              :text-color="colorManipulation(props.row.Availability)"
+              :label="labelManipulation(props.row.Availability)"
+            >
+            </q-chip>
+          </q-td>
+        </template>
       </q-table>
     </div>
   </q-page>
@@ -764,6 +775,23 @@ export default class LibrarianIndex extends Vue {
       field: "Availability",
     },
   ];
+
+  colorManipulation(Availability: string) {
+    if (Availability === "NO") {
+      return "red-5";
+    }
+    if (Availability === "YES") {
+      return "green";
+    }
+  }
+  labelManipulation(Availability: string) {
+    if (Availability === "YES") {
+      return "YES";
+    }
+    if (Availability === "NO") {
+      return "NO";
+    }
+  }
 
   // ----------------------------- E X P O R T TABLE-------------------------------------
   exportTable() {
