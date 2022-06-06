@@ -675,7 +675,7 @@ export default class ManageFines extends Vue {
       name: "paymentamount",
       label: "Payment Amount",
       align: "center",
-      field: "Payment_Amount",
+      field: (row: BookFinesDto) => '₱ ' + row.Payment_Amount,
     },
     {
       name: "paymentstatus",
