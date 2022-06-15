@@ -1,5 +1,14 @@
 <template>
   <q-page class="bg-image1">
+    <div class="text-h4 text-teal-9 q-pb-lg q-pt-lg text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="people"
+        color="teal-9"
+        style="font-size: 3rem"
+      />
+      Manage Borrowers
+    </div>
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_BORROWER ------------------------------------------    --->
       <q-tabs
@@ -7,7 +16,7 @@
         dense
         width="50px"
         align="right"
-        class="bg-orange-9 text-white shadow-2"
+        class="bg-teal-9 text-white shadow-2"
       >
         <!--------------------------------  ADD NEW BORROWER BUTTON  ------------------------------------------    --->
         <q-tab

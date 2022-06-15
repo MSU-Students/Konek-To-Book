@@ -7,14 +7,16 @@
           <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <q-card style="width: 500px">
               <q-card-section
-                :class="$q.dark.isActive ? 'brown-6_dark' : 'bg-brown-7'"
+                :class="$q.dark.isActive ? 'brown-6_dark' : 'bg-red-7'"
                 class="text-white"
                 style="height: 150px"
               >
                 <div class="row">
                   <div class="col-10">
                     <div class="text-h5">Borrowers</div>
-                    <div class="text-h4 text-bold"> {{ allBorrower.length }}</div>
+                    <div class="text-h4 text-bold">
+                      {{ allBorrower.length }}
+                    </div>
                   </div>
                   <div class="col-2">
                     <q-icon size="62px" name="people" />
@@ -30,7 +32,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <q-card style="width: 500px">
                 <q-card-section
-                  :class="$q.dark.isActive ? 'red-7_dark' : 'bg-red-7'"
+                  :class="$q.dark.isActive ? 'red-7_dark' : 'bg-blue-grey-9'"
                   class="text-white"
                   style="height: 150px"
                 >
@@ -88,21 +90,26 @@ import { mapActions, mapState } from "vuex";
   computed: {
     ...mapState("account", ["allAccount"]),
     ...mapState("book", ["allBook"]),
-     ...mapState("borrower", ["allBorrower"]),
+    ...mapState("borrower", ["allBorrower"]),
   },
   methods: {
     ...mapActions("account", ["getAllUser"]),
+    ...mapActions("book", ["getAllBook"]),
+    ...mapActions("borrower", ["getAllBorrower"]),
   },
 })
 export default class AdminIndex extends Vue {
   allAccount!: UserDto[];
   allBook!: BookDto[];
   allBorrower!: BorrowerDto[];
-
+  getAllBook!: () => Promise<void>;
+  getAllBorrower!: () => Promise<void>;
   getAllUser!: () => Promise<void>;
 
   async mounted() {
     await this.getAllUser();
+    await this.getAllBook();
+    await this.getAllBorrower();
   }
 
   date = "2021/09/17";

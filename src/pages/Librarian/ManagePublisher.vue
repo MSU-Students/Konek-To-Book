@@ -1,5 +1,15 @@
 <template>
   <q-page class="bg-image1">
+    <div class="text-h4 text-teal-9 q-pb-lg q-pt-lg text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="publish"
+        color="teal-9"
+        style="font-size: 3rem"
+      />
+      Manage Publisher
+    </div>
+
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_PUBLISHER ------------------------------------------    --->
       <q-tabs
@@ -7,7 +17,7 @@
         dense
         width="50px"
         align="right"
-        class="bg-deep-purple-10 text-white shadow-2"
+        class="bg-teal-9 text-white shadow-2"
       >
         <!--------------------------------  ADD NEW PUBLISHER BUTTON  ------------------------------------------    --->
         <q-tab
@@ -74,12 +84,6 @@
                       outlined
                       v-model="inputPublisher.PlaceOfPublication"
                       label="Place Of Publication"
-                      lazy-rules
-                      :rules="[
-                        (val) =>
-                          (val && val.length > 0) ||
-                          'Input the place of publication',
-                      ]"
                     />
                   </div>
                 </div>
@@ -140,7 +144,7 @@
               <q-btn
                 fab
                 icon="keyboard_arrow_up"
-                color="deep-purple-10"
+                color="orange-9"
                 text-color="white"
               />
             </q-page-scroller>
@@ -153,7 +157,7 @@
             <div class="q-gutter-sm">
               <q-btn
                 round
-                color="blue"
+                color="teal-7"
                 icon="edit"
                 size="sm"
                 flat
@@ -470,3 +474,8 @@ export default class ManagePublisher extends Vue {
   }
 }
 </script>
+<style>
+.publisher_bgcolor {
+  background-image: linear-gradient(to right, #0c5874, #0c5874);
+}
+</style>

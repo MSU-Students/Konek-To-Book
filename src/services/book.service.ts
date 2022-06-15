@@ -1,16 +1,15 @@
 import { lmsApiService } from "./lms-api.service";
 import { BookDto, DefaultApi } from "./rest-api";
 
-
 class BookService extends DefaultApi {
   async create(payload: any): Promise<BookDto> {
     const response = await lmsApiService.addBook(payload);
     return response.data;
   }
 
-  async getAll(): Promise<BookDto> {
+  async getAll(): Promise<BookDto[]> {
     const response = await lmsApiService.getBooks();
-    return response.data;
+    return response.data as unknown as BookDto[];
   }
 
   async getOne(Book_ID: number): Promise<BookDto> {

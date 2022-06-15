@@ -60,7 +60,7 @@
                     </q-item-section>
                   </q-item>
 
-                  <q-item clickable v-close-popup to="pages/Guest/LoginForm">
+                  <q-item clickable @click="logout()">
                     <q-item-section avatar>
                       <q-avatar
                         icon="logout"
@@ -89,14 +89,14 @@
       :width="250"
       :breakpoint="500"
       bordered
-      class="bg-grey-2"
+      class="bg-white"
     >
       <!-- drawer content -->
       <q-scroll-area class="fit">
         <q-list padding>
           <q-item clickable v-ripple to="pages/Admin/AdminIndex">
             <q-item-section avatar>
-              <q-icon name="dashboard" />
+              <q-icon name="dashboard" color="teal-9" />
             </q-item-section>
 
             <q-item-section> Dashboard </q-item-section>
@@ -104,7 +104,7 @@
 
           <q-item clickable v-ripple to="pages/Admin/ManageAccount">
             <q-item-section avatar>
-              <q-icon name="manage_accounts" />
+              <q-icon name="manage_accounts" color="teal-9" />
             </q-item-section>
 
             <q-item-section> Manage Accounts </q-item-section>
@@ -112,9 +112,9 @@
 
           <q-separator />
 
-          <q-item clickable v-ripple to="pages/Guest/LoginForm">
+          <q-item clickable @click="logout()">
             <q-item-section avatar>
-              <q-icon name="logout" />
+              <q-icon name="logout" color="red" />
             </q-item-section>
 
             <q-item-section> Logout </q-item-section>
@@ -172,6 +172,24 @@ export default class AdminLayout extends Vue {
   async mounted() {
     const res = await lmsApiService.getProfile();
     this.currentProfile = res.data;
+  }
+
+  async logout() {
+    try {
+      const result = await lmsApiService.logoutUser();
+      if (result.status == 201) {
+        await this.$router.replace("/LoginForm");
+      }
+      this.$q.notify({
+        type: "warning",
+        message: "You have been logged out!",
+      });
+    } catch (error) {
+      this.$q.notify({
+        type: "negative",
+        message: "Something went wrong",
+      });
+    }
   }
 }
 </script>

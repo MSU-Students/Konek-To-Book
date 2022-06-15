@@ -1,5 +1,14 @@
 <template>
   <q-page class="bg-image1">
+    <div class="text-h4 text-teal-9 q-pb-lg q-pt-lg text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="payments"
+        color="teal-9"
+        style="font-size: 3rem"
+      />
+      Manage Fines
+    </div>
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_FINES------------------------------------------    --->
       <q-tabs
@@ -7,7 +16,7 @@
         dense
         width="50px"
         align="right"
-        class="bg-light-green-8 text-white shadow-2"
+        class="bg-teal-9 text-white shadow-2"
       >
         <!--------------------------------  ADD NEW FINES BUTTON  ------------------------------------------    --->
         <q-tab
@@ -180,7 +189,7 @@
         <template v-slot:top-right>
           <div>
             <q-fab
-              color="light-green-8"
+              color="teal-9"
               icon="sort"
               direction="left"
               label="Filter by:"
@@ -219,7 +228,7 @@
           </div>
         </template>
 
-         <template #body-cell-paymentstatus="props">
+        <template #body-cell-paymentstatus="props">
           <q-td :props="props">
             <q-chip
               flat
@@ -393,22 +402,11 @@
                   </q-card-section>
                 </q-card>
               </q-dialog> -->
-              <!--------------------------------------- DELETE FINES BUTTON   ------------------------------------------    --->
-              <q-btn
-                color="red-8"
-                icon="delete"
-                size="sm"
-                class="q-ml-sm"
-                flat
-                round
-                dense
-                @click="deleteSpecificBookFines(props.row)"
-              />
 
               <!--------------------------------------- Payment_Status BUTTON   ------------------------------------------    --->
               <q-btn
                 round
-                color="green"
+                color="teal-8"
                 icon="done_all"
                 size="sm"
                 flat
@@ -561,12 +559,7 @@
       :scroll-offset="150"
       :offset="[18, 18]"
     >
-      <q-btn
-        fab
-        icon="keyboard_arrow_up"
-        color="light-green-8"
-        text-color="white"
-      />
+      <q-btn fab icon="keyboard_arrow_up" color="red-9" text-color="white" />
     </q-page-scroller>
   </q-page>
 </template>
@@ -675,7 +668,7 @@ export default class ManageFines extends Vue {
       name: "paymentamount",
       label: "Payment Amount",
       align: "center",
-      field: (row: BookFinesDto) => '₱ ' + row.Payment_Amount,
+      field: (row: BookFinesDto) => "₱ " + row.Payment_Amount,
     },
     {
       name: "paymentstatus",
@@ -778,21 +771,21 @@ export default class ManageFines extends Vue {
     });
   }
 
-  deleteSpecificBookFines(val: BookFinesDto) {
-    this.$q
-      .dialog({
-        message: "Confirm to delete?",
-        cancel: true,
-        persistent: true,
-      })
-      .onOk(async () => {
-        await this.deleteBookFines(val.BookFines_ID as any);
-        this.$q.notify({
-          type: "warning",
-          message: "Successfully removed",
-        });
-      });
-  }
+  // deleteSpecificBookFines(val: BookFinesDto) {
+  //   this.$q
+  //     .dialog({
+  //       message: "Confirm to delete?",
+  //       cancel: true,
+  //       persistent: true,
+  //     })
+  //     .onOk(async () => {
+  //       await this.deleteBookFines(val.BookFines_ID as any);
+  //       this.$q.notify({
+  //         type: "warning",
+  //         message: "Successfully removed",
+  //       });
+  //     });
+  // }
 
   resetModel() {
     this.inputBookFines = {

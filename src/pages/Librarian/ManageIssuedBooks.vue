@@ -1,5 +1,14 @@
 <template>
   <q-page class="bg-image1">
+    <div class="text-h4 text-teal-9 q-pb-lg q-pt-lg text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="local_library"
+        color="teal-9 "
+        style="font-size: 3rem"
+      />
+      Manage IssuedBooks
+    </div>
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_ISSUEBOOK ------------------------------------------    --->
       <q-tabs
@@ -7,7 +16,7 @@
         dense
         width="50px"
         align="right"
-        class="bg-red-8 text-white shadow-2"
+        class="bg-teal-9 text-white shadow-2"
       >
         <!--------------------------------  ADD NEW ISSUEDBOOK BUTTON  ------------------------------------------    --->
         <q-tab
@@ -171,7 +180,7 @@
         <template v-slot:top-right>
           <div>
             <q-fab
-              color="red-8"
+              color="teal-9"
               icon="sort"
               direction="left"
               label="Filter by:"
@@ -219,6 +228,65 @@
               :label="labelManipulation(props.row.IssuedBook_Status)"
             >
             </q-chip>
+          </q-td>
+        </template>
+        <!------------------------------------------  ----------    DETAILS BOOK Button ------------------------------------------ ------------------------->
+        <template v-slot:body-cell-Details="props">
+          <q-td :props="props">
+            <div class="q-gutter-sm">
+              <q-btn
+                round
+                color="teal-6"
+                icon="more_vert"
+                size="md"
+                flat
+                dense
+                @click="openDialog(props.row)"
+              />
+
+              <q-dialog v-model="Details">
+                <q-card style="width: 700px; max-width: 100vw" my-card>
+                  <q-card-section class="bg-grey-1">
+                    <div>{{ inputIssuedBook.IssuedBook_ID }}</div>
+                    <div class="text-h7 text-center">
+                      <strong>Book Title: </strong>
+                      {{ inputIssuedBook.Title }}
+                    </div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section class="bg-grey-1">
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong> Borrower Name: </strong>
+                      {{ inputIssuedBook.Borrower_Name }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Borrow Date: </strong>
+                      {{ inputIssuedBook.Borrow_Date }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Due Date: </strong>
+                      {{ inputIssuedBook.Due_Date }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Book Status: </strong>
+                      {{ inputIssuedBook.Book_Status }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>IssuedBook Status: </strong>
+                      {{ inputIssuedBook.IssuedBook_Status }}
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section
+                    class="bg-primary text-center text-caption text-white"
+                  >
+                    Mindanao State University - Marawi City
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
+            </div>
           </q-td>
         </template>
 
@@ -380,22 +448,11 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-              <!--------------------------------------- DELETE ISSUEDBOOK BUTTON   ------------------------------------------    --->
-              <q-btn
-                color="red-8"
-                icon="delete"
-                size="sm"
-                class="q-ml-sm"
-                flat
-                round
-                dense
-                @click="deleteSpecificIssuedBook(props.row)"
-              />
 
               <!--------------------------------------- IssuedBook_Status BUTTON   ------------------------------------------    --->
               <q-btn
                 round
-                color="green"
+                color="teal-8"
                 icon="done_all"
                 size="sm"
                 flat
@@ -548,7 +605,7 @@
       :scroll-offset="150"
       :offset="[18, 18]"
     >
-      <q-btn fab icon="keyboard_arrow_up" color="red-8" text-color="white" />
+      <q-btn fab icon="keyboard_arrow_up" color="orange-9" text-color="white" />
     </q-page-scroller>
   </q-page>
 </template>
@@ -630,10 +687,17 @@ export default class ManageIssuedBooks extends Vue {
   issuedStatus = false;
   filter = "";
   dialog = false;
+  Details = false;
 
   issuedstatusOpt = ["Issued", "Lost", "Return"];
 
   columns = [
+    {
+      name: "Details",
+      align: "center",
+      field: "Details",
+    },
+
     {
       name: "issuedbookID",
       align: "center",
@@ -641,15 +705,7 @@ export default class ManageIssuedBooks extends Vue {
       field: "IssuedBook_ID",
       sortable: true,
     },
-    {
-      name: "desc",
-      required: true,
-      label: "Title",
-      align: "center",
-      field: (row: IssuedBookDto) => row.Title,
-      format: (val: string) => `${val}`,
-      sortable: true,
-    },
+
     {
       name: "borrowername",
       label: "Borrower Name",
@@ -663,19 +719,13 @@ export default class ManageIssuedBooks extends Vue {
       field: "Borrow_Date",
     },
     { name: "duedate ", label: "Due Date", align: "center", field: "Due_Date" },
-    {
-      name: "bookstatus",
-      label: "Book Status",
-      align: "center",
-      field: "Book_Status",
-    },
+
     {
       name: "issuedbookstatus",
       label: "IssuedBook Status",
       align: "center",
       field: "IssuedBook_Status",
     },
-
     {
       name: "action",
       align: "center",
@@ -754,6 +804,10 @@ export default class ManageIssuedBooks extends Vue {
     this.editRowIssuedBook = true;
     this.inputIssuedBook = { ...val };
   }
+  openDialog(val: IssuedBookDto) {
+    this.Details = true;
+    this.inputIssuedBook = { ...val };
+  }
   async onaddIssuedBook() {
     try {
       await this.addIssuedBook(this.inputIssuedBook);
@@ -781,21 +835,21 @@ export default class ManageIssuedBooks extends Vue {
     });
   }
 
-  deleteSpecificIssuedBook(val: IssuedBookDto) {
-    this.$q
-      .dialog({
-        message: "Confirm to delete?",
-        cancel: true,
-        persistent: true,
-      })
-      .onOk(async () => {
-        await this.deleteIssuedBook(val.IssuedBook_ID as any);
-        this.$q.notify({
-          type: "warning",
-          message: "Successfully removed",
-        });
-      });
-  }
+  // deleteSpecificIssuedBook(val: IssuedBookDto) {
+  //   this.$q
+  //     .dialog({
+  //       message: "Confirm to delete?",
+  //       cancel: true,
+  //       persistent: true,
+  //     })
+  //     .onOk(async () => {
+  //       await this.deleteIssuedBook(val.IssuedBook_ID as any);
+  //       this.$q.notify({
+  //         type: "warning",
+  //         message: "Successfully removed",
+  //       });
+  //     });
+  // }
 
   resetModel() {
     this.inputIssuedBook = {

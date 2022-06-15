@@ -1,5 +1,14 @@
 <template>
   <q-page class="bg-image1">
+    <div class="text-h4 text-teal-9 q-pb-lg q-pt-lg text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="book"
+        color="teal-9"
+        style="font-size: 3rem"
+      />
+      Manage Categories
+    </div>
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_CATEGORIES ------------------------------------------    --->
       <q-tabs
@@ -7,7 +16,7 @@
         dense
         width="50px"
         align="right"
-        class="bg-teal-8 text-white shadow-2"
+        class="bg-teal-9 text-white shadow-2"
       >
         <!--------------------------------  ADD NEW CATEGORIES BUTTON  ------------------------------------------    --->
         <q-tab
@@ -78,7 +87,7 @@
     <!--------------------------------  TABLE LIST OF CATEGORIES  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
-        title="Categories List"
+        title="Category List"
         :rows="allCategory"
         :columns="columns"
         row-key="name"
@@ -107,7 +116,7 @@
               <q-btn
                 fab
                 icon="keyboard_arrow_up"
-                color="teal-8"
+                color="orange-9"
                 text-color="white"
               />
             </q-page-scroller>
@@ -120,7 +129,7 @@
             <div class="q-gutter-md">
               <q-btn
                 round
-                color="blue"
+                color="teal-7"
                 icon="edit"
                 size="sm"
                 flat

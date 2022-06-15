@@ -62,7 +62,7 @@
                     </q-item-section>
                   </q-item>
 
-                  <q-item clickable v-close-popup to="pages/Guest/LoginForm">
+                  <q-item clickable @click="logout()">
                     <q-item-section avatar>
                       <q-avatar
                         icon="logout"
@@ -91,13 +91,13 @@
       :width="260"
       :breakpoint="500"
       bordered
-      class="bg-grey-2"
+      class="bg-white"
     >
       <q-scroll-area class="fit">
         <q-list padding>
           <q-item clickable v-ripple to="pages/Librarian/LibrarianIndex">
             <q-item-section avatar>
-              <q-icon name="dashboard" />
+              <q-icon name="dashboard" color="teal-9" />
             </q-item-section>
 
             <q-item-section> Dashboard </q-item-section>
@@ -107,7 +107,7 @@
           <q-expansion-item>
             <template v-slot:header>
               <q-item-section avatar>
-                <q-icon name="view_list" />
+                <q-icon name="view_list" color="teal-9" />
               </q-item-section>
               <q-item-section> Manage </q-item-section>
             </template>
@@ -119,21 +119,21 @@
                   to="pages/Librarian/ManageCategories"
                 >
                   <q-item-section avatar>
-                    <q-icon name="book" />
+                    <q-icon name="book" color="teal-9" />
                   </q-item-section>
                   <q-item-section> Categories </q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="pages/Librarian/ManagePublisher">
                   <q-item-section avatar>
-                    <q-icon name="publish" />
+                    <q-icon name="publish" color="teal-9" />
                   </q-item-section>
                   <q-item-section> Publisher </q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="pages/Librarian/ManageBorrowers">
                   <q-item-section avatar>
-                    <q-icon name="people" />
+                    <q-icon name="people" color="teal-9" />
                   </q-item-section>
                   <q-item-section> Borrowers </q-item-section>
                 </q-item>
@@ -144,14 +144,14 @@
                   to="pages/Librarian/ManageIssuedBooks"
                 >
                   <q-item-section avatar>
-                    <q-icon name="local_library" />
+                    <q-icon name="local_library" color="teal-9" />
                   </q-item-section>
                   <q-item-section> Issued Books </q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="pages/Librarian/ManageFines">
                   <q-item-section avatar>
-                    <q-icon name="payments" />
+                    <q-icon name="payments" color="teal-9" />
                   </q-item-section>
                   <q-item-section> Fines </q-item-section>
                 </q-item>
@@ -160,9 +160,9 @@
           </q-expansion-item>
           <q-separator />
 
-          <q-item clickable v-ripple to="pages/Guest/LoginForm">
+          <q-item clickable @click="logout()">
             <q-item-section avatar>
-              <q-icon name="logout" />
+              <q-icon name="logout" color="red-7" />
             </q-item-section>
 
             <q-item-section> Logout </q-item-section>
@@ -215,6 +215,23 @@ export default class LoginForm extends Vue {
   async mounted() {
     const res = await lmsApiService.getProfile();
     this.currentProfile = res.data;
+  }
+  async logout() {
+    try {
+      const result = await lmsApiService.logoutUser();
+      if (result.status == 201) {
+        await this.$router.replace("/LoginForm");
+      }
+      this.$q.notify({
+        type: "warning",
+        message: "You have been logged out!",
+      });
+    } catch (error) {
+      this.$q.notify({
+        type: "negative",
+        message: "Something went wrong",
+      });
+    }
   }
 }
 </script>

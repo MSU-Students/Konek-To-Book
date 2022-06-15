@@ -6,7 +6,9 @@
       <section id="login" class="column">
         <div class="q-pa-md" style="max-width: 400px" align="center">
           <br />
-          <div class="text-h5 text-primary q-my-none text-weight-bold">Change Password</div>
+          <div class="text-h5 text-primary q-my-none text-weight-bold">
+            Change Password
+          </div>
           <br />
 
           <q-form @submit="onSubmit" class="q-gutter-md">
@@ -17,10 +19,7 @@
                 dense
                 label="Current Password"
                 lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) || '',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || '']"
               >
                 <template v-slot:prepend>
                   <q-icon name="lock" />
@@ -33,9 +32,7 @@
                 label="New Password"
                 :type="isPwd1 ? 'password' : 'text'"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || '',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || '']"
               >
                 <template v-slot:append>
                   <q-icon
@@ -55,10 +52,7 @@
                 label="Confirm Password"
                 :type="isPwd ? 'password' : 'text'"
                 lazy-rules
-                :rules="[
-                  (val) =>
-                    (val && val.length > 0) || '',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || '']"
               >
                 <template v-slot:append>
                   <q-icon

@@ -9,7 +9,7 @@
         :rows-per-page-options="[0]"
         :filter="filter"
       >
-        <template v-slot:top-right="props">
+        <template v-slot:top-right>
           <q-input
             outlined
             rounded
@@ -22,14 +22,6 @@
               <q-icon name="search" />
             </template>
           </q-input>
-          <q-btn
-            flat
-            round
-            dense
-            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-            @click="props.toggleFullscreen"
-            class="q-ml-md"
-          />
 
           <div class="q-pa-md q-gutter-sm row">
             <q-page-scroller
@@ -52,7 +44,7 @@
             <div class="q-gutter-sm">
               <q-btn
                 round
-                color="blue"
+                color="teal-8"
                 icon="more_vert"
                 size="md"
                 flat
@@ -61,7 +53,7 @@
               />
 
               <q-dialog v-model="Details">
-                <q-card style="width: 500px; max-width: 90vw" my-card>
+                <q-card style="width: 800px; max-width: 90vw" my-card>
                   <q-card-section>
                     <div class="text-subtitle2">
                       {{ inputBook.Book_ID }}
@@ -213,7 +205,6 @@ export default class GuestIndex extends Vue {
       field: (row: any) => row.Author || "None",
       sortable: true,
     },
-    { name: "edition", label: "Edition", align: "center", field: "Edition" },
 
     {
       name: "category",
@@ -223,12 +214,6 @@ export default class GuestIndex extends Vue {
       sortable: true,
     },
 
-    {
-      name: "status",
-      label: "Status",
-      align: "center",
-      field: "Book_Status",
-    },
     {
       name: "availability",
       label: "Availability",

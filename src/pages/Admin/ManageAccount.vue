@@ -1,256 +1,28 @@
 <template>
   <q-page class="bg-image3">
-    <div class="q-ma-md">
-      <!--------------------------------  TAB_MENU_ACCOUNT ------------------------------------------    --->
-      <q-tabs
-        inline-label
-        dense
-        width="50px"
-        align="right"
-        class="bg-red-8 text-white shadow-2"
-      >
-        <!--------------------------------  ADD NEW Account BUTTON  ------------------------------------------    --->
-        <q-tab
-          name="account"
-          icon="person_add"
-          label="Add Account"
-          @click="addNewAccount = true"
-        />
-        <q-dialog v-model="addNewAccount" persistent>
-          <q-card style="width: 1100px; max-width: 110vw">
-            <q-card-section class="row">
-              <q-toolbar>
-                <q-avatar size="50px">
-                  <q-icon name="person" />
-                </q-avatar>
-                <div class="text-h6">Add New Account</div>
-                <q-space />
-                <q-btn
-                  flat
-                  round
-                  dense
-                  icon="close"
-                  @click="resetModel()"
-                  v-close-popup
-                />
-              </q-toolbar>
-            </q-card-section>
+    <div class="text-h4 text-teal-8 q-pb-lg q-pt-md text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="person"
+        color="teal-9"
+        style="font-size: 3rem"
+      />
+      Account
+    </div>
 
-            <q-card-section>
-              <q-form @submit="onaddAccount()" class="q-px-md">
-                <div class="row q-pl-md q-pr-lg">
-                  <!--C O L U M N-->
-                  <div class="col-12 col-md-4">
-                    <div class="text-overline text-bold">
-                      Profile Picture
-                      <div class="q-gutter-y-md">
-                        <q-file
-                          outlined
-                          accept=".jpg, image/*"
-                          v-model="imageAttachement"
-                          style="max-width: 300px"
-                        >
-                          <template v-slot:prepend>
-                            <q-icon name="camera" />
-                          </template>
-                        </q-file>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-8">
-                    <div class="text-overline text-bold">
-                      Account Information
-                      <div class="q-gutter-xs row">
-                        <div class="col-12 col-md">
-                          <q-input
-                            v-model="inputUser.U_First_Name"
-                            dense
-                            outlined
-                            label="First Name"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || '']"
-                          />
-                        </div>
-                        <div class="col-12 col-md">
-                          <q-input
-                            v-model="inputUser.U_Middle_Name"
-                            dense
-                            outlined
-                            label="Middle Initial"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || ' ']"
-                          />
-                        </div>
-                        <div class="col-12 col-md">
-                          <q-input
-                            v-model="inputUser.U_Last_Name"
-                            dense
-                            outlined
-                            label="Last Name"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || '']"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="q-gutter-x-xs row">
-                        <div class="col-12 col-md">
-                          <q-select
-                            outlined
-                            dense
-                            v-model="inputUser.Gender"
-                            :options="options"
-                            label="Gender"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || '  ']"
-                          />
-                        </div>
-                        <div class="col-12 col-md">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputUser.U_Birth_Date"
-                            type="date"
-                            hint="Birth Date"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || ' ']"
-                          />
-                        </div>
-                        <div class="col-12 col-md">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputUser.Address"
-                            label="Address"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || ' ']"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="q-gutter-sm row">
-                        <div class="col-12 col-md">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputUser.U_Contact_Number"
-                            label="Contact Number"
-                            mask="(####) ### - ####"
-                            hint="Format: (0963) 135 - 8292"
-                            lazy-rules
-                            :rules="[(val) => (val && val.length > 0) || ' ']"
-                          />
-                        </div>
-                        <div class="col-12 col-md">
-                          <q-input
-                            dense
-                            outlined
-                            v-model="inputUser.email"
-                            label="Email"
-                            type="email"
-                            hint="Example@gmail.com"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input a valid email address',
-                            ]"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="q-gutter-xs q-pb-sm">
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputUser.username"
-                          label="Username"
-                          lazy-rules
-                          :rules="[(val) => (val && val.length > 0) || ' ']"
-                        />
-                        <q-input
-                          dense
-                          outlined
-                          v-model="inputUser.password"
-                          :type="isPwd ? 'password' : 'text'"
-                          label="Password"
-                          lazy-rules
-                          :rules="[(val) => (val && val.length > 0) || ' ']"
-                        >
-                          <template v-slot:append>
-                            <q-icon
-                              :name="isPwd ? 'visibility_off' : 'visibility'"
-                              class="cursor-pointer"
-                              @click="isPwd = !isPwd"
-                            />
-                          </template>
-                        </q-input>
-                      </div>
-
-                      <div class="q-gutter-sm row">
-                        <div class="col-12 col-md">
-                          <q-select
-                            outlined
-                            dense
-                            v-model="inputUser.User_Type"
-                            :options="options1"
-                            label="User type"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Select the user type',
-                            ]"
-                          />
-                        </div>
-                        <div class="col-12 col-md">
-                          <q-select
-                            outlined
-                            dense
-                            v-model="inputUser.User_Status"
-                            :options="options2"
-                            label="Status"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Select the Account Status',
-                            ]"
-                          />
-                        </div>
-                      </div>
-
-                      <q-card-actions align="right">
-                        <q-btn
-                          flat
-                          label="Cancel"
-                          color="red-10"
-                          v-close-popup
-                          @click="resetModel()"
-                        />
-                        <q-btn
-                          flat
-                          label="Save"
-                          color="primary"
-                          type="submit"
-                        />
-                      </q-card-actions>
-                    </div>
-                  </div>
-                </div>
-              </q-form>
-            </q-card-section>
-          </q-card>
-        </q-dialog>
+    <div class="q-mt-sm">
+      <div class="q-gutter-sm q-ma-md row">
+        <!-- <q-space /> -->
         <!--------------------------------  Export CSV _ ACCOUNT ------------------------------------------    --->
-        <q-tab
-          name="Export"
+        <q-btn
+          color="teal-9"
           icon="archive"
           label="Export to csv"
-          @click="exportTable"
+          @click="exportTable()"
         />
-      </q-tabs>
+      </div>
     </div>
+
     <!--------------------------------  TABLE_ LISTS OF ACCOUNT  ------------------------------------------    --->
     <div class="q-ma-md">
       <q-table
@@ -274,6 +46,260 @@
               <q-icon name="search" />
             </template>
           </q-input>
+          <!--------------------------------  ADD NEW Account BUTTON  ------------------------------------------    --->
+          <div class="q-ma-sm">
+            <q-btn
+              label="Add Account"
+              color="teal-8"
+              dense
+              flat
+              icon="person_add"
+              @click="addNewAccount = true"
+            />
+            <q-dialog v-model="addNewAccount" persistent>
+              <q-card style="width: 1100px; max-width: 110vw">
+                <q-card-section class="row">
+                  <q-toolbar>
+                    <q-avatar size="50px">
+                      <q-icon name="person" />
+                    </q-avatar>
+                    <div class="text-h6">Add New Account</div>
+                    <q-space />
+                    <q-btn
+                      flat
+                      round
+                      dense
+                      icon="close"
+                      @click="resetModel()"
+                      v-close-popup
+                    />
+                  </q-toolbar>
+                </q-card-section>
+
+                <q-card-section>
+                  <q-form @submit="onaddAccount()" class="q-px-md">
+                    <div class="row q-pl-md q-pr-lg">
+                      <!--C O L U M N-->
+                      <div class="col-12 col-md-4">
+                        <div class="text-overline text-bold">
+                          Profile Picture
+                          <div class="q-gutter-y-md">
+                            <q-file
+                              outlined
+                              accept=".jpg, image/*"
+                              v-model="imageAttachement"
+                              style="max-width: 300px"
+                            >
+                              <template v-slot:prepend>
+                                <q-icon name="camera" />
+                              </template>
+                            </q-file>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-8">
+                        <div class="text-overline text-bold">
+                          Account Information
+                          <div class="q-gutter-xs row">
+                            <div class="col-12 col-md">
+                              <q-input
+                                v-model="inputUser.U_First_Name"
+                                dense
+                                outlined
+                                label="First Name"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || '',
+                                ]"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <q-input
+                                v-model="inputUser.U_Middle_Name"
+                                dense
+                                outlined
+                                label="Middle Initial"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || ' ',
+                                ]"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <q-input
+                                v-model="inputUser.U_Last_Name"
+                                dense
+                                outlined
+                                label="Last Name"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || '',
+                                ]"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="q-gutter-x-xs row">
+                            <div class="col-12 col-md">
+                              <q-select
+                                outlined
+                                dense
+                                v-model="inputUser.Gender"
+                                :options="options"
+                                label="Gender"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || '  ',
+                                ]"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <q-input
+                                dense
+                                outlined
+                                v-model="inputUser.U_Birth_Date"
+                                type="date"
+                                hint="Birth Date"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || ' ',
+                                ]"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <q-input
+                                dense
+                                outlined
+                                v-model="inputUser.Address"
+                                label="Address"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || ' ',
+                                ]"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="q-gutter-sm row">
+                            <div class="col-12 col-md">
+                              <q-input
+                                dense
+                                outlined
+                                v-model="inputUser.U_Contact_Number"
+                                label="Contact Number"
+                                mask="(####) ### - ####"
+                                hint="Format: (0963) 135 - 8292"
+                                lazy-rules
+                                :rules="[
+                                  (val) => (val && val.length > 0) || ' ',
+                                ]"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <q-input
+                                dense
+                                outlined
+                                v-model="inputUser.email"
+                                label="Email"
+                                type="email"
+                                hint="Example@gmail.com"
+                                lazy-rules
+                                :rules="[
+                                  (val) =>
+                                    (val && val.length > 0) ||
+                                    'Input a valid email address',
+                                ]"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="q-gutter-xs q-pb-sm">
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputUser.username"
+                              label="Username"
+                              lazy-rules
+                              :rules="[(val) => (val && val.length > 0) || ' ']"
+                            />
+                            <q-input
+                              dense
+                              outlined
+                              v-model="inputUser.password"
+                              :type="isPwd ? 'password' : 'text'"
+                              label="Password"
+                              lazy-rules
+                              :rules="[(val) => (val && val.length > 0) || ' ']"
+                            >
+                              <template v-slot:append>
+                                <q-icon
+                                  :name="
+                                    isPwd ? 'visibility_off' : 'visibility'
+                                  "
+                                  class="cursor-pointer"
+                                  @click="isPwd = !isPwd"
+                                />
+                              </template>
+                            </q-input>
+                          </div>
+
+                          <div class="q-gutter-sm row">
+                            <div class="col-12 col-md">
+                              <q-select
+                                outlined
+                                dense
+                                v-model="inputUser.User_Type"
+                                :options="options1"
+                                label="User type"
+                                lazy-rules
+                                :rules="[
+                                  (val) =>
+                                    (val && val.length > 0) ||
+                                    'Select the user type',
+                                ]"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <q-select
+                                outlined
+                                dense
+                                v-model="inputUser.User_Status"
+                                :options="options2"
+                                label="Status"
+                                lazy-rules
+                                :rules="[
+                                  (val) =>
+                                    (val && val.length > 0) ||
+                                    'Select the Account Status',
+                                ]"
+                              />
+                            </div>
+                          </div>
+
+                          <q-card-actions align="right">
+                            <q-btn
+                              flat
+                              label="Cancel"
+                              color="red-10"
+                              v-close-popup
+                              @click="resetModel()"
+                            />
+                            <q-btn
+                              flat
+                              label="Save"
+                              color="primary"
+                              type="submit"
+                            />
+                          </q-card-actions>
+                        </div>
+                      </div>
+                    </div>
+                  </q-form>
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+          </div>
+
           <div class="q-pa-md q-gutter-sm row">
             <q-page-scroller
               position="bottom-right"
@@ -283,7 +309,7 @@
               <q-btn
                 fab
                 icon="keyboard_arrow_up"
-                color="red-8 "
+                color="orange-9"
                 text-color="white"
               />
             </q-page-scroller>
@@ -297,7 +323,7 @@
             <div class="q-gutter-sm">
               <q-btn
                 round
-                color="blue"
+                color="teal-6"
                 icon="more_vert"
                 size="md"
                 flat
@@ -390,7 +416,7 @@
             <div class="q-gutter-sm">
               <q-btn
                 round
-                color="blue"
+                color="teal-8"
                 icon="edit"
                 size="sm"
                 flat
@@ -652,22 +678,10 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-              <!----------------------------- - - - - -  DELETE BUTTON  - - - - ----------------------------->
-              <q-btn
-                color="red-8"
-                icon="delete"
-                size="sm"
-                class="q-ml-sm"
-                flat
-                round
-                dense
-                @click="deleteSpecificAccount(props.row)"
-              />
-
               <!--------------------------------------- USER STATUS BUTTON   ------------------------------------------    --->
               <q-btn
                 round
-                color="green"
+                color="teal-8"
                 icon="done_all"
                 size="sm"
                 flat
@@ -712,6 +726,17 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
+              <!----------------------------- - - - - -  DELETE BUTTON  - - - - ----------------------------->
+              <!-- <q-btn
+                color="red-8"
+                icon="delete"
+                size="sm"
+                class="q-ml-sm"
+                flat
+                round
+                dense
+                @click="deleteSpecificAccount(props.row)"
+              /> -->
             </div>
           </q-td>
         </template>
@@ -813,12 +838,6 @@ export default class ManageAccount extends Vue {
       align: "center",
       field: "Details",
     },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
-    },
 
     {
       name: "userid",
@@ -870,6 +889,12 @@ export default class ManageAccount extends Vue {
       label: "Status",
       align: "center",
       field: "User_Status",
+    },
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
     },
   ];
 
@@ -969,13 +994,13 @@ export default class ManageAccount extends Vue {
         });
         this.$q.notify({
           type: "positive",
-          message: "Account is Successfully Added!.",
+          message: "Account is Successfully Added!",
         });
       } else {
         await this.addAccount(this.inputUser);
         this.$q.notify({
           type: "positive",
-          message: "Account is Successfully Added!.",
+          message: "Account is Successfully Added!",
         });
       }
     } catch (error) {
@@ -1053,21 +1078,21 @@ export default class ManageAccount extends Vue {
     // this.resetModel();
   }
 
-  deleteSpecificAccount(val: UserDto) {
-    this.$q
-      .dialog({
-        message: "Confirm to delete?",
-        cancel: true,
-        persistent: true,
-      })
-      .onOk(async () => {
-        await this.deleteAccount(val.id as any);
-        this.$q.notify({
-          type: "warning",
-          message: "Successfully removed",
-        });
-      });
-  }
+  // deleteSpecificAccount(val: UserDto) {
+  //   this.$q
+  //     .dialog({
+  //       message: "Confirm to delete?",
+  //       cancel: true,
+  //       persistent: true,
+  //     })
+  //     .onOk(async () => {
+  //       await this.deleteAccount(val.id as any);
+  //       this.$q.notify({
+  //         type: "warning",
+  //         message: "Successfully removed",
+  //       });
+  //     });
+  // }
 
   openUserStatus(val: UserDto) {
     this.status = true;

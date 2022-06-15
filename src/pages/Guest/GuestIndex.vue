@@ -104,7 +104,7 @@
                       <q-btn
                         fab
                         icon="keyboard_arrow_up"
-                        color="orange-6"
+                        color="orange-9"
                         text-color="white"
                       />
                     </q-page-scroller>
@@ -116,7 +116,7 @@
                     <div class="q-gutter-sm">
                       <q-btn
                         round
-                        color="blue"
+                        color="teal-8"
                         icon="more_vert"
                         size="md"
                         flat
@@ -125,7 +125,7 @@
                       />
 
                       <q-dialog v-model="Details">
-                        <q-card style="width: 500px; max-width: 100vw" my-card>
+                        <q-card style="width: 800px; max-width: 100vw" my-card>
                           <q-card-section class="bg-grey-1">
                             <div class="text-subtitle2">
                               {{ inputBook.Book_ID }}
@@ -301,7 +301,6 @@ export default class GuestIndex extends Vue {
       field: (row: any) => row.Author || "None",
       sortable: true,
     },
-    { name: "edition", label: "Edition", align: "center", field: "Edition" },
 
     {
       name: "category",
@@ -311,12 +310,6 @@ export default class GuestIndex extends Vue {
       sortable: true,
     },
 
-    {
-      name: "status",
-      label: "Status",
-      align: "center",
-      field: "Book_Status",
-    },
     {
       name: "availability",
       label: "Availability",

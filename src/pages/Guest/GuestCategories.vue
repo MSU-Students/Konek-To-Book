@@ -1,16 +1,20 @@
 <template>
   <q-page class="bg-image2">
-    <div class="q-pl-lg">
-      <div class="text-h5 q-pa-lg text-bold">
-        <q-icon name="ballot" color="orange-6" style="font-size: 5rem" />
-        Categories List
-      </div>
+    <div class="text-h4 text-teal-9 q-pb-lg q-pt-lg text-bold flex flex-center">
+      <q-icon
+        class="q-pr-sm"
+        name="ballot"
+        color="orange-6"
+        style="font-size: 4rem"
+      />
+      Category List
     </div>
+
     <!--------------------------------  TABLE_ LISTS OF BOOKS  ------------------------------------------    --->
     <div class="q-pl-lg">
       <q-table
         grid
-        card-class="bg-teal-7 text-white"
+        card-class="bg-teal-9 text-white"
         :rows="allCategory"
         :columns="columns"
         row-key="name"
