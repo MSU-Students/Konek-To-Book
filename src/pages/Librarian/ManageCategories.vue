@@ -135,7 +135,10 @@
                 flat
                 dense
                 @click="openEditDialog(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Edit
+                </q-tooltip></q-btn
+              >
               <q-dialog v-model="editRowCategory" persistent>
                 <q-card style="width: 600px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
@@ -213,7 +216,10 @@
                 round
                 dense
                 @click="deleteSpecificCategory(props.row)"
-              />
+                ><q-tooltip class="bg-red-10" :offset="[10, 10]">
+                  Delete
+                </q-tooltip></q-btn
+              >
             </div>
           </q-td>
         </template>
@@ -283,6 +289,13 @@ export default class ManageCategories extends Vue {
 
   columns = [
     {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
+    },
+
+    {
       name: "categoryid",
       align: "center",
       label: "Category ID",
@@ -297,13 +310,6 @@ export default class ManageCategories extends Vue {
       field: (row: CategoryDto) => row.C_Description,
       format: (val: string) => `${val}`,
       sortable: true,
-    },
-
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
     },
   ];
 

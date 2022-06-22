@@ -4,7 +4,6 @@
       <div class="fixed-center">
         <q-card class="bg-blue-grey-1 q-dark q-pb-xl float-left">
           <div class="q-pt-lg" style="max-width: 380px">
-
             <q-card-section>
               <div class="q-pt-lg">
                 <div class="col text-h6 ellipsis flex justify-center">
@@ -25,6 +24,7 @@
                     v-model="password.oldPassword"
                     dense
                     label="Current Password"
+                    :type="isPwd2 ? 'password' : 'text'"
                     lazy-rules
                     :rules="[
                       (val) =>
@@ -32,11 +32,18 @@
                         'Input your  current password',
                     ]"
                   >
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd2 ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd2 = !isPwd2"
+                      />
+                    </template>
                     <template v-slot:prepend>
                       <q-icon name="lock" />
                     </template>
                   </q-input>
-
+                  <!----------------------------- NEW PASSWORD ----------------------------->
                   <q-input
                     v-model="password.newPassword"
                     dense
@@ -59,7 +66,7 @@
                       <q-icon name="lock" />
                     </template>
                   </q-input>
-
+                  <!----------------------------- CONFIRM PASSWORD ----------------------------->
                   <q-input
                     v-model="confirmpassword"
                     dense
@@ -119,7 +126,6 @@ import { mapActions } from "vuex";
 import { ChangePasswordDto } from "src/services/rest-api";
 import { lmsApiService } from "src/services/lms-api.service";
 
-
 @Options({
   methods: {
     ...mapActions("auth", ["changePassword"]),
@@ -134,6 +140,7 @@ export default class LibrarianChangePass extends Vue {
   confirmpassword = "";
   isPwd = true;
   isPwd1 = true;
+  isPwd2 = true;
   user = "librarian";
 
   async onSubmit() {

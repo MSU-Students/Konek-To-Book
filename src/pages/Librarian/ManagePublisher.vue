@@ -163,7 +163,10 @@
                 flat
                 dense
                 @click="openEditDialog(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Edit
+                </q-tooltip></q-btn
+              >
               <q-dialog v-model="editRowPublisher" persistent>
                 <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
                   <q-card-section class="row">
@@ -274,7 +277,10 @@
                 round
                 dense
                 @click="deleteSpecificPublisher(props.row)"
-              />
+                ><q-tooltip class="bg-red-10" :offset="[10, 10]">
+                  Delete
+                </q-tooltip></q-btn
+              >
             </div>
           </q-td>
         </template>
@@ -344,6 +350,12 @@ export default class ManagePublisher extends Vue {
 
   columns = [
     {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
+    },
+    {
       name: "publisherid",
       required: true,
       align: "center",
@@ -372,12 +384,6 @@ export default class ManagePublisher extends Vue {
       align: "center",
       field: "PlaceOfPublication",
       sortable: true,
-    },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
     },
   ];
 

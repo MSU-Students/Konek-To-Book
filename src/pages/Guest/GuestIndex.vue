@@ -122,7 +122,10 @@
                         flat
                         dense
                         @click="openDialog(props.row)"
-                      />
+                        ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                          Details
+                        </q-tooltip></q-btn
+                      >
 
                       <q-dialog v-model="Details">
                         <q-card style="width: 800px; max-width: 100vw" my-card>

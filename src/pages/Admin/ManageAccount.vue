@@ -316,11 +316,11 @@
           </div>
         </template>
 
-        <!------------------------------------------ DETAILS ACCOUNT Button ------------------------------------------ ------------------------->
-
-        <template v-slot:body-cell-Details="props">
+        <!--------------------------------  BUTTONS  ------------------------------------------    --->
+        <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
+              <!------------------------- DETAILS ACCOUNT Button ------------------------ ------------------------->
               <q-btn
                 round
                 color="teal-6"
@@ -329,7 +329,10 @@
                 flat
                 dense
                 @click="openDialog(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Details
+                </q-tooltip></q-btn
+              >
               <q-dialog v-model="showAccountDetails">
                 <q-card style="width: 600px; max-width: 90vw" my-card>
                   <q-card-section>
@@ -407,13 +410,7 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-            </div>
-          </q-td>
-        </template>
-        <!--------------------------------  EDIT OF ACCOUNT  ------------------------------------------    --->
-        <template v-slot:body-cell-action="props">
-          <q-td :props="props">
-            <div class="q-gutter-sm">
+              <!--------------------------------  EDIT OF ACCOUNT  ------------------------------------------    --->
               <q-btn
                 round
                 color="teal-8"
@@ -422,7 +419,10 @@
                 flat
                 dense
                 @click="openEditDialog(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Edit
+                </q-tooltip></q-btn
+              >
               <q-dialog v-model="editRowAccount" persistent>
                 <q-card style="width: 1100px; max-width: 110vw">
                   <q-card-section class="row">
@@ -687,7 +687,10 @@
                 flat
                 dense
                 @click="openUserStatus(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Account Status
+                </q-tooltip></q-btn
+              >
 
               <q-dialog v-model="status">
                 <q-card style="width: 400px" class="q-ma-sm">
@@ -834,11 +837,11 @@ export default class ManageAccount extends Vue {
 
   columns = [
     {
-      name: "Details",
+      name: "action",
       align: "center",
-      field: "Details",
+      label: "Action",
+      field: "action",
     },
-
     {
       name: "userid",
       required: true,
@@ -889,12 +892,6 @@ export default class ManageAccount extends Vue {
       label: "Status",
       align: "center",
       field: "User_Status",
-    },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
     },
   ];
 
@@ -994,13 +991,13 @@ export default class ManageAccount extends Vue {
         });
         this.$q.notify({
           type: "positive",
-          message: "Account is Successfully Added!",
+          message: "Account is Successfully Added",
         });
       } else {
         await this.addAccount(this.inputUser);
         this.$q.notify({
           type: "positive",
-          message: "Account is Successfully Added!",
+          message: "Account is Successfully Added",
         });
       }
     } catch (error) {

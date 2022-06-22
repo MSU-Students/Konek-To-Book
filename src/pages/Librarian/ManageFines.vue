@@ -403,6 +403,58 @@
                 </q-card>
               </q-dialog> -->
 
+              <!-------------------------    DETAILS BOOK Button --------------------------------------------------->
+              <q-btn
+                round
+                color="teal-6"
+                icon="more_vert"
+                size="md"
+                flat
+                dense
+                @click="openDialog(props.row)"
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Details
+                </q-tooltip></q-btn
+              >
+
+              <q-dialog v-model="Details">
+                <q-card style="width: 600px; max-width: 100vw" my-card>
+                  <q-card-section class="bg-grey-1">
+                    <div>{{ inputBookFines.BookFines_ID }}</div>
+                    <div class="text-h7 text-center">
+                      <strong>Book Title: </strong>
+                      {{ inputBookFines.Title }}
+                    </div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section class="bg-grey-1">
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong> Borrower Name: </strong>
+                      {{ inputBookFines.Borrower_Name }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Fine Date: </strong>
+                      {{ inputBookFines.Fine_Date }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Payment Amount: </strong>
+                      {{ inputBookFines.Payment_Amount }}
+                    </div>
+                    <div class="text-left q-ma-mp q-mb-xs">
+                      <strong>Payment Status: </strong>
+                      {{ inputBookFines.Payment_Status }}
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section
+                    class="bg-primary text-center text-caption text-white"
+                  >
+                    Mindanao State University - Marawi City
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
               <!--------------------------------------- Payment_Status BUTTON   ------------------------------------------    --->
               <q-btn
                 round
@@ -412,7 +464,10 @@
                 flat
                 dense
                 @click="openPaymentStatus(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Payment Status
+                </q-tooltip></q-btn
+              >
 
               <q-dialog v-model="paymentStatus">
                 <q-card style="width: 400px" class="q-ma-sm">
@@ -559,7 +614,7 @@
       :scroll-offset="150"
       :offset="[18, 18]"
     >
-      <q-btn fab icon="keyboard_arrow_up" color="red-9" text-color="white" />
+      <q-btn fab icon="keyboard_arrow_up" color="orange-9" text-color="white" />
     </q-page-scroller>
   </q-page>
 </template>
@@ -631,10 +686,17 @@ export default class ManageFines extends Vue {
   paymentStatus = false;
   filter = "";
   dialog = false;
+  Details = false;
 
   options1 = ["Fines", "Paid", "Overdue"];
 
   columns = [
+    {
+      name: "action",
+      align: "center",
+      label: "Action",
+      field: "action",
+    },
     {
       name: "bookfinesid",
       align: "center",
@@ -643,19 +705,11 @@ export default class ManageFines extends Vue {
       sortable: true,
     },
     {
-      name: "desc",
-      required: true,
-      label: "Title",
-      align: "center",
-      field: (row: BookFinesDto) => row.Title,
-      format: (val: string) => `${val}`,
-      sortable: true,
-    },
-    {
       name: "borrowername",
       label: "Borrower Name",
       align: "center",
-      field: "Borrower_Name",
+      field: (row: BookFinesDto) => row.Borrower_Name,
+      format: (val: string) => `${val}`,
       sortable: true,
     },
     {
@@ -675,12 +729,6 @@ export default class ManageFines extends Vue {
       label: "Payment Status",
       align: "center",
       field: "Payment_Status",
-    },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
     },
   ];
 
@@ -740,6 +788,11 @@ export default class ManageFines extends Vue {
   onSelectBorrower(borrower: any) {
     this.inputBookFines.Borrower_Name =
       borrower.B_Last_Name + ", " + borrower.B_First_Name;
+  }
+
+  openDialog(val: BookFinesDto) {
+    this.Details = true;
+    this.inputBookFines = { ...val };
   }
 
   // openEditDialog(val: BookFinesDto) {

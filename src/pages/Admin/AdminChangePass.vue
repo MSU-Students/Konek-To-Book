@@ -18,14 +18,22 @@
                 v-model="password.oldPassword"
                 dense
                 label="Current Password"
+                :type="isPwd2 ? 'password' : 'text'"
                 lazy-rules
                 :rules="[(val) => (val && val.length > 0) || '']"
               >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd2 ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd2 = !isPwd2"
+                  />
+                </template>
                 <template v-slot:prepend>
                   <q-icon name="lock" />
                 </template>
               </q-input>
-
+              <!----------------------------- NEW PASSWORD ----------------------------->
               <q-input
                 v-model="password.newPassword"
                 dense
@@ -45,7 +53,7 @@
                   <q-icon name="lock" />
                 </template>
               </q-input>
-
+              <!----------------------------- CONFIRM PASSWORD ----------------------------->
               <q-input
                 v-model="confirmpassword"
                 dense
@@ -114,6 +122,7 @@ export default class LibrarianChangePass extends Vue {
   confirmpassword = "";
   isPwd = true;
   isPwd1 = true;
+  isPwd2 = true;
   user = "librarian";
 
   async onSubmit() {

@@ -230,10 +230,12 @@
             </q-chip>
           </q-td>
         </template>
-        <!------------------------------------------  ----------    DETAILS BOOK Button ------------------------------------------ ------------------------->
-        <template v-slot:body-cell-Details="props">
+
+        <!-------------------------------------  BUTTONS   ------------------------------------------    --->
+        <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <div class="q-gutter-sm">
+              <!-------------------------    DETAILS BOOK Button --------------------------------------------------->
               <q-btn
                 round
                 color="teal-6"
@@ -242,10 +244,13 @@
                 flat
                 dense
                 @click="openDialog(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Details
+                </q-tooltip></q-btn
+              >
 
               <q-dialog v-model="Details">
-                <q-card style="width: 700px; max-width: 100vw" my-card>
+                <q-card style="width: 600px; max-width: 100vw" my-card>
                   <q-card-section class="bg-grey-1">
                     <div>{{ inputIssuedBook.IssuedBook_ID }}</div>
                     <div class="text-h7 text-center">
@@ -286,14 +291,8 @@
                   </q-card-section>
                 </q-card>
               </q-dialog>
-            </div>
-          </q-td>
-        </template>
 
-        <!------------------------------------- EDIT ISSUEDBOOK BUTTON   ------------------------------------------    --->
-        <template v-slot:body-cell-action="props">
-          <q-td :props="props">
-            <div class="q-gutter-sm">
+              <!--------------------------------------- EDITISSUEDBOOK Button --------------- ------------------------->
               <q-btn
                 round
                 color="teal-8"
@@ -302,7 +301,10 @@
                 flat
                 dense
                 @click="openEditDialog(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  Edit
+                </q-tooltip></q-btn
+              >
               <q-dialog v-model="editRowIssuedBook" persistent>
                 <q-card style="width: 900px; max-width: 110vw" class="q-pa-lg">
                   <q-card-section class="row">
@@ -458,7 +460,10 @@
                 flat
                 dense
                 @click="openIssuedStatus(props.row)"
-              />
+                ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                  IssueBook Status
+                </q-tooltip></q-btn
+              >
 
               <q-dialog v-model="issuedStatus">
                 <q-card style="width: 400px" class="q-ma-sm">
@@ -693,9 +698,10 @@ export default class ManageIssuedBooks extends Vue {
 
   columns = [
     {
-      name: "Details",
+      name: "action",
       align: "center",
-      field: "Details",
+      label: "Action",
+      field: "action",
     },
 
     {
@@ -725,12 +731,6 @@ export default class ManageIssuedBooks extends Vue {
       label: "IssuedBook Status",
       align: "center",
       field: "IssuedBook_Status",
-    },
-    {
-      name: "action",
-      align: "center",
-      label: "Action",
-      field: "action",
     },
   ];
 
