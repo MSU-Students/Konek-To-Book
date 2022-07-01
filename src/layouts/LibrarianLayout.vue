@@ -18,7 +18,18 @@
         <!-------------------------------------- Account Profile ---------------------------- ------------------------>
         <div class="q-gutter-sm row items-center no-wrap">
           <q-tooltip>Account</q-tooltip>
-          <q-btn-dropdown round flat dropdown-icon="account_circle">
+          <q-btn-dropdown
+            round
+            flat
+            dropdown-icon="account_circle"
+            :label="
+              currentProfile.U_First_Name +
+              ' ' +
+              currentProfile.U_Middle_Name +
+              ' ' +
+              currentProfile.U_Last_Name
+            "
+          >
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
                 <q-avatar size="110px">

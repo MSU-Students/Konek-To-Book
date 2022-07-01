@@ -89,7 +89,6 @@
         :rows="allBook"
         :columns="columns"
         row-key="name"
-        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
@@ -817,6 +816,8 @@ function wrapCsvValue(
       "filterBook",
     ]),
     ...mapActions("auth", ["authUser"]),
+    ...mapActions("issuedbook", ["getAllIssuedBook"]),
+    ...mapActions("borrower", ["getAllBorrower"]),
   },
 })
 export default class LibrarianIndex extends Vue {
@@ -836,9 +837,13 @@ export default class LibrarianIndex extends Vue {
   deleteBook!: (payload: BookDto) => Promise<void>;
   filterBook!: (filter: string) => Promise<void>;
   getAllBook!: () => Promise<void>;
+  getAllIssuedBook!: () => Promise<void>;
+  getAllBorrower!: () => Promise<void>;
 
   async mounted() {
     await this.getAllBook();
+    await this.getAllIssuedBook();
+    await this.getAllBorrower();
   }
 
   pagination = {};

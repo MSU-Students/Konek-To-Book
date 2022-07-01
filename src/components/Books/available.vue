@@ -6,7 +6,6 @@
         :columns="columns"
         :rows="allBook.filter((i) => /^(Yes)$/gi.test(i.Availability))"
         row-key="name"
-        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>

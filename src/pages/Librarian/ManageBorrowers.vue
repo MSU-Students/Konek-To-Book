@@ -55,8 +55,8 @@
                       outlined
                       v-model="inputBorrower.Student_ID"
                       label="Student ID"
-                      mask="#### - #####"
-                      hint="Format: 0000 - 00000"
+                      mask="#########"
+                      hint="Format: 200000000"
                       lazy-rules
                       :rules="[
                         (val) =>
@@ -169,7 +169,6 @@
         :rows="allBorrower"
         :columns="columns"
         row-key="name"
-        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>

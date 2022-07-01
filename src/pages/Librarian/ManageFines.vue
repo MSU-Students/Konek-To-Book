@@ -183,7 +183,6 @@
         :rows="allBookFines"
         :columns="columns"
         row-key="name"
-        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
@@ -439,7 +438,7 @@
                       {{ inputBookFines.Fine_Date }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
-                      <strong>Payment Amount: </strong>
+                      <strong>Payment Amount: ₱ </strong>
                       {{ inputBookFines.Payment_Amount }}
                     </div>
                     <div class="text-left q-ma-mp q-mb-xs">
@@ -546,7 +545,7 @@
 
                   <q-item-section top side>
                     <q-item-label lines="1">
-                      <span class="text-weight-medium">Payment Amount:</span>
+                      <span class="text-weight-medium">Payment Amount: ₱ </span>
                       <span class="text-grey-8">
                         {{ data.Payment_Amount }}</span
                       >
@@ -593,7 +592,9 @@
 
                   <q-item-section top side>
                     <q-item-label lines="1">
-                      <span class="text-weight-medium">Payment Amount :</span>
+                      <span class="text-weight-medium"
+                        >Payment Amount : ₱
+                      </span>
                       <span class="text-grey-8">
                         {{ data.Payment_Amount }}</span
                       >

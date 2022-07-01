@@ -81,7 +81,6 @@
                 :rows="allBook"
                 :columns="columns"
                 row-key="name"
-                :rows-per-page-options="[0]"
                 :filter="filter"
               >
                 <template v-slot:top-right="props">

@@ -119,7 +119,6 @@
         :rows="allPublisher"
         :columns="columns"
         row-key="name"
-        :rows-per-page-options="[0]"
         :filter="filter"
       >
         <template v-slot:top-right>
@@ -224,12 +223,6 @@
                             v-model="inputPublisher.DateOfPublication"
                             type="date"
                             hint="Date Of Publication"
-                            lazy-rules
-                            :rules="[
-                              (val) =>
-                                (val && val.length > 0) ||
-                                'Input the date of publication',
-                            ]"
                           />
                         </div>
                         <div class="col">
