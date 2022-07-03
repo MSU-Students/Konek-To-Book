@@ -714,16 +714,16 @@ export default class ManageIssuedBooks extends Vue {
     {
       name: "borrowername",
       label: "Borrower Name",
-      align: "center",
+      align: "left",
       field: "Borrower_Name",
     },
     {
       name: "borrowdate",
       label: "Borrow Date",
-      align: "center",
+      align: "left",
       field: "Borrow_Date",
     },
-    { name: "duedate ", label: "Due Date", align: "center", field: "Due_Date" },
+    { name: "duedate ", label: "Due Date", align: "left", field: "Due_Date" },
 
     {
       name: "issuedbookstatus",

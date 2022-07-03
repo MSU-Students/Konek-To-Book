@@ -82,14 +82,14 @@ export default class GuestCategories extends Vue {
     {
       name: "categoryid",
       align: "center",
-      label: "Category ID",
+      label: "",
       field: "Category_ID",
       sortable: true,
     },
     {
       name: "desc",
       required: true,
-      label: "Name",
+      label: "",
       align: "left",
       field: (row: CategoryDto) => row.C_Description,
       format: (val: string) => `${val}`,

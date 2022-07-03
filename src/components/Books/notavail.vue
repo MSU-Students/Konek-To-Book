@@ -212,7 +212,7 @@ export default class GuestIndex extends Vue {
       name: "category",
       label: "Category",
       field: (row: any) => row.categories?.C_Description || "None",
-      align: "center",
+      align: "left",
       sortable: true,
     },
     {

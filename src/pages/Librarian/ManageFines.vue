@@ -708,7 +708,7 @@ export default class ManageFines extends Vue {
     {
       name: "borrowername",
       label: "Borrower Name",
-      align: "center",
+      align: "left",
       field: (row: BookFinesDto) => row.Borrower_Name,
       format: (val: string) => `${val}`,
       sortable: true,
@@ -716,7 +716,7 @@ export default class ManageFines extends Vue {
     {
       name: "borrowdate",
       label: "Fine Date",
-      align: "center",
+      align: "left",
       field: "Fine_Date",
     },
     {

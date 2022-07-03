@@ -853,7 +853,7 @@ export default class ManageAccount extends Vue {
       name: "desc",
       required: true,
       label: "First Name",
-      align: "center",
+      align: "left",
       field: (row: UserDto) => row.U_First_Name,
       format: (val: string) => `${val}`,
       sortable: true,
@@ -867,7 +867,7 @@ export default class ManageAccount extends Vue {
     {
       name: "lastname",
       label: "Last Name",
-      align: "center",
+      align: "left",
       field: "U_Last_Name",
       sortable: true,
     },
@@ -875,15 +875,15 @@ export default class ManageAccount extends Vue {
     {
       name: "contact",
       label: "Contact Number",
-      align: "center",
+      align: "left",
       field: "U_Contact_Number",
     },
-    { name: "email", label: "Email", align: "center", field: "email" },
-    { name: "username", label: "Username", align: "center", field: "username" },
+    { name: "email", label: "Email", align: "left", field: "email" },
+    { name: "username", label: "Username", align: "left", field: "username" },
     {
       name: "usertype",
       label: "User Type",
-      align: "center",
+      align: "left",
       field: "User_Type",
     },
     {
