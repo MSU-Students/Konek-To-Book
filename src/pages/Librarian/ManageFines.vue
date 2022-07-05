@@ -18,6 +18,13 @@
         align="right"
         class="bg-teal-9 text-white shadow-2"
       >
+        <!-------------------------------- VIEW TABLE ------------------------------------------    --->
+        <q-tab
+          label="View Table"
+          color="teal-9"
+          icon="view_list"
+          @click="viewTable = !viewTable"
+        />
         <!--------------------------------  ADD NEW FINES BUTTON  ------------------------------------------    --->
         <q-tab
           name="fines"
@@ -171,13 +178,13 @@
         <q-tab
           name="Export"
           icon="archive"
-          label="Export to csv"
+          label="Export"
           @click="exportTable"
         />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF FINES  ------------------------------------------    --->
-    <div class="q-ma-md">
+    <div v-show="viewTable" class="q-ma-md">
       <q-table
         title="Fine List"
         :rows="allBookFines"
@@ -201,6 +208,18 @@
                 text-color="black"
                 @click="filter = 'Fines'"
                 label="Fines"
+              />
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Overdue'"
+                label="Overdue"
+              />
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Paid'"
+                label="Paid"
               />
 
               <q-fab-action
@@ -688,6 +707,7 @@ export default class ManageFines extends Vue {
   filter = "";
   dialog = false;
   Details = false;
+  viewTable = false;
 
   options1 = ["Fines", "Paid", "Overdue"];
 

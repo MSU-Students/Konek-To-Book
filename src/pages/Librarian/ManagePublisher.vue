@@ -9,16 +9,23 @@
       />
       Manage Publisher
     </div>
-
     <div class="q-ma-md">
       <!--------------------------------  TAB_MENU_PUBLISHER ------------------------------------------    --->
       <q-tabs
         inline-label
         dense
-        width="50px"
         align="right"
+        width="50px"
         class="bg-teal-9 text-white shadow-2"
       >
+        <!-------------------------------- VIEW TABLE ------------------------------------------    --->
+        <q-tab
+          label="View Table"
+          color="teal-9"
+          icon="view_list"
+          @click="viewTable = !viewTable"
+        />
+
         <!--------------------------------  ADD NEW PUBLISHER BUTTON  ------------------------------------------    --->
         <q-tab
           name="Publisher"
@@ -106,14 +113,14 @@
         <q-tab
           name="Export"
           icon="archive"
-          label="Export to csv"
+          label="Export"
           @click="exportTable"
         />
       </q-tabs>
     </div>
 
     <!--------------------------------  TABLE_ LISTS OF Publisher  ------------------------------------------    --->
-    <div class="q-ma-md">
+    <div v-show="viewTable" class="q-ma-md">
       <q-table
         title="Publisher List"
         :rows="allPublisher"
@@ -333,6 +340,7 @@ export default class ManagePublisher extends Vue {
     await this.getAllPublisher();
   }
 
+  viewTable = false;
   pagination = {};
   filter = "";
   dialog = false;

@@ -69,21 +69,19 @@
       </div>
     </div>
 
-    <div class="q-mt-sm">
+    <div class="q-mt-sm row">
       <div class="q-gutter-sm q-ma-md">
-        <!-- <q-space /> -->
-        <!--------------------------------  Export CSV _ ACCOUNT ------------------------------------------    --->
         <q-btn
+          label="View Table"
           color="teal-9"
-          icon="archive"
-          label="Export to csv"
-          @click="exportTable()"
+          icon="view_list"
+          @click="viewTable = !viewTable"
         />
       </div>
     </div>
 
     <!--------------------------------  ---------  --- TABLE LISTS OF BOOKS  ------------------------------------------   ------ --->
-    <div class="q-ma-md">
+    <div v-show="viewTable" class="q-ma-md">
       <q-table
         title="Book List"
         :rows="allBook"
@@ -141,13 +139,17 @@
             <!--------------------------------  ADD NEW Book BUTTON  ------------------------------------------    --->
 
             <q-btn
-              label="Add Book"
-              color="teal-6"
+              color="teal-8"
               dense
               flat
+              size="md"
               icon="library_add"
               @click="addNewBook = true"
-            />
+              ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                Add Book
+              </q-tooltip></q-btn
+            >
+
             <q-dialog v-model="addNewBook" persistent>
               <q-card style="width: 750px; max-width: 100vw" class="q-pa-md">
                 <q-card-section class="row">
@@ -353,6 +355,19 @@
             </q-dialog>
           </div>
 
+          <!--------------------------------  Export CSV _Books ------------------------------------------    --->
+          <q-btn
+            color="teal-8"
+            flat
+            dense
+            size="md"
+            icon="archive"
+            @click="exportTable()"
+            ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+              Export CSV
+            </q-tooltip></q-btn
+          >
+
           <q-page-scroller
             position="bottom-right"
             :scroll-offset="150"
@@ -518,6 +533,7 @@
                             outlined
                             v-model="inputBook.ISBN"
                             label="ISBN"
+                            readonly
                             type="number"
                             lazy-rules
                             :rules="[
@@ -547,6 +563,7 @@
                           <q-input
                             dense
                             outlined
+                            readonly
                             v-model="inputBook.Call_Number"
                             label="Call Number"
                           />
@@ -555,6 +572,7 @@
                           <q-input
                             dense
                             outlined
+                            readonly
                             v-model="inputBook.Edition"
                             label="Edition"
                           />
@@ -581,6 +599,7 @@
                           <q-select
                             dense
                             outlined
+                            readonly
                             label="Publisher"
                             :options="allPublisher"
                             option-label="Publisher"
@@ -839,6 +858,7 @@ export default class LibrarianIndex extends Vue {
   getAllBook!: () => Promise<void>;
   getAllIssuedBook!: () => Promise<void>;
   getAllBorrower!: () => Promise<void>;
+  viewTable = false;
 
   async mounted() {
     await this.getAllBook();

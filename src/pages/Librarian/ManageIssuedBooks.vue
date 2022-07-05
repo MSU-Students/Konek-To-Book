@@ -18,6 +18,13 @@
         align="right"
         class="bg-teal-9 text-white shadow-2"
       >
+        <!-------------------------------- VIEW TABLE ------------------------------------------    --->
+        <q-tab
+          label="View Table"
+          color="teal-9"
+          icon="view_list"
+          @click="viewTable = !viewTable"
+        />
         <!--------------------------------  ADD NEW ISSUEDBOOK BUTTON  ------------------------------------------    --->
         <q-tab
           name="issuedbook"
@@ -162,13 +169,13 @@
         <q-tab
           name="Export"
           icon="archive"
-          label="Export to csv"
+          label="Export"
           @click="exportTable"
         />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE_ LISTS OF ISSUEDBOOK  ------------------------------------------    --->
-    <div class="q-ma-md">
+    <div v-show="viewTable" class="q-ma-md">
       <q-table
         title="IssuedBook List"
         :rows="allIssuedBook"
@@ -192,6 +199,18 @@
                 text-color="black"
                 @click="filter = 'Issued'"
                 label="Issued"
+              />
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Return'"
+                label="Return"
+              />
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Lost'"
+                label="Lost"
               />
 
               <q-fab-action
@@ -690,8 +709,10 @@ export default class ManageIssuedBooks extends Vue {
   editRowIssuedBook = false;
   issuedStatus = false;
   filter = "";
+  search = "";
   dialog = false;
   Details = false;
+  viewTable = false;
 
   issuedstatusOpt = ["Issued", "Lost", "Return"];
 
@@ -785,6 +806,14 @@ export default class ManageIssuedBooks extends Vue {
     IssuedBook_Status: "Issued",
   };
 
+  searchAction(books: any) {
+    this.inputIssuedBook.Title = books.Title;
+    this.inputIssuedBook.Book_Status = books.Book_Status;
+  }
+
+  clearSearch() {
+    this.search = "";
+  }
   onSelectBook(books: any) {
     this.inputIssuedBook.Title = books.Title;
     this.inputIssuedBook.Book_Status = books.Book_Status;

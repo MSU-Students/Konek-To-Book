@@ -18,6 +18,13 @@
         align="right"
         class="bg-teal-9 text-white shadow-2"
       >
+        <!-------------------------------- VIEW TABLE ------------------------------------------    --->
+        <q-tab
+          label="View Table"
+          color="teal-9"
+          icon="view_list"
+          @click="viewTable = !viewTable"
+        />
         <!--------------------------------  ADD NEW BORROWER BUTTON  ------------------------------------------    --->
         <q-tab
           name="borrower"
@@ -157,13 +164,13 @@
         <q-tab
           name="Export"
           icon="archive"
-          label="Export to csv"
+          label="Export"
           @click="exportTable"
         />
       </q-tabs>
     </div>
     <!--------------------------------  TABLE _ LIST OF BORROWERS  ------------------------------------------    --->
-    <div class="q-ma-md">
+    <div v-show="viewTable" class="q-ma-md">
       <q-table
         title="Borrower List"
         :rows="allBorrower"
@@ -444,6 +451,7 @@ export default class ManageBorrowers extends Vue {
   filter = "";
   dialog = false;
   BorrowerDetails = "";
+  viewTable = false;
 
   options1 = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 

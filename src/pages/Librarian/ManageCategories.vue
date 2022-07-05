@@ -79,7 +79,7 @@
         <q-tab
           name="Export"
           icon="archive"
-          label="Export to csv"
+          label="Export"
           @click="exportTable"
         />
       </q-tabs>

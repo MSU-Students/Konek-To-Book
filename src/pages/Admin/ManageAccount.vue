@@ -10,21 +10,21 @@
       Account
     </div>
 
-    <div class="q-mt-sm">
-      <div class="q-gutter-sm q-ma-md row">
+    <div class="q-mt-sm row">
+      <div class="q-gutter-sm q-ma-md">
         <!-- <q-space /> -->
-        <!--------------------------------  Export CSV _ ACCOUNT ------------------------------------------    --->
+        <!-------------------------------- View Table ------------------------------------------    --->
         <q-btn
+          label="View Table"
           color="teal-9"
-          icon="archive"
-          label="Export to csv"
-          @click="exportTable()"
+          icon="view_list"
+          @click="viewTable = !viewTable"
         />
       </div>
     </div>
 
     <!--------------------------------  TABLE_ LISTS OF ACCOUNT  ------------------------------------------    --->
-    <div class="q-ma-md">
+    <div v-show="viewTable" class="q-ma-md">
       <q-table
         title="Account List"
         :rows="allAccount"
@@ -33,28 +33,63 @@
         :filter="filter"
       >
         <template v-slot:top-right>
-          <q-input
-            outlined
-            rounded
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+          <div>
+            <q-fab
+              color="teal-9"
+              icon="sort"
+              direction="left"
+              label="Filter by:"
+              label-position="top"
+              external-label
+              padding="xs"
+            >
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Active'"
+                label="Active"
+              />
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = 'Inactive'"
+                label="Inactive"
+              />
+
+              <q-fab-action
+                color="white"
+                text-color="black"
+                @click="filter = ''"
+                icon="clear"
+              />
+            </q-fab>
+          </div>
+          <div class="q-pa-md">
+            <q-input
+              outlined
+              rounded
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
           <!--------------------------------  ADD NEW Account BUTTON  ------------------------------------------    --->
           <div class="q-ma-sm">
             <q-btn
-              label="Add Account"
               color="teal-8"
               dense
               flat
               icon="person_add"
               @click="addNewAccount = true"
-            />
+              ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+                Add Account
+              </q-tooltip></q-btn
+            >
             <q-dialog v-model="addNewAccount" persistent>
               <q-card style="width: 1100px; max-width: 110vw">
                 <q-card-section class="row">
@@ -298,6 +333,19 @@
               </q-card>
             </q-dialog>
           </div>
+
+          <!--------------------------------  Export CSV _ ACCOUNT ------------------------------------------    --->
+          <q-btn
+            color="teal-8"
+            flat
+            dense
+            size="md"
+            icon="archive"
+            @click="exportTable()"
+            ><q-tooltip class="bg-teal-7" :offset="[10, 10]">
+              Export CSV
+            </q-tooltip></q-btn
+          >
 
           <div class="q-pa-md q-gutter-sm row">
             <q-page-scroller
@@ -827,6 +875,7 @@ export default class ManageAccount extends Vue {
   cancelEnabled = true;
   editRowAccount = false;
   status = false;
+  viewTable = false;
 
   fitModes = ["scale-down"];
   options = ["Male", "Female"];
