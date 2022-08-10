@@ -61,12 +61,14 @@
                       outlined
                       dense
                       label="Book_ID"
-                      :options="allBook"
+                      :options="options"
                       option-label="Book_ID"
                       optine-value="Book_ID"
                       map-options
                       emit-value
-                      @update:model-value="onSelectBook"
+                      @update:model-value="onSelectBook($event)"
+                      @filter="filterFn"
+                      use-input
                       v-model="inputIssuedBook.books"
                       lazy-rules
                       :rules="[(val) => val || 'Select Book ID']"
@@ -88,12 +90,14 @@
                       dense
                       outlined
                       label="Borrower ID"
-                      :options="allBorrower"
+                      :options="OptionBorrow"
                       option-label="Borrower_ID"
-                      optine-value="Borrower_ID"
+                      option-value="Borrower_ID"
                       map-options
                       emit-value
-                      @update:model-value="onSelectBorrower"
+                      @update:model-value="onSelectBorrower($event)"
+                      @filter="filtering"
+                      use-input
                       v-model="inputIssuedBook.borrowerss"
                       lazy-rules
                       :rules="[(val) => val || 'Select Borrower ID']"
@@ -361,12 +365,14 @@
                             outlined
                             dense
                             label="Book_ID"
-                            :options="allBook"
+                            :options="options"
                             option-label="Book_ID"
                             optine-value="Book_ID"
                             map-options
                             emit-value
-                            @update:model-value="onSelectBook"
+                            @update:model-value="onSelectBook($event)"
+                            @filter="filterFn"
+                            use-input
                             v-model="inputIssuedBook.books"
                           />
                         </div>
@@ -386,12 +392,14 @@
                             dense
                             outlined
                             label="Borrower ID"
-                            :options="allBorrower"
+                            :options="OptionBorrow"
                             option-label="Borrower_ID"
-                            optine-value="Borrower_ID"
+                            option-value="Borrower_ID"
                             map-options
                             emit-value
-                            @update:model-value="onSelectBorrower"
+                            @update:model-value="onSelectBorrower($event)"
+                            @filter="filtering"
+                            use-input
                             v-model="inputIssuedBook.borrowerss"
                           />
                         </div>
@@ -693,6 +701,9 @@ export default class ManageIssuedBooks extends Vue {
   lostBook!: IssuedBookDto[];
   issuedBook!: IssuedBookDto[];
 
+  options: BookDto[] = [];
+  OptionBorrow: BorrowerDto[] = [];
+
   addIssuedBook!: (payload: IssuedBookDto) => Promise<void>;
   editIssuedBook!: (payload: IssuedBookDto) => Promise<void>;
   deleteIssuedBook!: (payload: IssuedBookDto) => Promise<void>;
@@ -797,7 +808,7 @@ export default class ManageIssuedBooks extends Vue {
 
   // --------------------------------------------------------------------------
 
-  inputIssuedBook: IssuedBookDto = {
+  inputIssuedBook: any = {
     Title: "",
     Borrower_Name: "",
     Borrow_Date: currentDate,
@@ -815,13 +826,54 @@ export default class ManageIssuedBooks extends Vue {
     this.search = "";
   }
   onSelectBook(books: any) {
-    this.inputIssuedBook.Title = books.Title;
-    this.inputIssuedBook.Book_Status = books.Book_Status;
+    this.inputIssuedBook.Title = this.allBook.find(
+      (i) => i.Book_ID === books
+    )?.Title;
+
+    this.inputIssuedBook.Book_Status = this.allBook.find(
+      (i) => i.Book_ID === books
+    )?.Book_Status;
+  }
+
+  filterFn(val: any, update: any) {
+    if (val === "") {
+      update(() => {
+        this.options = this.allBook.map(
+          (i) => i.Book_ID
+        ) as unknown as BookDto[];
+      });
+      return;
+    }
+
+    update(() => {
+      const needle = val.toLowerCase();
+      this.options = this.allBook
+        .filter((v) => String(v.Book_ID).toLowerCase().indexOf(needle) > -1)
+        .map((i) => i.Book_ID) as unknown as BookDto[];
+    });
+  }
+  filtering(val: any, update: any) {
+    if (val === "") {
+      update(() => {
+        this.OptionBorrow = this.allBorrower.map(
+          (i) => i.Borrower_ID
+        ) as unknown as BorrowerDto[];
+      });
+      return;
+    }
+    update(() => {
+      const needle = val.toLowerCase();
+      this.OptionBorrow = this.allBorrower
+        .filter((v) => String(v.Borrower_ID).toLowerCase().indexOf(needle) > -1)
+        .map((s) => s.Borrower_ID) as unknown as BorrowerDto[];
+    });
   }
 
   onSelectBorrower(borrowerss: any) {
     this.inputIssuedBook.Borrower_Name =
-      borrowerss.B_Last_Name + ", " + borrowerss.B_First_Name;
+      this.allBorrower.find((s) => s.Borrower_ID === borrowerss)?.B_First_Name +
+      " " +
+      this.allBorrower.find((s) => s.Borrower_ID === borrowerss)?.B_Last_Name;
   }
 
   openIssuedStatus(val: IssuedBookDto) {

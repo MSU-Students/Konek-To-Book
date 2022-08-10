@@ -61,12 +61,14 @@
                       outlined
                       dense
                       label="Book_ID"
-                      :options="allBook"
+                      :options="options"
                       option-label="Book_ID"
                       optine-value="Book_ID"
                       map-options
                       emit-value
-                      @update:model-value="onSelectBook"
+                      @update:model-value="onSelectBook($event)"
+                      @filter="filterFn"
+                      use-input
                       v-model="inputBookFines.book"
                       lazy-rules
                       :rules="[(val) => val || 'Select Book ID']"
@@ -88,11 +90,14 @@
                       dense
                       outlined
                       label="Borrower ID"
-                      :options="allBorrower"
+                      :options="OptionBorrow"
                       option-label="Borrower_ID"
+                      option-value="Borrower_ID"
                       map-options
                       emit-value
-                      @update:model-value="onSelectBorrower"
+                      @update:model-value="onSelectBorrower($event)"
+                      @filter="filtering"
+                      use-input
                       v-model="inputBookFines.borrower"
                       lazy-rules
                       :rules="[(val) => val || 'Select Borrower ID']"
@@ -690,6 +695,9 @@ export default class ManageFines extends Vue {
   overdueBook!: BookFinesDto[];
   finesBook!: BookFinesDto[];
 
+  options: BookDto[] = [];
+  OptionBorrow: BorrowerDto[] = [];
+
   addBookFines!: (payload: BookFinesDto) => Promise<void>;
   editBookFines!: (payload: BookFinesDto) => Promise<void>;
   deleteBookFines!: (payload: BookFinesDto) => Promise<void>;
@@ -794,7 +802,7 @@ export default class ManageFines extends Vue {
 
   // --------------------------------------------------------------------------
 
-  inputBookFines: BookFinesDto = {
+  inputBookFines: any = {
     Title: "",
     Borrower_Name: "",
     Fine_Date: "",
@@ -803,12 +811,50 @@ export default class ManageFines extends Vue {
   };
 
   onSelectBook(book: any) {
-    this.inputBookFines.Title = book.Title;
+    this.inputBookFines.Title = this.allBook.find(
+      (i) => i.Book_ID === book
+    )?.Title;
   }
 
   onSelectBorrower(borrower: any) {
     this.inputBookFines.Borrower_Name =
-      borrower.B_Last_Name + ", " + borrower.B_First_Name;
+      this.allBorrower.find((s) => s.Borrower_ID === borrower)?.B_First_Name +
+      " " +
+      this.allBorrower.find((s) => s.Borrower_ID === borrower)?.B_Last_Name;
+  }
+
+  filterFn(val: any, update: any) {
+    if (val === "") {
+      update(() => {
+        this.options = this.allBook.map(
+          (i) => i.Book_ID
+        ) as unknown as BookDto[];
+      });
+      return;
+    }
+
+    update(() => {
+      const needle = val.toLowerCase();
+      this.options = this.allBook
+        .filter((v) => String(v.Book_ID).toLowerCase().indexOf(needle) > -1)
+        .map((i) => i.Book_ID) as unknown as BookDto[];
+    });
+  }
+  filtering(val: any, update: any) {
+    if (val === "") {
+      update(() => {
+        this.OptionBorrow = this.allBorrower.map(
+          (i) => i.Borrower_ID
+        ) as unknown as BorrowerDto[];
+      });
+      return;
+    }
+    update(() => {
+      const needle = val.toLowerCase();
+      this.OptionBorrow = this.allBorrower
+        .filter((v) => String(v.Borrower_ID).toLowerCase().indexOf(needle) > -1)
+        .map((s) => s.Borrower_ID) as unknown as BorrowerDto[];
+    });
   }
 
   openDialog(val: BookFinesDto) {
